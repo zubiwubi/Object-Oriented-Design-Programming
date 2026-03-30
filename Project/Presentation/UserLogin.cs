@@ -1,4 +1,4 @@
-static class UserLogin
+/* static class UserLogin
 {
     static private AccountsLogic accountsLogic = new AccountsLogic();
 
@@ -24,4 +24,5 @@ static class UserLogin
             Console.WriteLine("No account found with that email and password");
         }
     }
-}
+} */
+

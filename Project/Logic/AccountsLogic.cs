@@ -1,7 +1,7 @@
 ﻿
 
 //This class is not static so later on we can use inheritance and interfaces
-public class AccountsLogic
+public class AccountLogic
 {
 
     //Static properties are shared across all instances of the class
@@ -27,6 +27,12 @@ public class AccountsLogic
             return acc;
         }
         return null;
+    }
+
+
+    public static void LogOff()
+    {
+        CurrentAccount == null; 
     }
 }
 
