@@ -1,6 +1,4 @@
-﻿
-
-//This class is not static so later on we can use inheritance and interfaces
+﻿//This class is not static so later on we can use inheritance and interfaces
 public class AccountLogic
 {
 
@@ -10,7 +8,7 @@ public class AccountLogic
     public static AccountModel? CurrentAccount { get; private set; }
     private AccountsAccess _access = new();
 
-    public AccountsLogic()
+    public void AccountsLogic()
     {
         // Could do something here
 
@@ -32,7 +30,7 @@ public class AccountLogic
 
     public static void LogOff()
     {
-        CurrentAccount == null; 
+        // CurrentAccount == null; 
     }
 }
 
