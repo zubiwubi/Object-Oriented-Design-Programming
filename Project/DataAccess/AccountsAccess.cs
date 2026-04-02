@@ -2,7 +2,6 @@ using Microsoft.Data.Sqlite;
 
 using Dapper;
 
-
 public class AccountsAccess
 {
     private SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
@@ -11,11 +10,11 @@ public class AccountsAccess
 
     public void Write(AccountModel account)
     {
-        string sql = $"INSERT INTO {Table} (email, password, fullname) VALUES (@EmailAddress, @Password, @FullName)";
+        string sql = $"INSERT INTO {Table} (firstName, lastName, emailAddress, password,type) VALUES (@FirstName, @LastName,@EmailAddress,@Password,@Type)";
         _connection.Execute(sql, account);
     }
 
-    public AccountModel GetByEmail(string email)
+    public AccountModel? GetByEmail(string email)
     {
         string sql = $"SELECT * FROM {Table} WHERE email = @Email";
         return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Email = email });
@@ -23,7 +22,7 @@ public class AccountsAccess
 
     public void Update(AccountModel account)
     {
-        string sql = $"UPDATE {Table} SET email = @EmailAddress, password = @Password, fullname = @FullName WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET firstName=@FirstName, lastName=@LastName emailAddress = @EmailAddress, password = @Password, type = @Type WHERE id = @Id";
         _connection.Execute(sql, account);
     }
 

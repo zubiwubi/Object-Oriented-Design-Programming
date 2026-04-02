@@ -31,8 +31,10 @@
 //                 Subject = subject,
 //                 Body = body
 //             };
-//             var attachment = new Attachment($"qrcode{order}.png"); // path to your file
-//             message.Attachments.Add(attachment);
+//             var attachmentQR = new Attachment($"qrcode{order}.png"); // path to your file
+//             var attachmentCinema = new Attachment("CINEMA.JPG");
+//             message.Attachments.Add(attachmentQR);
+//             message.Attachments.Add(attachmentCinema);
 //             {
 //                 smtp.Send(message);
 //             }
