@@ -1,16 +1,18 @@
 using Microsoft.Data.Sqlite;
-
 using Dapper;
 
-public class AccountsAccess
+
+public class AccountAccess
 {
     private SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
+    private string Table = "Account";
 
-    private string Table = "Accounts";
+    //        AccountModel Account = new AccountModel(FirstName, LastName, EmailAdress, Password, Type); 
+
 
     public void Write(AccountModel account)
     {
-        string sql = $"INSERT INTO {Table} (firstName, lastName, emailAddress, password,type) VALUES (@FirstName, @LastName,@EmailAddress,@Password,@Type)";
+        string sql = $"INSERT INTO {Table} (FirstName, LastName, EmailAdress, Password, Type) VALUES (@FirstName, @LastName, @Email @Password, @Type)";
         _connection.Execute(sql, account);
     }
 
@@ -22,7 +24,7 @@ public class AccountsAccess
 
     public void Update(AccountModel account)
     {
-        string sql = $"UPDATE {Table} SET firstName=@FirstName, lastName=@LastName emailAddress = @EmailAddress, password = @Password, type = @Type WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET email = @EmailAddress, password = @Password, fullname = @FullName WHERE id = @Id";
         _connection.Execute(sql, account);
     }
 
@@ -34,4 +36,4 @@ public class AccountsAccess
 
 
 
-}
+} 

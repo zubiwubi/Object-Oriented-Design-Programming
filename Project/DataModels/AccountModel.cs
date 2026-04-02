@@ -18,6 +18,16 @@
         Type = type;
     }
 
+    public AccountModel(string firstName, string lastName, string emailAdress, string password, string type)
+    {
+        FirstName = firstName; 
+        LastName = lastName; 
+        EmailAddress = emailAdress;
+        Password = password;
+        Type = type; 
+        
+    }
+
 
 }
 
