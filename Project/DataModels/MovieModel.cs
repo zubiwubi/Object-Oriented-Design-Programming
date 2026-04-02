@@ -11,6 +11,7 @@ public class MovieModel
     public string Duration { get; set; }
     public int BBFC { get; set; }
 
+    public MovieModel() { }
     public MovieModel(long id, int locationId, string title, string genre, string description, string date, string startTime, string endTime, string duration, int bBFC)
     {
         Id = id;
