@@ -1,43 +1,131 @@
-public class MakeAccount
+using System.Transactions;
+
+public class MakeAccount : Account 
 {
-    public string FirstName = "";
-    public string LastName = "";
-    public string EmailAdress = "";
-    public string PhoneNumber = "";
-    public string Password = "";
+    public void CreateAccount()
+    {  
+        string FirstName = AskFirstName(); 
+        string LastName = AskLastName(); 
+        string EmailAdress = AskEmail(); 
+        string Password = CreatePassword(); 
 
-    //AccountModel account = new AccountModel;
+        AccountModel Account = new AccountModel(FirstName, LastName, EmailAdress, Password, Type); 
+        accountLogic.MakeAccount(Account); 
+        Tools.ApproveMessage($"Je account is successvol aangemaakt!! ✅✅✅");
 
-    public static void AskFirstName()
+        Console.Clear(); 
+
+
+        Console.WriteLine(@$"
+
+                                          _           
+   __ _  ___ ___ ___  _   _ _ __ | |_         
+  / _` |/ __/ __/ _ \| | | | '_ \| __|        
+ | (_| | (_| (_| (_) | |_| | | | | |_         
+  \__,_|\___\___\___/_\__,_|_|_|_|\__|  ___   
+  / _` |/ _ \/ _` |/ _ \ \ / / _ | '_ \/ __|  
+ | (_| |  __| (_| |  __/\ V |  __| | | \__ \  
+  \__, |\___|\__, |\___| \_/ \___|_| |_|___/  
+  |___/      |___/                            
+
+
+    
+        VOORNAAM : {Account.FirstName}
+        ACHTERNAAM : {Account.LastName}
+        EMAIL : {Account.EmailAddress}
+
+        
+        ");
+
+
+        Console.WriteLine("druk op 'enter' om terug te gaan naar de begin pagina");
+        Console.ReadLine(); 
+
+        // home page method call
+
+    }
+
+    private string AskFirstName()
     {
-       /*  string firstName; 
+        Console.Clear(); 
+        string firstName; 
         do
         {
-            Console.WriteLine("Enter your first name [FIELD REQUIRED]: ");
-            firstName = Console.ReadLine(); 
+            Console.WriteLine("Vul je voornaam in [VERPLICHT VELD]: ");
+            //Console.WriteLine("Enter your first name [FIELD REQUIRED]: ");
+            firstName = Console.ReadLine()!; 
+
+            if (!accountLogic.IsNameValid(firstName))
+            {
+                InvalidNameValidationPrint(firstName); 
+            }
             
-        } while ();  */
+        } while (!accountLogic.IsNameValid(firstName));
 
-        
+        return firstName;   
     }
 
-    public static void AskLastName()
+    private string AskLastName()
     {
+        Console.Clear(); 
+        string LastName; 
+        do
+        {
+            Console.WriteLine("Vul je achternaam in [VERPLICHT VELD]: ");
+            // Console.WriteLine("Enter your last name [REQUIRED FIELD]: ");
+            LastName = Console.ReadLine()!; 
+
+            if (!accountLogic.IsNameValid(LastName))
+            {
+                InvalidNameValidationPrint(LastName); 
+            }
+
+        } while (!accountLogic.IsNameValid(LastName)); 
+
+        return LastName; 
         
     }
 
-    public static void AskEmail()
+    private string AskEmail()
     {
-        
-    }
+        Console.Clear(); 
+        string email; 
 
-    public static void AskPhoneNumber()
-    {
-        
-    }
+        do
+        {
+            Console.WriteLine("Vul een E-mail adress in [VERPLICHT VELD]: "); 
+            email = Console.ReadLine()!; 
+            //Console.WriteLine("Enter a valid E-mail Adress [REQUIRED FIELD]: ");
 
-    public static void CreatePassword()
-    {
+            if (accountLogic.IsEmailValid(email))
+            {
+                InvalidEmailPrint(email); 
+            }
+            
+        } while (accountLogic.IsEmailValid(email)); 
+
+        return email;
         
     }
+    private string CreatePassword()
+    {
+        Console.Clear(); 
+        string password; 
+
+        do
+        {
+            //Tools.ErrorMessage("Wachtwoord moe");
+            Console.WriteLine("Maak een wachtwoord aan [VERPLICHT VELD]: ");
+            //Console.WriteLine("Create your password [REQUIRED FIELD]: ");
+            password = Console.ReadLine()!; 
+
+            if (accountLogic.IsPasswordValid(password))
+            {
+                InvalidPasswordPrint(password); 
+            }
+
+        } while (accountLogic.IsPasswordValid(password)); 
+
+        return password;    
+    }  
 } 
