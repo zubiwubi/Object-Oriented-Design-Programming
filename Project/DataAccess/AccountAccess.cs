@@ -12,7 +12,7 @@ public class AccountAccess
 
     public void Write(AccountModel account)
     {
-        string sql = $"INSERT INTO {Table} (FirstName, LastName, EmailAdress, Password, Type) VALUES (@FirstName, @LastName, @Email @Password, @Type)";
+        string sql = $"INSERT INTO {Table} (FirstName, LastName, Email, Password, Type) VALUES (@FirstName, @LastName, @Email, @Password, @Type)";
         _connection.Execute(sql, account);
     }
 

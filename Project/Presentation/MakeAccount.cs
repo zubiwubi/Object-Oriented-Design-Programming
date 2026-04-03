@@ -6,14 +6,14 @@ public class MakeAccount : Account
     {  
         string FirstName = AskFirstName(); 
         string LastName = AskLastName(); 
-        string EmailAdress = AskEmail(); 
+        string Email = AskEmail(); 
         string Password = CreatePassword(); 
+        
 
-        AccountModel Account = new AccountModel(FirstName, LastName, EmailAdress, Password, Type); 
+        AccountModel Account = new AccountModel(FirstName, LastName, Email, Password, Type); 
         accountLogic.MakeAccount(Account); 
-        Tools.ApproveMessage($"Je account is successvol aangemaakt!! ✅✅✅");
 
-        Console.Clear(); 
+        Tools.ApproveMessage($"Je account is successvol aangemaakt!! ✅✅✅");
 
 
         Console.WriteLine(@$"
@@ -32,16 +32,17 @@ public class MakeAccount : Account
     
         VOORNAAM : {Account.FirstName}
         ACHTERNAAM : {Account.LastName}
-        EMAIL : {Account.EmailAddress}
+        EMAIL : {Account.Email}
 
         
         ");
 
 
-        Console.WriteLine("druk op 'enter' om terug te gaan naar de begin pagina");
+
+        Console.WriteLine("druk op 'enter' om door te gaan");
         Console.ReadLine(); 
 
-        // home page method call
+        AccountHomePage.HomePage();
 
     }
 
@@ -97,12 +98,12 @@ public class MakeAccount : Account
             email = Console.ReadLine()!; 
             //Console.WriteLine("Enter a valid E-mail Adress [REQUIRED FIELD]: ");
 
-            if (accountLogic.IsEmailValid(email))
+            if (!accountLogic.IsEmailValid(email))
             {
                 InvalidEmailPrint(email); 
             }
             
-        } while (accountLogic.IsEmailValid(email)); 
+        } while (!accountLogic.IsEmailValid(email)); 
 
         return email;
         
@@ -119,12 +120,12 @@ public class MakeAccount : Account
             //Console.WriteLine("Create your password [REQUIRED FIELD]: ");
             password = Console.ReadLine()!; 
 
-            if (accountLogic.IsPasswordValid(password))
+            if (!accountLogic.IsPasswordValid(password))
             {
                 InvalidPasswordPrint(password); 
             }
 
-        } while (accountLogic.IsPasswordValid(password)); 
+        } while (!accountLogic.IsPasswordValid(password)); 
 
         return password;    
     }  
