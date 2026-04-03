@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 public class AccountLogic
 {
     public static AccountModel? CurrentAccount { get; private set; }
@@ -7,6 +9,23 @@ public class AccountLogic
     public void MakeAccount(AccountModel account)
     {
         _access.Write(account); 
+    }
+
+    public AccountModel? AccountExists(string email)
+    {
+        return _access.GetByEmail(email); 
+    }
+
+    public AccountModel? CheckLogin(string email, string password)
+    {
+        AccountModel account = _access.GetByEmail(email);
+
+        if (account != null && account.Password == password)
+        {
+            CurrentAccount = account; 
+            return CurrentAccount; 
+        } 
+        return null; 
     }
 
     public bool IsNameValid(string name)
@@ -59,6 +78,9 @@ public class AccountLogic
         {
             return false; 
         }
+        // add 1 upperletter 
+        // atleast 1 special symbol 
+
 
         return true; 
     }
