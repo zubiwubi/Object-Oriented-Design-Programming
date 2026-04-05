@@ -51,7 +51,7 @@ public static class SearchMovies
             Console.WriteLine("\nGeen films gevonden die aan uw criteria voldoen.");
             Console.WriteLine("\nDruk een toets om door te gaan.");
             Console.ReadKey();
-            Menu.Start();
+            //Menu.Start();
             return;
         }
 
@@ -62,7 +62,7 @@ public static class SearchMovies
         // Console.WriteLine("\nPress any key to return to main menu");
         Console.WriteLine("\nDruk een toets om door te gaan.");
         Console.ReadKey();
-        Menu.Start();
+        //Menu.Start();
 
 
     }
