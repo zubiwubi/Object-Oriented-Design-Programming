@@ -14,6 +14,7 @@ public class MakeAccount : Account
 
         AccountModel Account = new AccountModel(FirstName, LastName, Email, Password, Type); 
         accountLogic.MakeAccount(Account); 
+        Display.ClearScreen();
 
         Tools.ApproveMessage($"Je account is successvol aangemaakt!! ✅✅✅");
 
@@ -34,7 +35,7 @@ public class MakeAccount : Account
     
         VOORNAAM : {Account.FirstName}
         ACHTERNAAM : {Account.LastName}
-        EMAIL : {Account.Email}
+        EMAIL : {Account.EmailAddress}
 
         
         ");
@@ -44,7 +45,7 @@ public class MakeAccount : Account
         Console.WriteLine("druk op 'enter' om door te gaan");
         Console.ReadLine(); 
 
-        AccountHomePage.HomePage();
+        LogIn(); 
 
     }
 
