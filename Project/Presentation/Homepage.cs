@@ -1,6 +1,6 @@
 using Spectre.Console;
 
-class Homepage : OptionSelect
+class Homepage : MenuOptionSelect
 {
     public static string[] options = {"Login", "Create Account", "See Movies (Continue as Guest)", "See Food Menu", "FAQ"};
     public override void Render()
