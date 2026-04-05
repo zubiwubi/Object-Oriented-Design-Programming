@@ -2,9 +2,11 @@ using Spectre.Console;
 
 abstract class MenuOptionSelect
 {
+    protected abstract List<string> Options { get; set; }
+
     public abstract void Render();
 
-    public static int MenuRenderer(string[] options)
+    public static int MenuRenderer(List<string> options)
     {
         int selectedOption = 0;
 
@@ -12,7 +14,7 @@ abstract class MenuOptionSelect
         {
             Display.ClearScreen();
 
-            for (int i = 0; i < options.Length; i++)
+            for (int i = 0; i < options.Count; i++)
             {
                 if (selectedOption == i)
                 {
@@ -32,19 +34,19 @@ abstract class MenuOptionSelect
 
             if (input.Key == ConsoleKey.DownArrow)
             {
-                selectedOption = (selectedOption + 1) % options.Length;
+                selectedOption = (selectedOption + 1) % options.Count;
             }
 
             if (input.Key == ConsoleKey.UpArrow)
             {
-                selectedOption = (options.Length + selectedOption - 1 ) % options.Length;
+                selectedOption = (options.Count + selectedOption - 1 ) % options.Count;
             }
 
             else if (input.Key == ConsoleKey.Enter)
             {
                 Display.ClearScreen();
 
-                for (int i = 0; i < options.Length; i++)
+                for (int i = 0; i < options.Count; i++)
                 {
                     if (selectedOption == i)
                     {

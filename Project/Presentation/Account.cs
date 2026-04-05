@@ -9,7 +9,7 @@ public class Account
 
     public static void LogIn()
     {
-        Console.Clear(); 
+        Display.ClearScreen();
         Console.WriteLine(@$"
 
           _                _                           _             

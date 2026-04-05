@@ -2,32 +2,26 @@ using Spectre.Console;
 
 class Homepage : MenuOptionSelect
 {
-    public static string[] options = {"Login", "Create Account", "See Movies (Continue as Guest)", "See Food Menu", "FAQ"};
+    protected override List<string> Options { get; set; } = new List<string>(){"Login", "Create Account", "See Movies (Continue as Guest)", "See Food Menu", "FAQ", "Exit"};
     public override void Render()
     {
         Console.Clear();
 
         while (true)
         {
-            int selectedOption = MenuRenderer(options);
+            int selectedOption = MenuRenderer(Options);
 
             switch(selectedOption)
             {
                 case 0:
-                    // Call UserLogin.Method();
-                    //Console.WriteLine("The User Login page is under construction. Press Enter to return.");
-                    AnsiConsole.MarkupLine("[red bold] :construction: The User Login page is under construction.[/] Press Enter to return.");
-                    Console.ReadKey();
+                    Account.LogIn();
                     break;
                 case 1:     
-                    // Call MakeAccount.Method();
-                    AnsiConsole.MarkupLine("[red bold] :construction: The Make Account page is under construction.[/] Press Enter to return.");
-                    Console.ReadKey();
+                    MakeAccount makeAccount = new();
+                    makeAccount.CreateAccount();
                     break;
                 case 2:
-                    // Call MoviesOverview.Method();
-                    AnsiConsole.MarkupLine("[red bold] :construction: The Movie Overview page is under construction.[/] Press Enter to return.");
-                    Console.ReadKey();
+                    SearchMovies.SearchMovie();
                     break;
                 case 3:
                     //Call FoodMenu.Method();
@@ -38,6 +32,9 @@ class Homepage : MenuOptionSelect
                     // Call FAQ.Method();
                     AnsiConsole.MarkupLine("[red bold] :construction: The FAQ page is under construction.[/] Press Enter to return.");
                     Console.ReadKey();
+                    break;
+                case 5:
+                    Environment.Exit(0);
                     break;
             }
         }

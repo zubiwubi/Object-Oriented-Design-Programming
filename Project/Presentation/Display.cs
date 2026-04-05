@@ -3,7 +3,7 @@ using Spectre.Console;
 public static class Display
 {
 
-    public static void ClearScreen() // Use instead of Console.Clear();
+    public static void ClearScreen() // Use this instead of Console.Clear();
     {
         Console.Clear();
         PrintBanner();
@@ -17,7 +17,7 @@ public static class Display
         Console.Write(text);
     }
 
-    public static void LoadingRenderer()
+    public static void LoadingRenderer() // Creates a loading animation
     {
         AnsiConsole.Progress()
             .Columns(
