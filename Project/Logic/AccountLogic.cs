@@ -6,6 +6,10 @@ public class AccountLogic
     private static AccountAccess _access = new AccountAccess();
     public List<char> characters = new() { '!', '@', '#', '$', '%', '^', '&', '*' };
     public List<int> digits = new() {0,1,2,3,4,5,6,7,8,9};
+
+    public bool IsSymbol; 
+    public bool IsUpperLetter; 
+
     public void MakeAccount(AccountModel account)
     {
         _access.Write(account); 
@@ -20,7 +24,12 @@ public class AccountLogic
     {
         AccountModel account = _access.GetByEmail(email);
 
-        if (account != null && account.Password == password)
+        if (account == null)
+        {
+            return null; 
+        }
+
+        if (account.Password.Trim() == password.Trim())
         {
             CurrentAccount = account; 
             return CurrentAccount; 
@@ -73,15 +82,47 @@ public class AccountLogic
 
     public bool IsPasswordValid(string password)
     {
+        IsSymbol = false; 
+        IsUpperLetter = false; 
+
+        if (string.IsNullOrEmpty(password.Trim()))
+        {
+            return false; 
+        }
 
         if (password.Length < 8)
         {
             return false; 
         }
-        // add 1 upperletter 
-        // atleast 1 special symbol 
 
 
+        foreach (char x in password)
+        {
+            if (characters.Contains(x))
+            { 
+                IsSymbol = true; 
+                break;
+            }
+        }
+        if (!IsSymbol)
+        {
+            return false;
+        }
+            
+
+        foreach (char x in password)
+        {
+            if (char.IsUpper(x))
+            {
+                IsUpperLetter = true; 
+                break; 
+            }
+        }
+        if (!IsUpperLetter)
+        {
+            return false; 
+        }
+   
         return true; 
     }
 

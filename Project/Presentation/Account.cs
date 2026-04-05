@@ -23,39 +23,64 @@ public class Account
         
         ");
 
-    
-        Console.WriteLine("voer je E-mail in: ");
-        string email = Console.ReadLine(); 
+
+        string email;
+        do
+        {
+            Console.WriteLine("voer je E-mail in: ");
+            email = Console.ReadLine()!; 
+
+            if (!accountLogic.IsEmailValid(email))
+            {
+                InvalidEmailPrint(email);
+            }
+
+        } while (!accountLogic.IsEmailValid(email));
+        
 
         AccountModel accountExists = accountLogic.AccountExists(email); 
 
         if (accountExists != null)
         {
-            Console.WriteLine("Voer je wachtwoord in: ");
-            string password = Console.ReadLine()!; 
-
-            AccountModel account = accountLogic.CheckLogin(email, password); 
-
-            if (account != null)
+            string password; 
+            do
             {
-                Tools.ApproveMessage("successvol ingelogd!! ✅✅✅");
-                Thread.Sleep(3000);
-                AccountHomePage.HomePage(); 
-            }
-            else
-            {
-                Tools.ErrorMessage("Wachtwoord komt niet overeen!!"); 
-                // home page method call 
-            }
+                Console.WriteLine("Voer je wachtwoord in: ");
+                password = Console.ReadLine()!; 
+                AccountModel account = accountLogic.CheckLogin(email, password); 
+
+                if (account != null)
+                {
+                    Tools.ApproveMessage("successvol ingelogd!! ✅✅✅");
+                    Thread.Sleep(4000);
+                    AccountHomePage.HomePage(); 
+                    return; 
+                }
+                else
+                {
+                    Tools.ErrorMessage("Wachtwoord komt niet overeen, je moet nogmaals inloggen!!"); 
+                    Thread.Sleep(4000);
+                    // homepage call 
+                    Environment.Exit(0); 
+                }
+
+                if (!accountLogic.IsPasswordValid(password))
+                {
+                    InvalidPasswordPrint(password);  
+                }
+                
+            } while (!accountLogic.IsPasswordValid(password)); 
             
         }
         else
         {
             Tools.ErrorMessage($"Een account de E-mail '{email}' is niet gevonden!  🫷🥺🫸  StAwP");
+            Thread.Sleep(4000);
+            LogIn();
         }
     }
     
-    public void InvalidNameValidationPrint(string name)
+    public static void InvalidNameValidationPrint(string name)
     {
         if (!accountLogic.IsNameValid(name))
             {
@@ -76,7 +101,7 @@ public class Account
                 {
                     if (name.Contains(x))
                     {
-                        Tools.ErrorMessage("naam kan geen symbool bevatten! 🫷🥺🫸  StAwP");
+                        Tools.ErrorMessage("Naam kan geen symbool bevatten! 🫷🥺🫸  StAwP");
                         //Tools.ErrorMessage("name can't contain symbols! 🫷🥺🫸  StAwP");
                     }
                 }
@@ -85,7 +110,7 @@ public class Account
                 {
                     if (name.Contains(x.ToString()))
                     {
-                        Tools.ErrorMessage("naam kan geen getal bevatten 🫷🥺🫸  StAwP");
+                        Tools.ErrorMessage("Naam kan geen getal bevatten 🫷🥺🫸  StAwP");
                         // Tools.ErrorMessage("name can't contain a number 🫷🥺🫸  StAwP");
                     }
                 }
@@ -93,7 +118,7 @@ public class Account
             }
     }
 
-    public void InvalidEmailPrint(string email)
+    public static void InvalidEmailPrint(string email)
     {
         if (string.IsNullOrEmpty(email.Trim()))
         {
@@ -106,7 +131,7 @@ public class Account
         }
     }
 
-    public void InvalidPasswordPrint(string password)
+    public static void InvalidPasswordPrint(string password)
     {
         if (string.IsNullOrEmpty(password.Trim()))
         {
@@ -116,7 +141,19 @@ public class Account
         {
             // Tools.ErrorMessage("password can't be less then 8 characters! 🫷🥺🫸StAwP");
 
-            Tools.ErrorMessage("wachtwoord kan niet korter zijn dan 8 karakters! 🫷🥺🫸   StAwP"); 
+            Tools.ErrorMessage("Wachtwoord kan niet korter zijn dan 8 karakters! 🫷🥺🫸   StAwP"); 
+        }
+
+        if (!accountLogic.IsSymbol)
+        {
+            Tools.ErrorMessage("Wachtwoord moet minstens 1 symbool bevatten ( '!', '@', '#', '$', '%', '^', '&', '*')! 🫷🥺🫸   StAwP");
+            //Tools.ErrorMessage("Password must have atleast 1 symbol ( '!', '@', '#', '$', '%', '^', '&', '*') 🫷🥺🫸   StAwP");
+        }
+
+        if (!accountLogic.IsUpperLetter)
+        {
+            Tools.ErrorMessage("Wachtwoord moet minstens 1 hoofdletter bevatten 🫷🥺🫸   StAwP");
+            // Tools.ErrorMessage("Password must consist of atleast  1 upperletter 🫷🥺🫸   StAwP");
         }
         
     }
