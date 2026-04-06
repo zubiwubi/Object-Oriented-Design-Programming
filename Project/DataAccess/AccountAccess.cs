@@ -12,14 +12,14 @@ public class AccountAccess
 
     public void Write(AccountModel account)
     {
-        string sql = $"INSERT INTO {Table} (FirstName, LastName, Email, Password, Type) VALUES (@FirstName, @LastName, @Email, @Password, @Type)";
+        string sql = $"INSERT INTO {Table} (FirstName, LastName, EmailAddress, Password, Type) VALUES (@FirstName, @LastName, @EmailAddress, @Password, @Type)";
         _connection.Execute(sql, account);
     }
 
     public AccountModel? GetByEmail(string email)
     {
-        string sql = $"SELECT * FROM {Table} WHERE email = @Email";
-        return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Email = email });
+        string sql = $"SELECT * FROM {Table} WHERE EmailAddress = @EmailAddress";
+        return _connection.QueryFirstOrDefault<AccountModel>(sql, new { EmailAddress = email });
     }
 
     public void Update(AccountModel account)

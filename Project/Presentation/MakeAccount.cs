@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Transactions;
 
 public class MakeAccount : Account 
@@ -12,6 +14,7 @@ public class MakeAccount : Account
 
         AccountModel Account = new AccountModel(FirstName, LastName, Email, Password, Type); 
         accountLogic.MakeAccount(Account); 
+        Display.ClearScreen();
 
         Tools.ApproveMessage($"Je account is successvol aangemaakt!! ✅✅✅");
 
@@ -32,7 +35,7 @@ public class MakeAccount : Account
     
         VOORNAAM : {Account.FirstName}
         ACHTERNAAM : {Account.LastName}
-        EMAIL : {Account.Email}
+        EMAIL : {Account.EmailAddress}
 
         
         ");
@@ -42,13 +45,13 @@ public class MakeAccount : Account
         Console.WriteLine("druk op 'enter' om door te gaan");
         Console.ReadLine(); 
 
-        AccountHomePage.HomePage();
+        LogIn(); 
 
     }
 
     private string AskFirstName()
     {
-        Console.Clear(); 
+        Display.ClearScreen(); 
         string firstName; 
         do
         {
@@ -68,7 +71,7 @@ public class MakeAccount : Account
 
     private string AskLastName()
     {
-        Console.Clear(); 
+        Display.ClearScreen();
         string LastName; 
         do
         {
@@ -89,7 +92,7 @@ public class MakeAccount : Account
 
     private string AskEmail()
     {
-        Console.Clear(); 
+        Display.ClearScreen();
         string email; 
 
         do
@@ -110,7 +113,7 @@ public class MakeAccount : Account
     }
     private string CreatePassword()
     {
-        Console.Clear(); 
+        Display.ClearScreen();
         string password; 
 
         do
