@@ -7,6 +7,12 @@ public class SearchMoviesLogic
         return _movieAccess.GetAll();
     }
 
+    public static MovieModel? GetByID(int id)
+    {
+        return _movieAccess.GetById(id);
+    }
+
+
     public List<MovieModel> FilterMovies(List<MovieModel> allMovies, string title, int? location, string date)
     {
         var queryMovies = allMovies;
