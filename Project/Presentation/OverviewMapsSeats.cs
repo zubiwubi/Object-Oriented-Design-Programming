@@ -1,10 +1,4 @@
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Remoting;
-
-public class OverviewlogicSeats : MenuOptionSelect
+class OverviewlogicSeats : MenuOptionSelect
 {
     protected override List<string> Options {get; set;} = new List<string>() {"Zaal 1", "Zaal 2", "Zaal 3"};
 
@@ -30,11 +24,13 @@ public class OverviewlogicSeats : MenuOptionSelect
                 char[,] aud2 = logic.DrawAuditorium(auditorium2);
                 logic.PrintAuditorium("Auditorium 2", aud2);
                 Console.WriteLine();
+                break;
 
             case 2:
                 char[,] aud3 = logic.DrawAuditorium(auditorium3);
                 logic.PrintAuditorium("Auditorium 3", aud3);
                 Console.WriteLine();
+                break;
         }
     }
 }
