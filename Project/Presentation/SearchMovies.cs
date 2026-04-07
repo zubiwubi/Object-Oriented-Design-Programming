@@ -11,6 +11,11 @@ public static class SearchMovies
         string title = Console.ReadLine();
         if (title == "Q" || title == "q") { return; }
 
+        Console.Write("Vul een genre van de film die u wilt zien(druk enter om leeg te laten of Q om terug te gaan): ");
+        // Console.Write("Enter a genre of the movie(press enter to skip): ");
+        string genre = Console.ReadLine();
+        if (genre == "Q" || genre == "q") { return; }
+
         Console.Write("Vul een nummer van de auditorium (1,2,3) (druk enter om leeg te laten of Q om terug te gaan): ");
         // Console.Write("Enter a auditorium number (1,2,3)(press enter to skip): ");
         string locationInput = Console.ReadLine();
@@ -43,7 +48,7 @@ public static class SearchMovies
 
             date = Console.ReadLine();
         }
-        matchingMovies = moviesLogic.FilterMovies(allMovies, title, location, date);
+        matchingMovies = moviesLogic.FilterMovies(allMovies, title, genre, location, date);
 
         if (matchingMovies.Count == 0)
         {
@@ -106,14 +111,14 @@ public static class SearchMovies
     {
         // Console.WriteLine("ID   | Title                          |Location  | Date         | StartTime | EndTime   | Duration | BBFC   ");
         // Console.WriteLine("-------------------------------------------------------------------------------------------------------------");
-        Console.WriteLine("ID   | Titel                          |Locatie   | Datum        | StartTjd | EindTijd   | Duur     | BBFC   ");
-        Console.WriteLine("-------------------------------------------------------------------------------------------------------------");
+        Console.WriteLine("ID   | Titel                          |Genre             |Locatie   | Datum        | StartTjd | EindTijd   | Duur     | BBFC   ");
+        Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------");
 
         foreach (var movie in movies)
         {
 
             Console.WriteLine(
-                $"{movie.Id,-4} | {movie.Title,-31}|{movie.LocationId,-9} | {movie.Date,-12} | {movie.StartTime,-9} | {movie.EndTime,-9} | {movie.Duration,-8} | {movie.BBFC,-7}"
+                $"{movie.Id,-4} | {movie.Title,-31}|{movie.Genre,-18}|{movie.LocationId,-9} | {movie.Date,-12} | {movie.StartTime,-9} | {movie.EndTime,-9} | {movie.Duration,-8} | {movie.BBFC,-7}"
             );
         }
     }

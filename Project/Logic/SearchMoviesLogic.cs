@@ -13,7 +13,7 @@ public class SearchMoviesLogic
     }
 
 
-    public List<MovieModel> FilterMovies(List<MovieModel> allMovies, string title, int? location, string date)
+    public List<MovieModel> FilterMovies(List<MovieModel> allMovies, string title, string genre, int? location, string date)
     {
         var queryMovies = allMovies;
 
@@ -27,6 +27,12 @@ public class SearchMoviesLogic
         {
             queryMovies = queryMovies.FindAll(f =>
                 f.LocationId == location.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(genre))
+        {
+            queryMovies = queryMovies.FindAll(f =>
+                f.Genre == genre);
         }
 
         if (!string.IsNullOrWhiteSpace(date))
