@@ -2,7 +2,7 @@ using Spectre.Console;
 
 class Homepage : MenuOptionSelect
 {
-    protected override List<string> Options { get; set; } = new List<string>(){"Login", "Create Account", "See Movies (Continue as Guest)", "See Food Menu", "FAQ", "Exit"};
+    protected override List<string> Options { get; set; } = new List<string>(){"Login", "Create Account", "See Movies (Continue as Guest)", "See Food Menu (Continue as Guest)", "Seat Map Overview (Continue as Guest)", "FAQ", "Exit"};
     public override void Render()
     {
         Console.Clear();
@@ -34,6 +34,10 @@ class Homepage : MenuOptionSelect
                     Console.ReadKey();
                     break;
                 case 5:
+                    //Call OverviewMovies()
+                    AnsiConsole.MarkupLine("[red bold] :construction: The Seat Map Overview page is under construction.[/] Press Enter to return.");
+                    Console.ReadKey();
+                case 6:
                     Environment.Exit(0);
                     break;
             }
