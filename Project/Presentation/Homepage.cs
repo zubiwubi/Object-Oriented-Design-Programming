@@ -37,6 +37,7 @@ class Homepage : MenuOptionSelect
                     //Call OverviewMovies()
                     AnsiConsole.MarkupLine("[red bold] :construction: The Seat Map Overview page is under construction.[/] Press Enter to return.");
                     Console.ReadKey();
+                    break;
                 case 6:
                     Environment.Exit(0);
                     break;
