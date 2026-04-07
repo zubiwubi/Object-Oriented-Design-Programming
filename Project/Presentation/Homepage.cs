@@ -29,13 +29,13 @@ class Homepage : MenuOptionSelect
                     Console.ReadKey();
                     break;
                 case 4:
-                    // Call FAQ.Method();
-                    AnsiConsole.MarkupLine("[red bold] :construction: The FAQ page is under construction.[/] Press Enter to return.");
+                    // Call SeatMapOverview.Method();
+                    AnsiConsole.MarkupLine("[red bold] :construction: The Seat Map Overview page is under construction.[/] Press Enter to return.");
                     Console.ReadKey();
                     break;
                 case 5:
-                    //Call OverviewMovies()
-                    AnsiConsole.MarkupLine("[red bold] :construction: The Seat Map Overview page is under construction.[/] Press Enter to return.");
+                    //Call FAQ.Method()
+                    AnsiConsole.MarkupLine("[red bold] :construction: The FAQ page is under construction.[/] Press Enter to return.");
                     Console.ReadKey();
                     break;
                 case 6:
