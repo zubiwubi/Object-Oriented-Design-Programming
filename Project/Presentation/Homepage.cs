@@ -30,8 +30,8 @@ class Homepage : MenuOptionSelect
                     break;
                 case 4:
                     // Call SeatMapOverview.Method();
-                    AnsiConsole.MarkupLine("[red bold] :construction: The Seat Map Overview page is under construction.[/] Press Enter to return.");
-                    Console.ReadKey();
+                    OverviewMapsSeats overviewMapsSeats = new();
+                    overviewMapsSeats.Render();
                     break;
                 case 5:
                     //Call FAQ.Method()

@@ -1,5 +1,15 @@
+/*
+        //  (ZAAL NAAM)  
+        //     ● ● ●   ● ● ●
+        //     ● ● ● ● ● ● ●
+        //     ● ● ●   ● ● ●
 
-public class MakeMapLogic
+        //     ════════════════
+        //     │   SCREEN     │
+        //     ════════════════
+*/
+
+public class DrawMap
 {
     // draw auditorium
     public char[,] DrawAuditorium(int[] seatsRow)
@@ -22,7 +32,7 @@ public class MakeMapLogic
 
             for (int j = 0; j < seatsRow[i]; j++)
             {   
-                auditorium[i, j + spaces] = 'O';    // j + spaces = centered
+                auditorium[i, j + spaces] = '●';    // j + spaces = centered
             }
         }
 
@@ -40,7 +50,7 @@ public class MakeMapLogic
         {
             for (int j = 0; j < auditorium.GetLength(1); j++)
             {
-                Console.Write($"[{auditorium[i, j]}]");
+                Console.Write($"{auditorium[i, j]}");
             }
             Console.WriteLine();
         }
