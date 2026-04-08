@@ -2,7 +2,7 @@ using Spectre.Console;
 
 class Homepage : MenuOptionSelect
 {
-    protected override List<string> Options { get; set; } = new List<string>(){"Login", "Create Account", "See Movies (Continue as Guest)", "See Food Menu (Continue as Guest)", "Seat Map Overview (Continue as Guest)", "FAQ", "Exit"};
+    protected override List<string> Options { get; set; } = new List<string>(){"Inloggen", "Account aanmaken", "Doorgaan als gast", "Films bekijken", "Menukaart bekijken", "Zaal plattegronden", "Veelgestelde vragen", "Afsluiten"};
     public override void Render()
     {
         Console.Clear();
@@ -21,24 +21,29 @@ class Homepage : MenuOptionSelect
                     makeAccount.CreateAccount();
                     break;
                 case 2:
+                    //Continue as guest
+                    AnsiConsole.MarkupLine("[red bold] :construction: Deze pagina is nog onder constructie.[/]  ​​Druk op Enter om terug te keren.");
+                    Console.ReadKey();
+                    break; 
+                case 3:
                     SearchMovies.SearchMovie();
                     break;
-                case 3:
+                case 4:
                     //Call FoodMenu.Method();
-                    AnsiConsole.MarkupLine("[red bold] :construction: The Food Menu page is under construction.[/] Press Enter to return.");
+                    AnsiConsole.MarkupLine("[red bold] :construction: De menukaart pagina is nog onder constructie.[/]  ​​Druk op Enter om terug te keren.");
                     Console.ReadKey();
                     break;
-                case 4:
-                    // Call SeatMapOverview.Method();
-                    OverviewMapsSeats overviewMapsSeats = new();
-                    overviewMapsSeats.Render();
-                    break;
                 case 5:
-                    //Call FAQ.Method()
-                    AnsiConsole.MarkupLine("[red bold] :construction: The FAQ page is under construction.[/] Press Enter to return.");
+                    // Call SeatMapOverview.Method();
+                    AnsiConsole.MarkupLine("[red bold] :construction: De zaal plattegrond pagina is nog onder constructie. [/]  ​​Druk op Enter om terug te keren.");
                     Console.ReadKey();
                     break;
                 case 6:
+                    //Call FAQ.Method()
+                    AnsiConsole.MarkupLine("[red bold] :construction: De veelgestelde vragen pagina is nog onder constructie. [/]  ​​Druk op Enter om terug te keren.");
+                    Console.ReadKey();
+                    break;
+                case 7:
                     Environment.Exit(0);
                     break;
             }
