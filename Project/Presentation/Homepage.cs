@@ -35,8 +35,9 @@ class Homepage : MenuOptionSelect
                     break;
                 case 5:
                     // Call SeatMapOverview.Method();
-                    AnsiConsole.MarkupLine("[red bold] :construction: De zaal plattegrond pagina is nog onder constructie. [/]  ​​Druk op Enter om terug te keren.");
-                    Console.ReadKey();
+                    OverviewMapsSeats overviewMapsSeats = new();
+                    overviewMapsSeats.Render();
+                    
                     break;
                 case 6:
                     //Call FAQ.Method()
