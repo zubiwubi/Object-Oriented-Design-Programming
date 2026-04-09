@@ -60,8 +60,8 @@ public class Account
                 {
                     Tools.ErrorMessage("Wachtwoord komt niet overeen, je moet nogmaals inloggen!!"); 
                     Thread.Sleep(4000);
-                    // homepage call 
-                    Environment.Exit(0); 
+                    Program.Main(); 
+                    //Environment.Exit(0); 
                 }
 
                 if (!accountLogic.IsPasswordValid(password))
