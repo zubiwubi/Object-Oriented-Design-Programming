@@ -31,7 +31,9 @@ public static class SearchMovies
             }
             else
             {
-                Console.WriteLine("Invalid location input. Restarting the search");
+                // Console.WriteLine("Invalid location input. Restarting the search");
+                Console.WriteLine("Ongeldige locatie. Het zoeken wordt opnieuw gestart.");
+                Console.WriteLine();
                 SearchMovie();
             }
         }
@@ -95,8 +97,6 @@ public static class SearchMovies
                 {
                     Console.WriteLine("Film niet gevonden");
                 }
-                Console.WriteLine("\nDruk een toets om naar het menu door te gaan.");
-                Console.ReadKey();
                 return;
             }
             else
