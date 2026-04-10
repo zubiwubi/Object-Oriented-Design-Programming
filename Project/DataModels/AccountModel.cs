@@ -1,19 +1,31 @@
 ﻿public class AccountModel
 {
 
-    public Int64 Id { get; set; }
+    public long Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
     public string EmailAddress { get; set; }
-
     public string Password { get; set; }
+    public string Type { get; set; }
 
-    public string FullName { get; set; }
-
-    public AccountModel(Int64 id, string email, string password, string fullname)
+    public AccountModel(long id, string firstName, string lastName, string emailAddress, string password, string type)
     {
         Id = id;
-        EmailAddress = email;
+        FirstName = firstName;
+        LastName = lastName;
+        EmailAddress = emailAddress;
         Password = password;
-        FullName = fullname;
+        Type = type;
+    }
+
+    public AccountModel(string firstName, string lastName, string emailAddress, string password, string type)
+    {
+        FirstName = firstName; 
+        LastName = lastName; 
+        EmailAddress = emailAddress; 
+        Password = password;
+        Type = type; 
+        
     }
 
 

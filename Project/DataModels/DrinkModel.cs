@@ -1,0 +1,10 @@
+public class DrinkModel : ConsumableModel
+{
+    public int Size { get; set; }
+
+    public DrinkModel(long id, string name, string description, int size, double price, string type)
+        : base(id, name, description, price, type)
+    {
+        Size = size;
+    }
+}
