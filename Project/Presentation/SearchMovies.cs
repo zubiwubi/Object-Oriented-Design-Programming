@@ -96,6 +96,9 @@ public static class SearchMovies
                 if (!found)
                 {
                     Console.WriteLine("Film niet gevonden");
+                    Console.WriteLine("\nDruk een toets om naar het menu door te gaan.");
+                    Console.ReadKey();
+                    return;
                 }
                 return;
             }
