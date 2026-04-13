@@ -10,28 +10,25 @@ public class AccountHomePage : IPage
         Console.Clear(); 
         Console.WriteLine(@$"
 
-
-                       _ _                     _     _  _   _          _   
- __      _____| | | _____  _ __ ___   | |__ (_)(_) | |__   ___| |_ 
- \ \ /\ / / _ \ | |/ / _ \| '_ ` _ \  | '_ \| || | | '_ \ / _ \ __|
-  \ V  V /  __/ |   < (_) | | | | | | | |_) | || | | | | |  __/ |_ 
-  _\_/\_/ \___|_|_|\_\___/|_| |_| |_| |_.__/|_|/ | |_| |_|\___|\__|
- | | _____ _   _ _______ _ __ ___   ___ _ __ |__/ _| |             
- | |/ / _ \ | | |_  / _ \ '_ ` _ \ / _ \ '_ \| | | | |             
- |   <  __/ |_| |/ /  __/ | | | | |  __/ | | | |_| |_|             
- |_|\_\___|\__,_/___\___|_| |_| |_|\___|_| |_|\__,_(_)             
-                                                                   
+             _                             _                
+    / \   ___ ___ ___  _   _ _ __ | |_              
+   / _ \ / __/ __/ _ \| | | | '_ \| __|             
+  / ___ \ (_| (_| (_) | |_| | | | | |_              
+ /_/   \_\___\___\___/ \__,_|_| |_|\__|             
+ | |__   ___  _ __ ___   ___ _ __   __ _  __ _  ___ 
+ | '_ \ / _ \| '_ ` _ \ / _ \ '_ \ / _` |/ _` |/ _ \
+ | | | | (_) | | | | | |  __/ |_) | (_| | (_| |  __/
+ |_| |_|\___/|_| |_| |_|\___| .__/ \__,_|\__, |\___|
+                            |_|          |___/      
 
         "); 
 
         if (AccountLogic.CurrentAccount != null)
         {
-            Console.WriteLine($"welkom terug {AccountLogic.CurrentAccount.FirstName} {AccountLogic.CurrentAccount.LastName}"); 
-            //Console.WriteLine($"Welcome back {AccountLogic.CurrentAccount.FirstName} {AccountLogic.CurrentAccount.LastName}!!"); 
+            Console.WriteLine($"Welcome back {AccountLogic.CurrentAccount.FirstName} {AccountLogic.CurrentAccount.LastName}!!"); 
         }
 
-        Console.WriteLine("Druk op 'enter' om de programma af te sluiten.");
-        //Console.WriteLine("Press 'Enter' to continue");
+        Console.WriteLine("Press 'Enter' to continue");
         Console.ReadKey(); 
         Environment.Exit(0);
         

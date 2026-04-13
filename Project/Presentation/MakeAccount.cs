@@ -16,20 +16,21 @@ public class MakeAccount : Account
         accountLogic.MakeAccount(Account); 
         Display.ClearScreen();
 
-        Tools.ApproveMessage($"Je account is successvol aangemaakt!! ✅✅✅");
+        Tools.ApproveMessage($"Account '{Email}' created succesfully!! ✅✅✅");
 
 
         Console.WriteLine(@$"
 
-                                          _           
-   __ _  ___ ___ ___  _   _ _ __ | |_         
-  / _` |/ __/ __/ _ \| | | | '_ \| __|        
- | (_| | (_| (_| (_) | |_| | | | | |_         
-  \__,_|\___\___\___/_\__,_|_|_|_|\__|  ___   
-  / _` |/ _ \/ _` |/ _ \ \ / / _ | '_ \/ __|  
- | (_| |  __| (_| |  __/\ V |  __| | | \__ \  
-  \__, |\___|\__, |\___| \_/ \___|_| |_|___/  
-  |___/      |___/                            
+             _                             _             
+    / \   ___ ___ ___  _   _ _ __ | |_           
+   / _ \ / __/ __/ _ \| | | | '_ \| __|          
+  / ___ \ (_| (_| (_) | |_| | | | | |_           
+ /_/_ _\_\___\___\___/_\__,_|_| |_|\__| __ _   _ 
+ / __| | | | '_ ` _ \| '_ ` _ \ / _` | '__| | | |
+ \__ \ |_| | | | | | | | | | | | (_| | |  | |_| |
+ |___/\__,_|_| |_| |_|_| |_| |_|\__,_|_|   \__, |
+                                           |___/ 
+
 
 
     
@@ -42,9 +43,8 @@ public class MakeAccount : Account
 
 
 
-        Console.WriteLine("druk op 'enter' om door te gaan");
-        Console.ReadLine(); 
-
+        Console.WriteLine("Press 'Enter' to log into your account");
+        Console.ReadKey(); 
         LogIn(); 
 
     }
@@ -55,8 +55,7 @@ public class MakeAccount : Account
         string firstName; 
         do
         {
-            Console.WriteLine("Vul je voornaam in [VERPLICHT VELD]: ");
-            //Console.WriteLine("Enter your first name [FIELD REQUIRED]: ");
+            Console.WriteLine("Enter your first name [FIELD REQUIRED]: ");
             firstName = Console.ReadLine()!; 
 
             if (!accountLogic.IsNameValid(firstName))
@@ -75,8 +74,7 @@ public class MakeAccount : Account
         string LastName; 
         do
         {
-            Console.WriteLine("Vul je achternaam in [VERPLICHT VELD]: ");
-            // Console.WriteLine("Enter your last name [REQUIRED FIELD]: ");
+            Console.WriteLine("Enter your last name [REQUIRED FIELD]: ");
             LastName = Console.ReadLine()!; 
 
             if (!accountLogic.IsNameValid(LastName))
@@ -97,9 +95,8 @@ public class MakeAccount : Account
 
         do
         {
-            Console.WriteLine("Vul een E-mail adress in [VERPLICHT VELD]: "); 
+            Console.WriteLine("Enter a valid E-mail Adress [REQUIRED FIELD]: ");
             email = Console.ReadLine()!; 
-            //Console.WriteLine("Enter a valid E-mail Adress [REQUIRED FIELD]: ");
 
             if (!accountLogic.IsEmailValid(email))
             {
@@ -118,9 +115,7 @@ public class MakeAccount : Account
 
         do
         {
-            //Tools.ErrorMessage("Wachtwoord moe");
-            Console.WriteLine("Maak een wachtwoord aan [VERPLICHT VELD]: ");
-            //Console.WriteLine("Create your password [REQUIRED FIELD]: ");
+            Console.WriteLine("Create your password [REQUIRED FIELD]: ");
             password = Console.ReadLine()!; 
 
             if (!accountLogic.IsPasswordValid(password))
