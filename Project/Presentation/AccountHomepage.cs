@@ -1,13 +1,17 @@
-public class AccountHomePage : IPage
+using System.Runtime.InteropServices;
+using Spectre.Console;
+
+public class AccountHomePage : Account, IPage
 {
-    public ConsoleKeyInfo Key { get; set; }
-    public int Arrow { get; set; }
-    public int MenuChoice { get; set; }
-    public bool IsOptionSelected { get; set; }
+    public static ConsoleKeyInfo Key { get; set; }
+    public static int Arrow { get; set; }
+    public static int MenuChoice { get; set; }
+    public static bool IsOptionSelected { get; set; }
+    public static List<string> Menu {get; set;} = new() {"Make a movie reservation.", "manage your account.", "view previous orders", "Log off"};
     
     public static void HomePage()
     {
-        Console.Clear(); 
+        Display.ClearScreen(); 
         Console.WriteLine(@$"
 
              _                             _                
@@ -26,12 +30,76 @@ public class AccountHomePage : IPage
         if (AccountLogic.CurrentAccount != null)
         {
             Console.WriteLine($"Welcome back {AccountLogic.CurrentAccount.FirstName} {AccountLogic.CurrentAccount.LastName}!!"); 
+            CreateAccountMenu(); 
+        }
+    }
+    public static void CreateAccountMenu()
+    {
+        while (!IsOptionSelected)
+        {
+            Display.ClearScreen();
+
+            for (int i = 0; i < Menu.Count; i++)
+            {
+                if (i == Arrow)
+                {
+                    Console.Write("⇝ ");
+                }
+
+                Console.WriteLine($"[{i + 1}] {Menu[i]}");
+            }
+
+
+            Key = Console.ReadKey(true); 
+            
+            if (Key.Key == ConsoleKey.UpArrow)
+            {
+                Arrow--;
+
+                if (Arrow < 0)
+                {
+                    Arrow = Menu.Count - 1;
+                }
+            }
+            else if (Key.Key == ConsoleKey.DownArrow)
+            {
+                Arrow++;
+
+                if (Arrow >= Menu.Count)
+                {
+                    Arrow = 0;
+                }
+            }
+            else if (Key.Key == ConsoleKey.Enter)
+            {
+                MenuChoice = Arrow;
+                IsOptionSelected = true;
+            }
         }
 
-        Console.WriteLine("Press 'Enter' to continue");
-        Console.ReadKey(); 
-        Environment.Exit(0);
-        
-
+        switch (MenuChoice)
+        {
+            case 0:
+                Console.WriteLine("you chose to make a reservation.");
+                Thread.Sleep(3000); 
+                // reservation movie call
+                Environment.Exit(0);
+                break; 
+            case 1: 
+                Console.WriteLine("you chose to manage your account.");
+                Thread.Sleep(3000);
+                ManageAccount.Start(); 
+                break;
+            case 2: 
+                Tools.ErrorMessage("this function does not exist yet.");
+                Environment.Exit(0); 
+                break;
+            case 3: 
+                Console.WriteLine("Loggin off.....");
+                Thread.Sleep(3000); 
+                LogOut();  
+                Program.Main();
+                break;  
+        } 
     }
 }

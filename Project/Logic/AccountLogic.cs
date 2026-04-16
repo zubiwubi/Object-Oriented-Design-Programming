@@ -4,7 +4,7 @@ public class AccountLogic
 {
     public static AccountModel? CurrentAccount { get; private set; }
     private static AccountAccess _access = new AccountAccess();
-    public List<char> characters = new() { '!', '@', '#', '$', '%', '^', '&', '*' };
+    public List<char> characters = new() { '!', '@', '#', '$', '%', '^', '&', '*', '.' };
     public List<int> digits = new() {0,1,2,3,4,5,6,7,8,9};
 
     public bool IsSymbol; 
@@ -65,7 +65,6 @@ public class AccountLogic
             }
         }
 
-
         return true; 
 
     }
@@ -73,6 +72,17 @@ public class AccountLogic
     public bool IsEmailValid(string email)
     {
         if (!email.Contains('@'))
+        {
+            return false;
+        }
+        
+
+        if (email.Split().Length == 2)
+        {
+            return false; 
+        }
+
+        if (!email.Contains('.'))
         {
             return false; 
         }

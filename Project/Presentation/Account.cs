@@ -1,11 +1,14 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 public class Account
 {
-    public static AccountLogic accountLogic = new(); 
+    protected static AccountLogic accountLogic = new(); 
     private string? _type; 
     public string Type => _type ?? "Customer"; 
-
+    protected const int MaxAttempt = 3; 
+    public static int Counter = 0; 
+    public static void LogOut() => accountLogic.LogOff(); 
 
     public static void LogIn()
     {
@@ -18,7 +21,6 @@ public class Account
  | |__| (_) | (_| | | | | | | |_) | (_| | (_| |  __/
  |_____\___/ \__, |_|_| |_| | .__/ \__,_|\__, |\___|
              |___/          |_|          |___/      
-
 
       
         ");
@@ -38,7 +40,7 @@ public class Account
         } while (!accountLogic.IsEmailValid(email));
         
 
-        AccountModel accountExists = accountLogic.AccountExists(email); 
+        AccountModel accountExists = accountLogic.AccountExists(email)!; 
 
         if (accountExists != null)
         {
@@ -47,7 +49,7 @@ public class Account
             {
                 Console.WriteLine("Enter your password [REQUIRED FIELD]: ");
                 password = Console.ReadLine()!; 
-                AccountModel account = accountLogic.CheckLogin(email, password); 
+                AccountModel account = accountLogic.CheckLogin(email, password)!; 
 
                 if (account != null)
                 {
@@ -58,18 +60,23 @@ public class Account
                 }
                 else
                 {
-                    Tools.ErrorMessage("Password does not match, you have to log in again!!"); 
-                    Thread.Sleep(4000);
-                    Program.Main(); 
+                    Counter++; 
+                    Tools.ErrorMessage($"Password does not match, {Counter}/{MaxAttempt} attempts"); 
+
+                    if (Counter == MaxAttempt)
+                    {
+                        Tools.ErrorMessage("Max attempts reached!! you have to create a new account :( ");
+                        Thread.Sleep(3000); 
+                        Program.Main(); 
+                    }
                 }
 
                 if (!accountLogic.IsPasswordValid(password))
                 {
                     InvalidPasswordPrint(password);  
                 }
-                
-            } while (!accountLogic.IsPasswordValid(password)); 
-            
+
+            } while (!accountLogic.IsPasswordValid(password) && Counter < MaxAttempt); 
         }
         else
         {
@@ -78,38 +85,49 @@ public class Account
             LogIn();
         }
     }
+
+
+
+
+
+
+
+    //------------------------------------------INVALID VALIDATION PRINT METHODS----------------------------------------------// 
     
     public static void InvalidNameValidationPrint(string name)
     {
         if (!accountLogic.IsNameValid(name))
+        {
+            if (string.IsNullOrEmpty(name.Trim()))
             {
-                if (string.IsNullOrEmpty(name.Trim()))
-                {
-                    Tools.ErrorMessage("Name can't be empty! 🫷🥺🫸StAwP");
-                }
-
-                if (name.Length < 2)
-                {
-                    Tools.ErrorMessage("Name can't be less then 2 characters! 🫷🥺🫸StAwP");
-                }
-                
-                foreach (char x in accountLogic.characters)
-                {
-                    if (name.Contains(x))
-                    {
-                        Tools.ErrorMessage("name can't contain symbols! 🫷🥺🫸  StAwP");
-                    }
-                }
-
-                foreach (int x in accountLogic.digits)
-                {
-                    if (name.Contains(x.ToString()))
-                    {
-                        Tools.ErrorMessage("name can't contain a number 🫷🥺🫸  StAwP");
-                    }
-                }
-                
+                Tools.ErrorMessage("Name can't be empty! 🫷🥺🫸  StAwP");
+                return; 
             }
+
+            if (name.Length < 2)
+            {
+                Tools.ErrorMessage("Name can't be less then 2 characters! 🫷🥺🫸  StAwP");
+                return;
+            }
+            
+            foreach (char x in accountLogic.characters)
+            {
+                if (name.Contains(x))
+                {
+                    Tools.ErrorMessage("name can't contain symbols! 🫷🥺🫸  StAwP");
+                    return;
+                }
+            }
+
+            foreach (int x in accountLogic.digits)
+            {
+                if (name.Contains(x.ToString()))
+                {
+                    Tools.ErrorMessage("name can't contain a number 🫷🥺🫸  StAwP");
+                    return; 
+                }
+            }
+        }
     }
 
     public static void InvalidEmailPrint(string email)
@@ -117,10 +135,24 @@ public class Account
         if (string.IsNullOrEmpty(email.Trim()))
         {
             Tools.ErrorMessage("E-mail can't be empty! 🫷🥺🫸   StAwP");
+            return; 
         }
         if (!email.Contains('@'))
         {
             Tools.ErrorMessage("E-mail must contain an '@'! 🫷🥺🫸  StAwP");
+            return; 
+        }
+
+        if (!email.Contains('.'))
+        {
+            Tools.ErrorMessage("E-mail must contain an '.'! 🫷🥺🫸  StAwP");
+            return; 
+        }
+
+        if (email.Split().Length == 2)
+        {
+            Tools.ErrorMessage("E-mail can't have '@' more then once! 🫷🥺🫸  StAwP");
+            return; 
         }
     }
 
@@ -129,20 +161,24 @@ public class Account
         if (string.IsNullOrEmpty(password.Trim()))
         {
             Tools.ErrorMessage("Password can't be empty! 🫷🥺🫸   StAwP"); 
+            return; 
         }
         if (password.Length < 8)
         {
             Tools.ErrorMessage("password can't be less then 8 characters! 🫷🥺🫸StAwP");
+            return; 
         }
 
         if (!accountLogic.IsSymbol)
         {
-            Tools.ErrorMessage("Password must have atleast 1 symbol ( '!', '@', '#', '$', '%', '^', '&', '*') 🫷🥺🫸   StAwP");
+            Tools.ErrorMessage("Password must have atleast 1 symbol ( '!', '@', '#', '$', '%', '^', '&', '*', '.') 🫷🥺🫸   StAwP");
+            return; 
         }
 
         if (!accountLogic.IsUpperLetter)
         {
             Tools.ErrorMessage("Password must consist of atleast  1 upperletter 🫷🥺🫸   StAwP");
+            return; // dit fixen
         }
         
     }
