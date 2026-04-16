@@ -9,8 +9,120 @@
         //     ════════════════
 */
 
+using System.Globalization;
+
 public class DrawMap
 {
+    int currentRow = 0;
+    int currentCol = 0;
+
+    // start position
+    public void StartPosition(char[,] auditorium)
+    {
+        // loop through the whole map
+        for (int i = 0; i < auditorium.GetLength(0); i++)
+        {
+            for (int j = 0; j < auditorium.GetLength(1); j++)
+            {
+                if (auditorium[i, j] == '●')
+                {
+                    currentRow = i;
+                    currentCol = j;
+                    return;
+                }
+            }
+        }
+    }
+
+    // seat selection
+    public void SeatSelection(char[,] auditorium, string name, string info, string screen)
+    {
+        while (true)
+        {
+            Console.Clear();
+
+            Console.WriteLine(name);
+            Console.WriteLine();
+
+            // MAP
+            // loop through the map
+            for (int i = 0; i < auditorium.GetLength(0); i++)
+            {
+                for (int j = 0; j < auditorium.GetLength(1); j++)
+                {
+                    if (i == currentRow && j == currentCol)
+                    {
+                       Console.Write(" X ");
+                    }
+                    else
+                    {
+                        Console.Write($" {auditorium[i, j]} ");
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            // scherm printen
+            Console.WriteLine();
+            Console.WriteLine(screen);
+            
+            // informatie
+            Console.WriteLine();
+            Console.WriteLine(info);
+
+            // instructies                
+            Console.WriteLine();
+            Console.WriteLine("Use the arrows to move");
+            Console.WriteLine("Press Enter to confirm | Escape to return");
+
+            // input 
+            var key = Console.ReadKey(true).Key;
+            switch (key)
+            {   
+                // seat selection with arrow keys
+                case ConsoleKey.UpArrow:
+                    int newRow = currentRow - 1;
+                    if (newRow >= 0 && auditorium[newRow, currentCol] == '●')
+                    {
+                        currentRow = newRow;
+                    }
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    int newRow2 = currentRow + 1;
+                    if (newRow2 < auditorium.GetLength(0) && auditorium[newRow2, currentCol] == '●')
+                    {
+                        currentRow = newRow2;
+                    }
+                    break;
+
+                case ConsoleKey.LeftArrow:
+                    int newCol = currentCol - 1;
+                    if (newCol >= 0 && auditorium[currentRow, newCol] == '●')
+                    {
+                        currentCol = newCol;
+                    }
+                    break;
+                
+                case ConsoleKey.RightArrow:
+                    int newCol2 = currentCol + 1;
+                    if (newCol2 < auditorium.GetLength(1) && auditorium[currentRow, newCol2] == '●')
+                    {
+                        currentCol = newCol2;
+                    }
+                    break;
+                
+                // confirm
+                case ConsoleKey.Enter:
+                    return;
+
+                // exit
+                case ConsoleKey.Escape:
+                    return;
+            }
+        }
+    }
+
     // draw auditorium
     public char[,] DrawAuditorium(int[] seatsRow)
     {
@@ -50,7 +162,7 @@ public class DrawMap
         {
             for (int j = 0; j < auditorium.GetLength(1); j++)
             {
-                Console.Write($"{auditorium[i, j]}");
+                Console.Write($" {auditorium[i, j]} ");
             }
             Console.WriteLine();
         }

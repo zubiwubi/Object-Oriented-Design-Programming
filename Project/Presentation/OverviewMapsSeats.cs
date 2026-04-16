@@ -15,59 +15,69 @@ class OverviewMapsSeats : MenuOptionSelect
             case 0:
                 Console.WriteLine();
                 char[,] aud1 = _drawMap.DrawAuditorium(auditorium1);
-                _drawMap.PrintAuditorium("Zaal 1", aud1);
-                Console.WriteLine();
-                Console.WriteLine("════════════════");
-                Console.WriteLine("│    SCHERM    │");
-                Console.WriteLine("════════════════");
-                Console.WriteLine();
-                Console.WriteLine("Aantal stoelen: 150");
-                Console.WriteLine("Tier 1:         9.99 euro");
-                Console.WriteLine("Tier 2:         29.99 euro");
-                Console.WriteLine("Tier 3:         38.99 euro");
-                Console.WriteLine("Technolgie:     IMAX, Dolby Sounds-System");
 
-                // readkey to pause the screen
-                Console.WriteLine("\nDruk op Enter om verder te gaan.");
-                Console.ReadKey();
+                string info1 =
+                    "\nTotal seats:       150\n" +
+                    "Basic ticket:      € 9.99\n" +
+                    "Standard ticket:   €29.99\n" +
+                    "Premium ticket:    €38.99\n" +
+                    "Technology:        IMAX, Dolby Sounds-System";
+                    
+                string screen1 =
+                "            ════════════════\n" +
+                "            │    SCREEN    │\n" +
+                "            ════════════════";
+                
+                // seats bekijken op de map
+                _drawMap.StartPosition(aud1);
+                _drawMap.SeatSelection(aud1, "Auditorium 1", info1, screen1);
+
+                Console.ReadKey();      // readkey to pause the screen
                 break;
 
             case 1:
                 char[,] aud2 = _drawMap.DrawAuditorium(auditorium2);
-                _drawMap.PrintAuditorium("Zaal 2", aud2);
-                Console.WriteLine();
-                Console.WriteLine("════════════════");
-                Console.WriteLine("│    SCHERM    │");
-                Console.WriteLine("════════════════");
-                Console.WriteLine();
-                Console.WriteLine("Aantal stoelen: 300");
-                Console.WriteLine("Tier 1:         9.99 euro");
-                Console.WriteLine("Tier 2:         29.99 euro");
-                Console.WriteLine("Tier 3:         38.99 euro");
-                Console.WriteLine("Technolgie:     IMAX 3D digitaal gecertificeerd viseel projectoren\n\t\tDolby Sounds-System");
-                // readkey to pause the screen
-                Console.WriteLine("\nDruk op Enter om verder te gaan.");
-                Console.ReadKey();
+
+                string info2 =
+                    "Aantal stoelen:    300\n" +
+                    "Basic ticket:      € 9.99\n" +
+                    "Standard ticket:   €29.99\n" +
+                    "Premium ticket:    €38.99\n" +
+                    "Technology:        IMAX 3D Digitalgecertificeerd viseel projectoren\n\t\tDolby Sounds-System";
+                
+                string screen2 = 
+                "                  ════════════════\n" +
+                "                  │    SCREEN    │\n" +
+                "                  ════════════════";
+
+                // seats bekijken op de map
+                _drawMap.StartPosition(aud2);
+                _drawMap.SeatSelection(aud2, "Auditorium 2", info2, screen2);
+
+                Console.ReadKey();      // readkey to pause the screen
                 break;
 
 
             case 2:
                 char[,] aud3 = _drawMap.DrawAuditorium(auditorium3);
-                _drawMap.PrintAuditorium("Zaal 3", aud3);
-                Console.WriteLine();
-                Console.WriteLine("════════════════");
-                Console.WriteLine("│    SCHERM    │");
-                Console.WriteLine("════════════════");
-                Console.WriteLine();
-                Console.WriteLine("Aantal stoelen: 500");
-                Console.WriteLine("Tier 1:         9.99 euro");
-                Console.WriteLine("Tier 2:         29.99 euro");
-                Console.WriteLine("Tier 3:         38.99 euro");
-                Console.WriteLine("Technologie:    IMAX 3D digitaal gecertificeerd viseel projectoren.\n\t\tAuro 3D-gecertificeerd bioscoopgeluidssysteem\n\t\tSupercomfortabele VIP-stoelen met veel beenruimte en ruime afstand tussen de stoelen.");
 
-                // readkey to pause the screen
-                Console.WriteLine("\nDruk op Enter om verder te gaan.");
-                Console.ReadKey();
+                string info3 =
+                    "Aantal stoelen:    500\n" +
+                    "Basic ticket:      € 9.99\n" +
+                    "Standard ticket:   €29.99\n" +
+                    "Premium ticket:    €38.99\n" +
+                    "Technology:        IMAX 3D digitaal gecertificeerd viseel projectoren.\n\t\tAuro 3D-gecertificeerd bioscoopgeluidssysteem\n\t\tSupercomfortabele VIP-stoelen met veel beenruimte en ruime afstand tussen de stoelen";
+
+                string screen3 =
+                "                                    ════════════════\n" +
+                "                                    │    SCREEN    │\n" +
+                "                                    ════════════════";
+                
+                // seats bekijken op de map
+                _drawMap.StartPosition(aud3);
+                _drawMap.SeatSelection(aud3, "Auditorium 3", info3, screen3);
+
+                Console.ReadKey();      // readkey to pause the screen
                 break;
 
         }
