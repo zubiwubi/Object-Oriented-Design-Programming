@@ -1,6 +1,6 @@
 class OverviewMapsSeats : MenuOptionSelect
 {
-    protected override List<string> Options { get; set; } = new List<string>() { "Zaal 1", "Zaal 2", "Zaal 3" };
+    protected override List<string> Options { get; set; } = new List<string>() { "Auditorium 1", "Auditorium 2", "Auditorium 3" };
 
     private DrawMap _drawMap = new();
     public int[] auditorium1 = [8, 10, 10, 12, 12, 12, 12, 12, 12, 12, 12, 10, 8, 8];
@@ -17,17 +17,17 @@ class OverviewMapsSeats : MenuOptionSelect
                 char[,] aud1 = _drawMap.DrawAuditorium(auditorium1);
 
                 string info1 =
-                    "\nTotal seats:       150\n" +
-                    "Basic ticket:      € 9.99\n" +
-                    "Standard ticket:   €29.99\n" +
-                    "Premium ticket:    €38.99\n" +
-                    "Technology:        IMAX, Dolby Sounds-System";
-                    
+                    "Amount of seats    :    150\n" +
+                    "Basic ticket       :  € 9.99\n" +
+                    "Standard ticket    :  €29.99\n" +
+                    "Premium ticket     :  €38.99\n" +
+                    "Technology         :  IMAX, Dolby Sounds-System";
+
                 string screen1 =
                 "            ════════════════\n" +
                 "            │    SCREEN    │\n" +
                 "            ════════════════";
-                
+
                 // seats bekijken op de map
                 _drawMap.StartPosition(aud1);
                 _drawMap.SeatSelection(aud1, "Auditorium 1", info1, screen1);
@@ -39,13 +39,13 @@ class OverviewMapsSeats : MenuOptionSelect
                 char[,] aud2 = _drawMap.DrawAuditorium(auditorium2);
 
                 string info2 =
-                    "Aantal stoelen:    300\n" +
-                    "Basic ticket:      € 9.99\n" +
-                    "Standard ticket:   €29.99\n" +
-                    "Premium ticket:    €38.99\n" +
-                    "Technology:        IMAX 3D Digitalgecertificeerd viseel projectoren\n\t\tDolby Sounds-System";
-                
-                string screen2 = 
+                    "Amount of seats    :    300\n" +
+                    "Basic ticket       :  € 9.99\n" +
+                    "Standard ticket    :  €29.99\n" +
+                    "Premium ticket     :  €38.99\n" +
+                    "Technology         :  IMAX 3D digital certified visual projectors.\n\t\tDolby Sounds-System";
+
+                string screen2 =
                 "                  ════════════════\n" +
                 "                  │    SCREEN    │\n" +
                 "                  ════════════════";
@@ -62,17 +62,17 @@ class OverviewMapsSeats : MenuOptionSelect
                 char[,] aud3 = _drawMap.DrawAuditorium(auditorium3);
 
                 string info3 =
-                    "Aantal stoelen:    500\n" +
-                    "Basic ticket:      € 9.99\n" +
-                    "Standard ticket:   €29.99\n" +
-                    "Premium ticket:    €38.99\n" +
-                    "Technology:        IMAX 3D digitaal gecertificeerd viseel projectoren.\n\t\tAuro 3D-gecertificeerd bioscoopgeluidssysteem\n\t\tSupercomfortabele VIP-stoelen met veel beenruimte en ruime afstand tussen de stoelen";
+                    "Amount of seats    :    500\n" +
+                    "Basic ticket       :  € 9.99\n" +
+                    "Standard ticket    :  €29.99\n" +
+                    "Premium ticket     :  €38.99\n" +
+                    "Technology         :  IMAX 3D digital certified visual projectors.\n\t\tAuro 3D certified cinema sound system\n\t\tsuper comfortable (VIP) seats with plenty of legroom and space in between";
 
                 string screen3 =
                 "                                    ════════════════\n" +
                 "                                    │    SCREEN    │\n" +
                 "                                    ════════════════";
-                
+
                 // seats bekijken op de map
                 _drawMap.StartPosition(aud3);
                 _drawMap.SeatSelection(aud3, "Auditorium 3", info3, screen3);

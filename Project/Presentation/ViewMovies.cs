@@ -11,21 +11,21 @@ public class ViewMovies
         Console.WriteLine("========================================");
 
         Console.WriteLine($"Genre      : {movie.Genre}");
-        Console.WriteLine($"Leeftijd   : {movie.BBFC}");
-        Console.WriteLine($"Duur       : {movie.Duration}");
+        Console.WriteLine($"BBFC/Age   : {movie.BBFC}");
+        Console.WriteLine($"Duration   : {movie.Duration}");
 
         Console.WriteLine();
-        Console.WriteLine($"Datum      : {movie.Date}");
-        Console.WriteLine($"Tijd       : {movie.StartTime} - {movie.EndTime}");
-        Console.WriteLine($"Zaal       : {movie.LocationId}");
+        Console.WriteLine($"Date       : {movie.Date}");
+        Console.WriteLine($"Times      : {movie.StartTime} - {movie.EndTime}");
+        Console.WriteLine($"Auditorium : {movie.LocationId}");
 
         Console.WriteLine();
         Console.WriteLine("----------------------------------------");
-        Console.WriteLine("Beschrijving:");
+        Console.WriteLine("Description:");
         Console.WriteLine(movie.Description);
         Console.WriteLine("========================================");
 
-        Console.WriteLine("\nDruk op een toets om terug te gaan naar de hoofd menu.");
+        Console.WriteLine("\nPress any key to return to the main menu.");
         Console.ReadKey();
 
         return;

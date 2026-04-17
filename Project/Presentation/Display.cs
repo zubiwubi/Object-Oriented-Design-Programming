@@ -25,7 +25,7 @@ public static class Display
                 new TaskDescriptionColumn())
             .Start(ctx =>
             {
-                var rendering = ctx.AddTask("Laden", maxValue: 50);
+                var rendering = ctx.AddTask("Loading", maxValue: 30);
 
                 var random = new Random(42);
                 while (!ctx.IsFinished)
@@ -34,12 +34,12 @@ public static class Display
                     Thread.Sleep(50);
                 }
             });
-        AnsiConsole.MarkupLine("[lime]Geladen.[/]");
+        AnsiConsole.MarkupLine("[lime]Loaded.[/]");
     }
-    
+
     public static void PrintBanner() // https://patorjk.com/software/taag/#p=display&f=ANSI+Compact&t=ROTTERDAM++CINEMA&x=none&v=0&h=4&w=80&we=false Font Used: ANSI Compact
     {
-        Display.CenterText(@$"Welkom bij");
+        Display.CenterText(@$"Welcome to");
         Console.WriteLine(@$"                                                                                                                                                                                                                     
                                 █████▄  ▄████▄ ██████ ██████ ██████ █████▄  ████▄  ▄████▄ ██▄  ▄██     ▄█████ ██ ███  ██ ██████ ██▄  ▄██ ▄████▄ 
                                 ██▄▄██▄ ██  ██   ██     ██   ██▄▄   ██▄▄██▄ ██  ██ ██▄▄██ ██ ▀▀ ██     ██     ██ ██ ▀▄██ ██▄▄   ██ ▀▀ ██ ██▄▄██ 
