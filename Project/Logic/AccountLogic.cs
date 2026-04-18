@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 
 public class AccountLogic
 {
@@ -19,10 +20,18 @@ public class AccountLogic
     {
         return _access.GetByEmail(email); 
     }
+    public AccountModel? CheckPassword(string password)
+    {
+        return _access.GetPassword(password); 
+    }
+    public void ChangePassword(AccountModel account)
+    {
+        _access.ChangePassword(account); 
+    }
 
     public AccountModel? CheckLogin(string email, string password)
     {
-        AccountModel account = _access.GetByEmail(email);
+        AccountModel account = _access.GetByEmail(email)!;
 
         if (account == null)
         {
@@ -75,13 +84,19 @@ public class AccountLogic
         {
             return false;
         }
-        
 
-        if (email.Split().Length == 2)
+       /*  int counter = 0; 
+        foreach (char x in email)
         {
-            return false; 
-        }
+            if (x == '@'); 
+            counter++; 
 
+            if (counter == 2)
+            {
+                return false; 
+            }
+        }  */
+           
         if (!email.Contains('.'))
         {
             return false; 
@@ -108,6 +123,11 @@ public class AccountLogic
 
         foreach (char x in password)
         {
+            if (x == ' ')
+            {
+                return false; 
+            }
+            
             if (characters.Contains(x))
             { 
                 IsSymbol = true; 
@@ -136,6 +156,11 @@ public class AccountLogic
         return true; 
     }
 
+
+    public void DeleteAccount(AccountModel account)
+    {
+        _access.Delete(account);
+    }
 
     public void LogOff()
     {

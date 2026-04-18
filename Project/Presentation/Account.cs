@@ -1,14 +1,19 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
-public class Account
+using Spectre.Console;
+public class Account : IPage
 {
     protected static AccountLogic accountLogic = new(); 
     private string? _type; 
     public string Type => _type ?? "Customer"; 
     protected const int MaxAttempt = 3; 
-    public static int Counter = 0; 
+    private static int _counter; 
+    public static int Counter {get  => _counter; set => _counter = Math.Min(value, MaxAttempt);}
     public static void LogOut() => accountLogic.LogOff(); 
+    public static DateTime EndTime = DateTime.Now.AddSeconds(30);
+    public static DateTime timer = DateTime.Now;
+    public static ConsoleKeyInfo Key { get; set; }
 
     public static void LogIn()
     {
@@ -34,7 +39,7 @@ public class Account
 
             if (!accountLogic.IsEmailValid(email))
             {
-                InvalidEmailPrint(email);
+                Tools.InvalidEmailPrint(email);
             }
 
         } while (!accountLogic.IsEmailValid(email));
@@ -44,6 +49,7 @@ public class Account
 
         if (accountExists != null)
         {
+            Counter = 0; 
             string password; 
             do
             {
@@ -61,19 +67,24 @@ public class Account
                 else
                 {
                     Counter++; 
-                    Tools.ErrorMessage($"Password does not match, {Counter}/{MaxAttempt} attempts"); 
-
+                    Tools.ErrorMessage($"Password does not match, {Counter}/{MaxAttempt} attempts!!"); 
+                    // dit moet vaker voorkomen 
                     if (Counter == MaxAttempt)
                     {
-                        Tools.ErrorMessage("Max attempts reached!! you have to create a new account :( ");
-                        Thread.Sleep(3000); 
-                        Program.Main(); 
+                        Tools.ErrorMessage("Max attempts reached! you have to wait for 30 seconds.");
+                        Console.WriteLine($"{timer}/{EndTime}");
+                        if (timer == EndTime)
+                        {
+                            Console.WriteLine("Times up!! you can log in again [your being redirected......]");
+                            Thread.Sleep(3000);
+                            LogIn();  
+                        }
                     }
                 }
 
                 if (!accountLogic.IsPasswordValid(password))
                 {
-                    InvalidPasswordPrint(password);  
+                    Tools.InvalidPasswordPrint(password);  
                 }
 
             } while (!accountLogic.IsPasswordValid(password) && Counter < MaxAttempt); 
@@ -86,100 +97,33 @@ public class Account
         }
     }
 
-
-
-
-
-
-
-    //------------------------------------------INVALID VALIDATION PRINT METHODS----------------------------------------------// 
-    
-    public static void InvalidNameValidationPrint(string name)
+    protected static string HidePassword()
     {
-        if (!accountLogic.IsNameValid(name))
+        string password = "";
+
+        while (true)
         {
-            if (string.IsNullOrEmpty(name.Trim()))
+            Key = Console.ReadKey(true); 
+            if (Key.Key == ConsoleKey.Enter)
             {
-                Tools.ErrorMessage("Name can't be empty! 🫷🥺🫸  StAwP");
-                return; 
+                break;
             }
 
-            if (name.Length < 2)
+            if (Key.Key != ConsoleKey.Backspace)
             {
-                Tools.ErrorMessage("Name can't be less then 2 characters! 🫷🥺🫸  StAwP");
-                return;
+                password += Key.KeyChar;
+                Console.Write("*");
             }
-            
-            foreach (char x in accountLogic.characters)
+            else
             {
-                if (name.Contains(x))
+                if (password.Length > 0)
                 {
-                    Tools.ErrorMessage("name can't contain symbols! 🫷🥺🫸  StAwP");
-                    return;
-                }
-            }
-
-            foreach (int x in accountLogic.digits)
-            {
-                if (name.Contains(x.ToString()))
-                {
-                    Tools.ErrorMessage("name can't contain a number 🫷🥺🫸  StAwP");
-                    return; 
+                    password = password.Remove(password.Length - 1); 
+                    Console.Write("\b \b"); 
                 }
             }
         }
-    }
-
-    public static void InvalidEmailPrint(string email)
-    {
-        if (string.IsNullOrEmpty(email.Trim()))
-        {
-            Tools.ErrorMessage("E-mail can't be empty! 🫷🥺🫸   StAwP");
-            return; 
-        }
-        if (!email.Contains('@'))
-        {
-            Tools.ErrorMessage("E-mail must contain an '@'! 🫷🥺🫸  StAwP");
-            return; 
-        }
-
-        if (!email.Contains('.'))
-        {
-            Tools.ErrorMessage("E-mail must contain an '.'! 🫷🥺🫸  StAwP");
-            return; 
-        }
-
-        if (email.Split().Length == 2)
-        {
-            Tools.ErrorMessage("E-mail can't have '@' more then once! 🫷🥺🫸  StAwP");
-            return; 
-        }
-    }
-
-    public static void InvalidPasswordPrint(string password)
-    {
-        if (string.IsNullOrEmpty(password.Trim()))
-        {
-            Tools.ErrorMessage("Password can't be empty! 🫷🥺🫸   StAwP"); 
-            return; 
-        }
-        if (password.Length < 8)
-        {
-            Tools.ErrorMessage("password can't be less then 8 characters! 🫷🥺🫸StAwP");
-            return; 
-        }
-
-        if (!accountLogic.IsSymbol)
-        {
-            Tools.ErrorMessage("Password must have atleast 1 symbol ( '!', '@', '#', '$', '%', '^', '&', '*', '.') 🫷🥺🫸   StAwP");
-            return; 
-        }
-
-        if (!accountLogic.IsUpperLetter)
-        {
-            Tools.ErrorMessage("Password must consist of atleast  1 upperletter 🫷🥺🫸   StAwP");
-            return; // dit fixen
-        }
+        return password; 
         
     }
 }

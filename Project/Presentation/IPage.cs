@@ -4,5 +4,5 @@ public interface IPage
     static int Arrow { get; set; }
     static int MenuChoice { get; set; }
     static bool IsOptionSelected { get; set; }
-    static List<string> Menu {get; set;}
+    static List<string> Menu {get; set;} = new(); 
 }
