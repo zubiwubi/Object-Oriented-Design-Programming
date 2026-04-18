@@ -31,8 +31,6 @@ public class MakeAccount : Account
  |___/\__,_|_| |_| |_|_| |_| |_|\__,_|_|   \__, |
                                            |___/ 
 
-
-
     
         VOORNAAM : {Account.FirstName}
         ACHTERNAAM : {Account.LastName}
@@ -60,7 +58,7 @@ public class MakeAccount : Account
 
             if (!accountLogic.IsNameValid(firstName))
             {
-                InvalidNameValidationPrint(firstName); 
+                Tools.InvalidNameValidationPrint(firstName); 
             }
             
         } while (!accountLogic.IsNameValid(firstName));
@@ -79,7 +77,7 @@ public class MakeAccount : Account
 
             if (!accountLogic.IsNameValid(LastName))
             {
-                InvalidNameValidationPrint(LastName); 
+                Tools.InvalidNameValidationPrint(LastName); 
             }
 
         } while (!accountLogic.IsNameValid(LastName)); 
@@ -100,7 +98,7 @@ public class MakeAccount : Account
 
             if (!accountLogic.IsEmailValid(email))
             {
-                InvalidEmailPrint(email); 
+                Tools.InvalidEmailPrint(email); 
             }
             
         } while (!accountLogic.IsEmailValid(email)); 
@@ -116,11 +114,11 @@ public class MakeAccount : Account
         do
         {
             Console.WriteLine("Create your password [REQUIRED FIELD]: ");
-            password = Console.ReadLine()!; 
+            password = HidePassword(); 
 
             if (!accountLogic.IsPasswordValid(password))
             {
-                InvalidPasswordPrint(password); 
+                Tools.InvalidPasswordPrint(password); 
             }
 
         } while (!accountLogic.IsPasswordValid(password)); 

@@ -6,10 +6,6 @@ public class AccountAccess
 {
     private SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
     private string Table = "Account";
-
-    //        AccountModel Account = new AccountModel(FirstName, LastName, EmailAdress, Password, Type); 
-
-
     public void Write(AccountModel account)
     {
         string sql = $"INSERT INTO {Table} (FirstName, LastName, EmailAddress, Password, Type) VALUES (@FirstName, @LastName, @EmailAddress, @Password, @Type)";
@@ -21,11 +17,21 @@ public class AccountAccess
         string sql = $"SELECT * FROM {Table} WHERE EmailAddress = @EmailAddress";
         return _connection.QueryFirstOrDefault<AccountModel>(sql, new { EmailAddress = email });
     }
+    public AccountModel? GetPassword(string password)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Password = @Password";
+        return _connection.QueryFirstOrDefault<AccountModel>(sql, new {Password = password});  
+    }
 
     public void Update(AccountModel account)
     {
         string sql = $"UPDATE {Table} SET email = @EmailAddress, password = @Password, fullname = @FullName WHERE id = @Id";
         _connection.Execute(sql, account);
+    }
+    public void ChangePassword(AccountModel account)
+    {
+        string sql = $"UPDATE {Table} SET Password = @Password, WHERE id = @Id";
+        _connection.Execute(sql, account); // fix 
     }
 
     public void Delete(AccountModel account)
@@ -33,7 +39,4 @@ public class AccountAccess
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = account.Id });
     }
-
-
-
 } 
