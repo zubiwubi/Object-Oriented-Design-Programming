@@ -1,10 +1,6 @@
-using Spectre.Console;
-
 abstract class MenuOptionSelect
 {
     protected abstract List<string> Options { get; set; }
-
-    public abstract void Render();
 
     public static int MenuRenderer(List<string> options)
     {

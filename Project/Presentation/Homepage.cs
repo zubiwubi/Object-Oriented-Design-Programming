@@ -3,7 +3,7 @@ using Spectre.Console;
 class Homepage : MenuOptionSelect
 {
     protected override List<string> Options { get; set; } = new List<string>() { "Login", "Create account", "Continue as guest", "Search movies", "View menu", "Auditorium map", "FAQ", "EXIT" };
-    public override void Render()
+    public void Render()
     {
         Console.Clear();
 
@@ -21,9 +21,10 @@ class Homepage : MenuOptionSelect
                     makeAccount.CreateAccount();
                     break;
                 case 2:
-                    //Continue as guest
+                    // Continue as guest
                     AnsiConsole.MarkupLine("[red bold] :construction: This page is being built. Not yet available.[/]  ​​Press enter to return.");
                     Console.ReadKey();
+                    // ReservationMovie.Reserve();
                     break;
                 case 3:
                     SearchMovies.SearchMovie();

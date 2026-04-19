@@ -6,11 +6,11 @@ public class OrderAccess
 {
     private SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private string Table = "Order";
+    private string Table = "\"Order\"";
 
     public void Write(OrderModel order)
     {
-        string sql = $"INSERT INTO {Table} (customerId, movieId, drinkId, foodId, date , fileNameQRCode) VALUES (@CustomerId, @MovieId, @DrinkId, @FoodId,@Date, @FileNameQRCode)";
+        string sql = $"INSERT INTO {Table} (customerId, movieId, seatId, drinkId, foodId, date , fileNameQRCode) VALUES (@CustomerId, @MovieId, @SeatId, @DrinkId, @FoodId,@Date, @FileNameQRCode)";
         _connection.Execute(sql, order);
     }
 
