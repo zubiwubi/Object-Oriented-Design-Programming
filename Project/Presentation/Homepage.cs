@@ -30,8 +30,7 @@ class Homepage : MenuOptionSelect
                     break;
                 case 4:
                     //Call FoodMenu.Method();
-                    AnsiConsole.MarkupLine("[red bold] :construction: This page is being built. Not yet available.[/]  ​​Press enter to return.");
-                    Console.ReadKey();
+                    ViewFoodMenu.RenderFoodMenu();
                     break;
                 case 5:
                     // Call SeatMapOverview.Method();
