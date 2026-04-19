@@ -68,7 +68,7 @@ public class Account : IPage
                 {
                     Counter++; 
                     Tools.ErrorMessage($"Password does not match, {Counter}/{MaxAttempt} attempts!!"); 
-                    // dit moet vaker voorkomen 
+
                     if (Counter == MaxAttempt)
                     {
                         Tools.ErrorMessage("Max attempts reached! you have to wait for 30 seconds.");
@@ -87,7 +87,7 @@ public class Account : IPage
                     Tools.InvalidPasswordPrint(password);  
                 }
 
-            } while (!accountLogic.IsPasswordValid(password) && Counter < MaxAttempt); 
+            } while (!accountLogic.IsPasswordValid(password)); 
         }
         else
         {
@@ -106,6 +106,7 @@ public class Account : IPage
             Key = Console.ReadKey(true); 
             if (Key.Key == ConsoleKey.Enter)
             {
+                Console.WriteLine();
                 break;
             }
 
