@@ -1,16 +1,12 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Metrics;
-using Spectre.Console;
 public class Account : IPage
 {
-    protected static AccountLogic accountLogic = new(); 
-    private string? _type; 
-    public string Type => _type ?? "Customer"; 
-    protected const int MaxAttempt = 3; 
-    private static int _counter; 
-    public static int Counter {get  => _counter; set => _counter = Math.Min(value, MaxAttempt);}
-    public static void LogOut() => accountLogic.LogOff(); 
+    protected static AccountLogic accountLogic = new();
+    private string? _type;
+    public string Type => _type ?? "Customer";
+    protected const int MaxAttempt = 3;
+    private static int _counter;
+    public static int Counter { get => _counter; set => _counter = Math.Min(value, MaxAttempt); }
+    public static void LogOut() => accountLogic.LogOff();
     public static DateTime EndTime = DateTime.Now.AddSeconds(30);
     public static DateTime timer = DateTime.Now;
     public static ConsoleKeyInfo Key { get; set; }
@@ -35,7 +31,7 @@ public class Account : IPage
         do
         {
             Console.WriteLine("Enter your E-mail [REQUIRED FIELD]: ");
-            email = Console.ReadLine()!; 
+            email = Console.ReadLine()!;
 
             if (!accountLogic.IsEmailValid(email))
             {
@@ -43,31 +39,31 @@ public class Account : IPage
             }
 
         } while (!accountLogic.IsEmailValid(email));
-        
 
-        AccountModel accountExists = accountLogic.AccountExists(email)!; 
+
+        AccountModel accountExists = accountLogic.AccountExists(email)!;
 
         if (accountExists != null)
         {
-            Counter = 0; 
-            string password; 
+            Counter = 0;
+            string password;
             do
             {
                 Console.WriteLine("Enter your password [REQUIRED FIELD]: ");
-                password = Console.ReadLine()!; 
-                AccountModel account = accountLogic.CheckLogin(email, password)!; 
+                password = Console.ReadLine()!;
+                AccountModel account = accountLogic.CheckLogin(email, password)!;
 
                 if (account != null)
                 {
                     Tools.ApproveMessage("Logged in succesfully!! ✅✅✅");
                     Thread.Sleep(4000);
-                    AccountHomePage.HomePage(); 
-                    return; 
+                    AccountHomePage.HomePage();
+                    return;
                 }
                 else
                 {
-                    Counter++; 
-                    Tools.ErrorMessage($"Password does not match, {Counter}/{MaxAttempt} attempts!!"); 
+                    Counter++;
+                    Tools.ErrorMessage($"Password does not match, {Counter}/{MaxAttempt} attempts!!");
                     // dit moet vaker voorkomen 
                     if (Counter == MaxAttempt)
                     {
@@ -77,17 +73,17 @@ public class Account : IPage
                         {
                             Console.WriteLine("Times up!! you can log in again [your being redirected......]");
                             Thread.Sleep(3000);
-                            LogIn();  
+                            LogIn();
                         }
                     }
                 }
 
                 if (!accountLogic.IsPasswordValid(password))
                 {
-                    Tools.InvalidPasswordPrint(password);  
+                    Tools.InvalidPasswordPrint(password);
                 }
 
-            } while (!accountLogic.IsPasswordValid(password) && Counter < MaxAttempt); 
+            } while (!accountLogic.IsPasswordValid(password) && Counter < MaxAttempt);
         }
         else
         {
@@ -103,7 +99,7 @@ public class Account : IPage
 
         while (true)
         {
-            Key = Console.ReadKey(true); 
+            Key = Console.ReadKey(true);
             if (Key.Key == ConsoleKey.Enter)
             {
                 break;
@@ -118,12 +114,12 @@ public class Account : IPage
             {
                 if (password.Length > 0)
                 {
-                    password = password.Remove(password.Length - 1); 
-                    Console.Write("\b \b"); 
+                    password = password.Remove(password.Length - 1);
+                    Console.Write("\b \b");
                 }
             }
         }
-        return password; 
-        
+        return password;
+
     }
 }
