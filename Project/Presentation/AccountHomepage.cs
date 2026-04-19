@@ -4,7 +4,7 @@ public class AccountHomePage : Account, IPage
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> Menu { get; set; } = new() { "Make a movie reservation.", "manage your account.", "view previous orders", "Log off" };
+    public static List<string> Menu { get; set; } = new() { "Make a movie reservation", "manage your account", "view previous orders", "Log off" };
 
     public static void HomePage()
     {
@@ -91,7 +91,10 @@ public class AccountHomePage : Account, IPage
                 break;
             case 2:
                 Tools.ErrorMessage("this function does not exist yet.");
-                Environment.Exit(0);
+                Console.WriteLine("Press 'Enter' to go back");
+                Console.ReadKey();
+                Thread.Sleep(3000);
+                HomePage();
                 break;
             case 3:
                 Console.WriteLine("Loggin off.....");

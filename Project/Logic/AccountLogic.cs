@@ -24,9 +24,9 @@ public class AccountLogic
     {
         return _access.GetPassword(password);
     }
-    public void ChangePassword(AccountModel account)
+    public void ChangePassword(long id, string password)
     {
-        _access.ChangePassword(account);
+        _access.ChangePassword(id, password);
     }
 
     public AccountModel? CheckLogin(string email, string password)
