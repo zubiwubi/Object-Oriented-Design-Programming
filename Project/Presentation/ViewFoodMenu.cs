@@ -5,27 +5,20 @@ public static class ViewFoodMenu
     public static List<FoodModel> allFoods = FoodMenuLogic.GetAllFoods();
     public static List<DrinkModel> allDrinks = FoodMenuLogic.GetAllDrinks();
 
-
-    // public static void CheckVegan<T>(List<T> Consumables)
-    // {
-    //     foreach (var item in Consumables)
-    //     {
-    //         if (item.Type.Contains("Vegan") && !item.Type.Contains(":herb:"))
-    //         {
-    //             item.Type = $":herb: {item.Type}";
-    //         }
-    //     }
-    // }
+    public static void AddVeganDescription<T>(List<T> Consumables) where T: ConsumableModel
+    {
+        foreach (var item in Consumables)
+        {
+            if (item.Type.Contains("Vegan") && !item.Type.Contains(":herb:"))
+            {
+                item.Type = $":herb: {item.Type}";
+            }
+        }
+    }
 
     public static void RenderFoodMenu()
     {
-        foreach (var food in allFoods)
-        {
-            if (food.Type.Contains("Vegan") && !food.Type.Contains(":herb:"))
-            {
-                food.Type = $":herb: {food.Type}";
-            }
-        }
+        AddVeganDescription(allFoods);
 
         int selectedOption = 0;
 
@@ -89,13 +82,7 @@ public static class ViewFoodMenu
 
     public static void RenderDrinkMenu()
     {
-        foreach (var drink in allDrinks)
-        {
-            if (drink.Type.Contains("Vegan") && !drink.Type.Contains(":herb:"))
-            {
-                drink.Type = $":herb: {drink.Type}";
-            }
-        }
+        AddVeganDescription(allDrinks);
         
         int selectedOption = 0;
 
