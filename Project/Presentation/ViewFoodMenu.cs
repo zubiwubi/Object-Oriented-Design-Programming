@@ -25,7 +25,7 @@ public static class ViewFoodMenu
         while (true)
         {
             Display.ClearScreen();
-            AnsiConsole.MarkupLine("[black on gray] FOODS & DRINKS MENU [/]\n\n");
+            AnsiConsole.MarkupLine("[black on gray] FOOD & DRINKS MENU [/]\n\n");
             AnsiConsole.MarkupLine(" BACKSPACE: :house: HOMEPAGE\n ENTER: :tropical_drink: DRINKS MENU\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
 
             // Draw Food Table Columns
