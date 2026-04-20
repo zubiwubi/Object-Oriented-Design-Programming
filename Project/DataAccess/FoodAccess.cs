@@ -8,16 +8,16 @@ public class FoodAccess
 
     private string Table = "Food";
 
-    public void Write(FoodModel food)
-    {
-        string sql = $"INSERT INTO {Table} (name, description, price, type) VALUES (@Name, @Description, @Price, @Type)";
-        _connection.Execute(sql, food);
-    }
-
     public List<FoodModel> GetAll()
     {
         string sql = $"SELECT * FROM {Table}";
         return _connection.Query<FoodModel>(sql).ToList();
+    }
+
+    public void Write(FoodModel food)
+    {
+        string sql = $"INSERT INTO {Table} (name, description, price, type) VALUES (@Name, @Description, @Price, @Type)";
+        _connection.Execute(sql, food);
     }
 
     public FoodModel? GetById(int id)
