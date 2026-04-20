@@ -5,21 +5,25 @@ public static class ViewFoodMenu
     public static List<FoodModel> allFoods = FoodMenuLogic.GetAllFoods();
     public static List<DrinkModel> allDrinks = FoodMenuLogic.GetAllDrinks();
 
+
+    // public static void CheckVegan<T>(List<T> Consumables)
+    // {
+    //     foreach (var item in Consumables)
+    //     {
+    //         if (item.Type.Contains("Vegan") && !item.Type.Contains(":herb:"))
+    //         {
+    //             item.Type = $":herb: {item.Type}";
+    //         }
+    //     }
+    // }
+
     public static void RenderFoodMenu()
     {
         foreach (var food in allFoods)
         {
-            if (food.Type.Contains("Vegan"))
+            if (food.Type.Contains("Vegan") && !food.Type.Contains(":herb:"))
             {
                 food.Type = $":herb: {food.Type}";
-            }
-        }
-
-        foreach (var drink in allDrinks)
-        {
-            if (drink.Type.Contains("Vegan"))
-            {
-                drink.Type = $":herb: {drink.Type}";
             }
         }
 
@@ -28,20 +32,23 @@ public static class ViewFoodMenu
         while (true)
         {
             Display.ClearScreen();
-            // Draw food table columns
+            AnsiConsole.MarkupLine("[black on gray] FOODS & DRINKS MENU [/]\n\n");
+            AnsiConsole.MarkupLine(" BACKSPACE: :house: HOMEPAGE\n ENTER: :tropical_drink: DRINKS MENU\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
+
+            // Draw Food Table Columns
             var table = new Table();
             table.Border(TableBorder.HeavyHead);
             table.AddColumn("#").Width(110); // .Width prevents deformation in the table
-            table.AddColumn("Item").Width(110);
-            table.AddColumn("Price").Width(110);
-            table.AddColumn("Dietary").Width(110);
+            table.AddColumn("FOOD").Width(110);
+            table.AddColumn("PRICE").Width(110);
+            table.AddColumn("DIETARY").Width(110);
             // -------------------------------
             foreach (var food in allFoods)
             {
                 bool isSelected = food.Id == (selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
 
-                var rowContent = new[] { $"{food.Id}", $"{food.Name}", $"€ {food.Price.ToString("0.00")}", $"{food.Type}" }; // string array
-                var rowContentSelected = new[] { $"[bold]{food.Id}[/]", $"[bold]{food.Name}[/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" }; // string array
+                var rowContent = new[] { $"{food.Id}", $"{food.Name}", $"€ {food.Price.ToString("0.00")}", $"{food.Type}" };
+                var rowContentSelected = new[] { $"{food.Id}", $"[white on gray23]   ● {food.Name}  [/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" };
 
                 if (isSelected)
                 {
@@ -54,34 +61,7 @@ public static class ViewFoodMenu
                 }
             }
 
-            AnsiConsole.Write(table);
-
-            // Drink Table Menu 
-            var drinkTable = new Table();
-            drinkTable.Border(TableBorder.HeavyHead);
-            drinkTable.AddColumn("#").Width(110);
-            drinkTable.AddColumn("Item").Width(110);
-            drinkTable.AddColumn("Price").Width(110);
-            drinkTable.AddColumn("Size").Width(110);
-            drinkTable.AddColumn("Dietary").Width(110);
-
-            foreach (var drink in allDrinks)
-            {
-                bool isSelected = drink.Id == (selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
-
-                var rowContent = new[] { $"{drink.Id}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Type}" };
-                var rowContentSelected = new[] { $"[bold]{drink.Id}[/]", $"[bold]{drink.Name}[/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"[bold]{drink.Type}[/]" };
-
-                if (isSelected)
-                {
-                    drinkTable.AddRow(rowContentSelected);
-                }
-
-                else
-                {
-                    drinkTable.AddRow(rowContent);
-                }
-            }
+            AnsiConsole.Write(table); // ---------------end of table------------------
 
             var input = Console.ReadKey();
 
@@ -95,24 +75,81 @@ public static class ViewFoodMenu
                 selectedOption = (allFoods.Count() + selectedOption - 1 ) % allFoods.Count();
             }
 
-        // Console.WriteLine($"FOOD MENU:\n");
+            if (input.Key == ConsoleKey.Enter)
+            {
+                RenderDrinkMenu();
+            }
 
-        // foreach (var food in allFoods) //name, description, price, type
-        // {
-        //     Console.WriteLine($"--- {food.Id}. {food.Name} ---\n{food.Description}\nPrice: €{food.Price}　\n{food.Type}\n");
-        // }
-        // Console.WriteLine();
-        // Console.WriteLine();
+            if (input.Key == ConsoleKey.Backspace)
+            {
+                return;
+            }
+        }
+    }
 
-        // foreach (var drink in allDrinks) //(id, name, description, size, price, type)
-        // {
-        //     Console.WriteLine($"--- {drink.Id}. {drink.Name} ({drink.Size}) ---\n{drink.Description}\nPrice: €{drink.Price}　\n{drink.Type}\n");
-        // }
-        //Console.WriteLine();
+    public static void RenderDrinkMenu()
+    {
+        foreach (var drink in allDrinks)
+        {
+            if (drink.Type.Contains("Vegan") && !drink.Type.Contains(":herb:"))
+            {
+                drink.Type = $":herb: {drink.Type}";
+            }
+        }
+        
+        int selectedOption = 0;
 
-        //Console.WriteLine("\nPress any key to return to the main menu.");
-        //Console.ReadKey();
-        //return;
+        while (true)
+        {
+            Display.ClearScreen();
+            AnsiConsole.MarkupLine("[black on gray] DRINKS MENU [/]\n\n");
+            AnsiConsole.MarkupLine(" BACKSPACE: :fork_and_knife: FOOD MENU\n\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
+
+            // Drink Menu Columns 
+            var drinkTable = new Table();
+            drinkTable.Border(TableBorder.HeavyHead);
+            drinkTable.AddColumn("#").Width(100);
+            drinkTable.AddColumn("DRINK").Width(100);
+            drinkTable.AddColumn("PRICE").Width(100);
+            drinkTable.AddColumn("SIZE").Width(100);
+            drinkTable.AddColumn("DIETARY").Width(100);
+            // --------------------------------------
+            foreach (var drink in allDrinks)
+            {
+                bool isSelected = drink.Id == (selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
+
+                var rowContent = new[] { $"{drink.Id}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Size}", $"{drink.Type}" };
+                var rowContentSelected = new[] { $"[bold]{drink.Id}[/]", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"{drink.Size}", $"[bold]{drink.Type}[/]" };
+
+                if (isSelected)
+                {
+                    drinkTable.AddRow(rowContentSelected);
+                }
+
+                else
+                {
+                    drinkTable.AddRow(rowContent);
+                }
+            }
+
+            AnsiConsole.Write(drinkTable); // ---------------end of table------------------
+
+            var input = Console.ReadKey();
+
+            if (input.Key == ConsoleKey.DownArrow)
+            {
+                selectedOption = (selectedOption + 1) % allFoods.Count();
+            }
+
+            if (input.Key == ConsoleKey.UpArrow)
+            {
+                selectedOption = (allDrinks.Count() + selectedOption - 1 ) % allDrinks.Count();
+            }
+
+            if (input.Key == ConsoleKey.Backspace)
+            {
+                return;
+            }
         }
     }
 }
