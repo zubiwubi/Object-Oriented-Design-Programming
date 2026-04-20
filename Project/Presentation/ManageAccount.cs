@@ -1,3 +1,5 @@
+using System.IO.Pipelines;
+using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 public class ManageAccount : Account
@@ -20,8 +22,8 @@ public class ManageAccount : Account
         
         ");
 
-        UpdatePassword(AccountLogic.CurrentAccount);
-
+        AccountModel currentAccount = AccountLogic.CurrentAccount!;
+        UpdatePassword(currentAccount);
     }
 
 
@@ -32,38 +34,77 @@ public class ManageAccount : Account
         {
             Console.WriteLine("Enter your current password [REQUIRED FIELD]: ");
             password = HidePassword(); 
-            accountLogic.CheckPassword(password);
 
-            if (AccountLogic.CurrentAccount != accountLogic.CheckPassword(password))
-            { // fixen want het wordt alnog geprint als goed is. 
-                Tools.ErrorMessage("The password is incorrect! [your being redirected.......]");
-                Thread.Sleep(3000); 
+            if (!accountLogic.IsPasswordValid(password))
+            {
+                Tools.InvalidPasswordPrint(password); 
             }
 
-        } while (!accountLogic.IsPasswordValid(password) && (AccountLogic.CurrentAccount == null 
-        || AccountLogic.CurrentAccount != accountLogic.CheckPassword(password)));
+        } while (!accountLogic.IsPasswordValid(password));
 
 
-        //<dit wordt alsnog gevraagd al is het fout>
-        Console.WriteLine("Enter a new password [REQUIRED FIELD] ");
-        string newPassword = HidePassword(); 
-
-        if (password == newPassword)
+        string newPassword;
+        do
         {
-            Tools.ErrorMessage("new password can't be the current password!!");
-            Thread.Sleep(3000); 
-            Start(); 
-        }
-        
+            Console.WriteLine("Enter a new password [REQUIRED FIELD]: ");
+            newPassword = HidePassword(); 
 
-        if (newPassword.Contains(AccountLogic.CurrentAccount.FirstName) && newPassword.Contains(AccountLogic.CurrentAccount.LastName))
+             if (!accountLogic.IsPasswordValid(newPassword))
+            {
+                Tools.InvalidPasswordPrint(newPassword); 
+            }
+            
+            if (password == newPassword)
+            {
+                Tools.ErrorMessage("new password can't be the current password!!");
+            }
+
+            if (newPassword.Contains(currentAccount.EmailAddress))
+            {
+                Tools.ErrorMessage("new password can't contain your email adress!!");
+            }
+
+            if (newPassword.Contains(currentAccount.FirstName))
+            {
+                Tools.ErrorMessage("new password can't contain your first name!!");
+            }
+
+            if (newPassword.Contains(currentAccount.LastName))
+            {
+                Tools.ErrorMessage("new password can't contain your last name!!");
+            }
+                
+        } while (!accountLogic.IsPasswordValid(newPassword) || password == newPassword || newPassword.Contains(currentAccount.EmailAddress) || newPassword.Contains(currentAccount.FirstName) 
+        || newPassword.Contains(currentAccount.LastName)); 
+
+        string confirmPassword; 
+        do
         {
-            Tools.ErrorMessage("Password can't contain your first name and/or lastname !!");
-            return; 
+            Console.WriteLine("Confirm your password [REQUIRED FIELD]: ");
+            confirmPassword = HidePassword(); 
+
+            if (!accountLogic.IsPasswordValid(confirmPassword))
+            {
+                Tools.InvalidPasswordPrint(confirmPassword); 
+            }
+
+            if (confirmPassword != newPassword)
+            {
+                Tools.ErrorMessage("Passwords does not match!! try again");
+                
+            }  
+
+        } while (!accountLogic.IsPasswordValid(confirmPassword) || confirmPassword != newPassword);
+
+        if (newPassword == confirmPassword)
+        {
+            accountLogic.ChangePassword(currentAccount.Id, confirmPassword); 
+            Display.ClearScreen(); 
+
+            Tools.ApproveMessage("your password has been successfully updated!! you can log in again! ");
+            Thread.Sleep(3000);
+            Program.Main(); 
         }
-
-        accountLogic.ChangePassword(currentAccount); 
-
 
     }   
 }

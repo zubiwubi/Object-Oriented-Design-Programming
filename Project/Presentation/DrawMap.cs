@@ -9,7 +9,7 @@
         //     ════════════════
 */
 
-using System.Globalization;
+using System.Data.Common;
 
 public class DrawMap
 {
@@ -52,7 +52,7 @@ public class DrawMap
                 {
                     if (i == currentRow && j == currentCol)
                     {
-                       Console.Write(" X ");
+                        Console.Write(" X ");
                     }
                     else
                     {
@@ -65,7 +65,7 @@ public class DrawMap
             // scherm printen
             Console.WriteLine();
             Console.WriteLine(screen);
-            
+
             // informatie
             Console.WriteLine();
             Console.WriteLine(info);
@@ -78,7 +78,7 @@ public class DrawMap
             // input 
             var key = Console.ReadKey(true).Key;
             switch (key)
-            {   
+            {
                 // seat selection with arrow keys
                 case ConsoleKey.UpArrow:
                     int newRow = currentRow - 1;
@@ -103,7 +103,7 @@ public class DrawMap
                         currentCol = newCol;
                     }
                     break;
-                
+
                 case ConsoleKey.RightArrow:
                     int newCol2 = currentCol + 1;
                     if (newCol2 < auditorium.GetLength(1) && auditorium[currentRow, newCol2] == '●')
@@ -111,9 +111,14 @@ public class DrawMap
                         currentCol = newCol2;
                     }
                     break;
-                
+
                 // confirm
                 case ConsoleKey.Enter:
+                    int seatNum = int.Parse($"{currentCol}{currentRow}");
+                    Console.WriteLine($"Your chosen seat is:\nColumn: {currentCol} Row: {currentRow}");
+                    Console.WriteLine($"Press enter to continue to payment");
+                    Console.ReadKey();
+                    Payment.Order(ReservationMovie.ChosenMovieId, seatNum);
                     return;
 
                 // exit
@@ -131,9 +136,9 @@ public class DrawMap
         int maxSeats = seatsRow.Max();
 
         char[,] auditorium = new char[rows, maxSeats];  // maxSeats = breedste rij
-        
+
         for (int i = 0; i < rows; i++)
-        {           
+        {
             // leeg maken
             for (int j = 0; j < maxSeats; j++)
             {
@@ -143,7 +148,7 @@ public class DrawMap
             int spaces = (maxSeats - seatsRow[i]) / 2;
 
             for (int j = 0; j < seatsRow[i]; j++)
-            {   
+            {
                 auditorium[i, j + spaces] = '●';    // j + spaces = centered
             }
         }
@@ -154,7 +159,7 @@ public class DrawMap
     }
 
     // print auditorium
-        public void PrintAuditorium(string name , char[,] auditorium)
+    public void PrintAuditorium(string name, char[,] auditorium)
     {
         Console.WriteLine(name);
 
