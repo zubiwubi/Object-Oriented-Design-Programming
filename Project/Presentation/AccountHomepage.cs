@@ -1,10 +1,12 @@
+using System.Diagnostics;
+
 public class AccountHomePage : Account, IPage
 {
     public static ConsoleKeyInfo Key { get; set; }
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> Menu { get; set; } = new() { "Make a movie reservation", "manage your account", "view previous orders", "Log off" };
+    public static List<string> Menu { get; set; } = new() { "Make a movie reservation", "manage your account", "view previous orders", "Log off", "Delete your account" };
 
     public static void HomePage()
     {
@@ -41,7 +43,7 @@ public class AccountHomePage : Account, IPage
             {
                 if (i == Arrow)
                 {
-                    Console.Write("⇝ ");
+                    Console.Write("➥ ");
                 }
 
                 Console.WriteLine($"[{i + 1}] {Menu[i]}");
@@ -80,9 +82,7 @@ public class AccountHomePage : Account, IPage
             case 0:
                 Console.WriteLine("you chose to make a reservation.");
                 Thread.Sleep(2000);
-                // reservation movie call
                 ReservationMovie.Reserve();
-                // Environment.Exit(0);
                 break;
             case 1:
                 Console.WriteLine("you chose to manage your account.");
@@ -102,6 +102,11 @@ public class AccountHomePage : Account, IPage
                 LogOut();
                 Program.Main();
                 break;
+            case 4: 
+            Console.WriteLine("your being redirected....");
+                Thread.Sleep(3000); 
+                DeleteAccount(); 
+                break; 
         }
     }
 }
