@@ -14,6 +14,12 @@ public class FoodAccess
         _connection.Execute(sql, food);
     }
 
+    public List<FoodModel> GetAll()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<FoodModel>(sql).ToList();
+    }
+
     public FoodModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
