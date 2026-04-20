@@ -1,8 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
 public class Payment
 {
     protected static AccountLogic accountLogic = new();
+    protected static PaymentLogic paymentLogic = new();
     public static void Order(int movieId, int seat)
     {
         // make arrow keys
@@ -20,7 +19,7 @@ public class Payment
                 string newCard = Console.ReadLine()?.Trim();
                 while (true)
                 {
-                    bool isNewCardValid = PaymentLogic.IBANCheck(newCard);
+                    bool isNewCardValid = paymentLogic.IBANCheck(newCard);
                     if (isNewCardValid)
                     {
                         break;
@@ -51,6 +50,7 @@ public class Payment
             }
 
             // make arrow keys
+            // add payment overview/ticket overview with all of the data, price etc
             Console.WriteLine("Confirm Payment?");
             Console.WriteLine("[1] Yes");
             Console.WriteLine("[2] No");

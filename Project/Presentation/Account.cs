@@ -7,8 +7,6 @@ public class Account : IPage
     private static int _counter;
     public static int Counter { get => _counter; set => _counter = Math.Min(value, MaxAttempt); }
     public static void LogOut() => accountLogic.LogOff();
-    public static DateTime EndTime = DateTime.Now.AddSeconds(30);
-    public static DateTime timer = DateTime.Now;
     public static ConsoleKeyInfo Key { get; set; }
 
     public static void LogIn()
@@ -50,7 +48,7 @@ public class Account : IPage
             do
             {
                 Console.WriteLine("Enter your password [REQUIRED FIELD]: ");
-                password = Console.ReadLine()!;
+                password = HidePassword(); 
                 AccountModel account = accountLogic.CheckLogin(email, password)!;
 
                 if (account != null)
@@ -68,13 +66,22 @@ public class Account : IPage
                     if (Counter == MaxAttempt)
                     {
                         Tools.ErrorMessage("Max attempts reached! you have to wait for 30 seconds.");
-                        Console.WriteLine($"{timer}/{EndTime}");
-                        if (timer == EndTime)
+
+                        for (int i = 30; i >= 0; i--)
                         {
-                            Console.WriteLine("Times up!! you can log in again [your being redirected......]");
-                            Thread.Sleep(3000);
-                            LogIn();
+                            Console.Write($"\r{i} seconds left!");
+                            Thread.Sleep(1000);
+
+                            if (i == 0)
+                            {
+                                Console.WriteLine(); 
+                                Tools.ApproveMessage("Times up!! you can log in again [your being redirected......]");
+                                Thread.Sleep(3000);
+                                LogIn(); 
+                            }
+                            
                         }
+                        Console.WriteLine(); 
                     }
                 }
 
@@ -90,6 +97,68 @@ public class Account : IPage
             Tools.ErrorMessage($"E-mail '{email}' not found!  🫷🥺🫸  StAwP");
             Thread.Sleep(4000);
             LogIn();
+        }
+    }
+    protected static void DeleteAccount()
+    {
+        Display.ClearScreen(); 
+        Tools.ErrorMessage("🚨⚠️[WARNING] YOU CAN'T UNDO THIS ACT AND ALL YOUR INFORMATION WILL BE LOST!!⚠️🚨");
+        Console.WriteLine("Press 'Enter' to continue.");
+        Console.ReadKey(); 
+        Display.ClearScreen(); 
+        string answer;
+        string confirmAnswer; 
+        do
+        {
+            Tools.ErrorMessage("Delete your account? (y/n)");
+            answer = Console.ReadLine()!; 
+
+            if (answer.ToLower() != "y" && answer.ToLower() != "n")
+            {
+                Tools.ErrorMessage("Not a valid answer! (y/n)");
+            }
+            
+        } while (answer.ToLower() != "y" && answer.ToLower() != "n"); 
+
+        if (answer == "y")
+        {
+            do
+            {
+                Tools.ErrorMessage("are you sure? (y/n)?"); 
+                confirmAnswer = Console.ReadLine()!; 
+
+                if (answer.ToLower() != "y" && answer.ToLower() != "n")
+                {
+                    Tools.ErrorMessage("Not a valid answer! (y/n)");
+                }
+                
+            } while (confirmAnswer.ToLower() != "y" && confirmAnswer.ToLower() != "n"); 
+
+            if (confirmAnswer.ToLower() == "y")
+            {
+                Display.ClearScreen(); 
+                accountLogic.DeleteAccount(AccountLogic.CurrentAccount); 
+                Tools.ErrorMessage("YOUR ACCOUNT HAS BEEN DELETED\nYOU HAVE TO CREATE A NEW ACCOUNT TO SAVE YOUR INFORMATION");
+                Console.WriteLine("Press 'Enter' to go back to homepage");
+                Console.ReadKey(); 
+                Thread.Sleep(2000);
+                Program.Main(); 
+            }
+
+            if (confirmAnswer.ToLower() == "n")
+            {
+                Console.WriteLine("You canceled deleting your account!\nYour being redirected to the homepage");
+                Thread.Sleep(4000); 
+                AccountHomePage.HomePage(); 
+            }
+        
+        }
+
+        if (answer.ToLower() == "n")
+        {
+            Console.WriteLine("You decided not to proceed to delete your account\nYour being redirected to the homepage");
+            Thread.Sleep(4000);
+            AccountHomePage.HomePage(); 
         }
     }
 

@@ -85,18 +85,6 @@ public class AccountLogic
             return false;
         }
 
-        /*  int counter = 0; 
-         foreach (char x in email)
-         {
-             if (x == '@'); 
-             counter++; 
-
-             if (counter == 2)
-             {
-                 return false; 
-             }
-         }  */
-
         if (!email.Contains('.'))
         {
             return false;
@@ -155,7 +143,6 @@ public class AccountLogic
 
         return true;
     }
-
 
     public void DeleteAccount(AccountModel account)
     {

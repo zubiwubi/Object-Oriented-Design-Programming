@@ -21,7 +21,7 @@ public class PaymentLogic
         { "CH", 21 }, { "TN", 24 }, { "TR", 26 }, { "AE", 23 },
         { "GB", 22 }, { "VG", 24 }
     };
-    public static bool IBANCheck(string iban)
+    public bool IBANCheck(string iban)
     {
 
 
