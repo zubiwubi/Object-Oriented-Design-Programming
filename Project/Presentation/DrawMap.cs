@@ -8,11 +8,9 @@
         //     │   SCREEN     │
         //     ════════════════
 */
-
-using System.Data.Common;
-
 public class DrawMap
 {
+    PriceSeats priceSeats = new();
     int currentRow = 0;
     int currentCol = 0;
 
@@ -72,7 +70,9 @@ public class DrawMap
 
             // instructies                
             Console.WriteLine();
+            double priceSeat = priceSeats.PriceSeatCalc(name, currentCol, currentRow);
             Console.WriteLine("Use the arrows to move");
+            Console.WriteLine($"Price current seat: {priceSeat}");
             Console.WriteLine("Press Enter to confirm | Escape to return");
 
             // input 

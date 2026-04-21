@@ -39,7 +39,7 @@ public class PaymentLogic
 
     }
 
-    public static void SaveOrder(long customerId, int movieId, int seatId, int drinkId, int foodId)
+    public static void SaveOrder(long customerId, int movieId, int seatId, int? drinkId, int? foodId)
     {
         string date = DateTime.Now.ToString("dd-MM-yyyy");
 

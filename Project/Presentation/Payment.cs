@@ -62,7 +62,7 @@ public class Payment
                 Console.WriteLine("\nPurchase Confirmed.");
                 Console.WriteLine($"The order has been added to the system'");
                 // check if logged in, if not, do not save -> print QR code
-                PaymentLogic.SaveOrder(AccountLogic.CurrentAccount.Id, movieId, seat, 1, 1);//foodid and drinkid
+                PaymentLogic.SaveOrder(AccountLogic.CurrentAccount.Id, movieId, seat, null, null);//foodid and drinkid are null because we cannot reserve it right now
                 Console.WriteLine("\nPress any key to return to the main menu...");
                 Console.ReadKey();
                 Console.Clear();
