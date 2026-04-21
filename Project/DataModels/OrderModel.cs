@@ -9,7 +9,7 @@ public class OrderModel
     public string Date { get; set; }
     public string FileNameQRCode { get; set; }
 
-    public OrderModel(long id, int customerId, int movieId, int seatId, int drinkId, int foodId, string date, string fileNameQRCode)
+    public OrderModel(long id, long customerId, int movieId, int seatId, int? drinkId, int? foodId, string date, string fileNameQRCode)
     {
         Id = id;
         CustomerId = customerId;
@@ -20,7 +20,7 @@ public class OrderModel
         Date = date;
         FileNameQRCode = fileNameQRCode;
     }
-    public OrderModel(long customerId, int movieId, int seatId, int drinkId, int foodId, string date, string fileNameQRCode)
+    public OrderModel(long customerId, int movieId, int seatId, int? drinkId, int? foodId, string date, string fileNameQRCode)
     {
         CustomerId = customerId;
         MovieId = movieId;
