@@ -26,6 +26,10 @@ public class PaymentLogic
 
 
         if (string.IsNullOrWhiteSpace(iban)) return false;
+        if (iban.Length < 2)
+        {
+            return false;
+        }
         iban = iban.Replace(" ", "").ToUpper();
         string countryCode = iban.Substring(0, 2);
         if (!IbanLengths.ContainsKey(countryCode))

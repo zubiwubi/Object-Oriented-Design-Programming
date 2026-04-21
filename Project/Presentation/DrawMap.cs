@@ -33,7 +33,7 @@ public class DrawMap
     }
 
     // seat selection
-    public void SeatSelection(char[,] auditorium, string name, string info, string screen)
+    public void SeatSelection(string caller, char[,] auditorium, string name, string info, string screen)
     {
         while (true)
         {
@@ -67,65 +67,81 @@ public class DrawMap
             // informatie
             Console.WriteLine();
             Console.WriteLine(info);
-
-            // instructies                
-            Console.WriteLine();
-            double priceSeat = priceSeats.PriceSeatCalc(name, currentCol, currentRow);
-            Console.WriteLine("Use the arrows to move");
-            Console.WriteLine($"Price current seat: {priceSeat}");
-            Console.WriteLine("Press Enter to confirm | Escape to return");
-
-            // input 
-            var key = Console.ReadKey(true).Key;
-            switch (key)
+            if (caller == "")
             {
-                // seat selection with arrow keys
-                case ConsoleKey.UpArrow:
-                    int newRow = currentRow - 1;
-                    if (newRow >= 0 && auditorium[newRow, currentCol] == '●')
-                    {
-                        currentRow = newRow;
-                    }
-                    break;
-
-                case ConsoleKey.DownArrow:
-                    int newRow2 = currentRow + 1;
-                    if (newRow2 < auditorium.GetLength(0) && auditorium[newRow2, currentCol] == '●')
-                    {
-                        currentRow = newRow2;
-                    }
-                    break;
-
-                case ConsoleKey.LeftArrow:
-                    int newCol = currentCol - 1;
-                    if (newCol >= 0 && auditorium[currentRow, newCol] == '●')
-                    {
-                        currentCol = newCol;
-                    }
-                    break;
-
-                case ConsoleKey.RightArrow:
-                    int newCol2 = currentCol + 1;
-                    if (newCol2 < auditorium.GetLength(1) && auditorium[currentRow, newCol2] == '●')
-                    {
-                        currentCol = newCol2;
-                    }
-                    break;
-
-                // confirm
-                case ConsoleKey.Enter:
-                    int seatNum = int.Parse($"{currentCol}{currentRow}");
-                    Console.WriteLine($"Your chosen seat is:\nColumn: {currentCol} Row: {currentRow}");
-                    Console.WriteLine($"Press enter to continue to payment");
-                    Console.ReadKey();
-                    Payment.Order(ReservationMovie.ChosenMovieId, seatNum);
-                    return;
-
-                // exit
-                case ConsoleKey.Escape:
-                    return;
+                Console.WriteLine();
+                Console.WriteLine($"Press enter to return to main menu");
+                Console.ReadKey();
+                return;
             }
+
+            if (caller == "reserve")
+            {
+                SeatSelectionArrow(auditorium, name);
+            }
+
         }
+    }
+
+    public void SeatSelectionArrow(char[,] auditorium, string name)
+    {
+        Console.WriteLine();
+        double priceSeat = priceSeats.PriceSeatCalc(name, currentCol, currentRow);
+        Console.WriteLine("Use the arrows to move");
+        Console.WriteLine($"Price current seat: {priceSeat}");
+        Console.WriteLine("Press Enter to confirm | Escape to return");
+
+        // input 
+        var key = Console.ReadKey(true).Key;
+        switch (key)
+        {
+            // seat selection with arrow keys
+            case ConsoleKey.UpArrow:
+                int newRow = currentRow - 1;
+                if (newRow >= 0 && auditorium[newRow, currentCol] == '●')
+                {
+                    currentRow = newRow;
+                }
+                break;
+
+            case ConsoleKey.DownArrow:
+                int newRow2 = currentRow + 1;
+                if (newRow2 < auditorium.GetLength(0) && auditorium[newRow2, currentCol] == '●')
+                {
+                    currentRow = newRow2;
+                }
+                break;
+
+            case ConsoleKey.LeftArrow:
+                int newCol = currentCol - 1;
+                if (newCol >= 0 && auditorium[currentRow, newCol] == '●')
+                {
+                    currentCol = newCol;
+                }
+                break;
+
+            case ConsoleKey.RightArrow:
+                int newCol2 = currentCol + 1;
+                if (newCol2 < auditorium.GetLength(1) && auditorium[currentRow, newCol2] == '●')
+                {
+                    currentCol = newCol2;
+                }
+                break;
+
+            // confirm
+            case ConsoleKey.Enter:
+                int seatNum = int.Parse($"{currentCol}{currentRow}");
+                Console.WriteLine($"Your chosen seat is:\nColumn: {currentCol} Row: {currentRow}");
+                Console.WriteLine($"Press enter to continue to payment");
+                Console.ReadKey();
+                Payment.Order(ReservationMovie.ChosenMovieId, seatNum);
+                return;
+
+            // exit
+            case ConsoleKey.Escape:
+                return;
+        }
+
     }
 
     // draw auditorium

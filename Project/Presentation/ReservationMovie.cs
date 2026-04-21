@@ -109,7 +109,7 @@ public static class ReservationMovie
                 Console.ReadKey();
 
                 OverviewMapsSeats seatScreen = new OverviewMapsSeats();
-                seatScreen.Render(chosenMovie.LocationId);
+                seatScreen.Render("reserve",chosenMovie.LocationId);
 
                 return;
             }
