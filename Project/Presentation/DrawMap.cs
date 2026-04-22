@@ -37,7 +37,7 @@ public class DrawMap
     {
         while (true)
         {
-            Console.Clear();
+            Display.ClearScreen();
 
             Console.WriteLine(name);
             Console.WriteLine();
@@ -50,11 +50,40 @@ public class DrawMap
                 {
                     if (i == currentRow && j == currentCol)
                     {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.BackgroundColor = ConsoleColor.Yellow;
                         Console.Write(" X ");
+                        Console.ResetColor();
+                        continue;
+                    }    
+
+                    if (auditorium[i, j] == ' ')
+                    {
+                        Console.Write("   ");
+                        continue;
                     }
                     else
                     {
-                        Console.Write($" {auditorium[i, j]} ");
+                        double price = priceSeats.PriceSeatCalc(name, j, i);
+
+                        if (price == 38.99)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write($" {auditorium[i, j]} ");
+                            Console.ResetColor();
+                        }
+                        else if (price == 29.99)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write($" {auditorium[i, j]} ");
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write($" {auditorium[i, j]} ");
+                            Console.ResetColor();
+                        }
                     }
                 }
                 Console.WriteLine();
@@ -77,13 +106,15 @@ public class DrawMap
 
             if (caller == "reserve")
             {
-                SeatSelectionArrow(auditorium, name);
+                bool exit = SeatSelectionArrow(auditorium, name);
+                if (exit)
+                    return;
             }
 
         }
     }
 
-    public void SeatSelectionArrow(char[,] auditorium, string name)
+    public bool SeatSelectionArrow(char[,] auditorium, string name)
     {
         Console.WriteLine();
         double priceSeat = priceSeats.PriceSeatCalc(name, currentCol, currentRow);
@@ -135,13 +166,13 @@ public class DrawMap
                 Console.WriteLine($"Press enter to continue to payment");
                 Console.ReadKey();
                 Payment.Order(ReservationMovie.ChosenMovieId, seatNum);
-                return;
+                return true;
 
             // exit
             case ConsoleKey.Escape:
-                return;
+                return true;
         }
-
+        return false;
     }
 
     // draw auditorium
@@ -172,20 +203,5 @@ public class DrawMap
         Console.WriteLine();
 
         return auditorium;
-    }
-
-    // print auditorium
-    public void PrintAuditorium(string name, char[,] auditorium)
-    {
-        Console.WriteLine(name);
-
-        for (int i = 0; i < auditorium.GetLength(0); i++)
-        {
-            for (int j = 0; j < auditorium.GetLength(1); j++)
-            {
-                Console.Write($" {auditorium[i, j]} ");
-            }
-            Console.WriteLine();
-        }
     }
 }
