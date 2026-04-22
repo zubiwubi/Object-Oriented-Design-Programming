@@ -31,16 +31,29 @@ public class DrawMap
             }
         }
     }
-
     // seat selection
     public void SeatSelection(string caller, char[,] auditorium, string name, string info, string screen)
     {
         while (true)
         {
             Display.ClearScreen();
+            // header
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.WriteLine($" {name} ");
+            Console.ResetColor();
 
-            Console.WriteLine(name);
-            Console.WriteLine();
+            // legenda
+            Console.WriteLine("\nLegend:");
+            Console.WriteLine(
+                "Red       =   Unavailable\n" +
+                "Grey      =   Available\n" +
+                "Green     =   Selected\n\n"
+                );
+
+            // instructies
+            Console.WriteLine("Use the Arrows to move");
+            Console.WriteLine("Press Enter to confirm | Escape to return\n");
 
             // MAP
             // loop through the map
@@ -48,43 +61,27 @@ public class DrawMap
             {
                 for (int j = 0; j < auditorium.GetLength(1); j++)
                 {
-                    if (i == currentRow && j == currentCol)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.BackgroundColor = ConsoleColor.Yellow;
-                        Console.Write(" X ");
-                        Console.ResetColor();
-                        continue;
-                    }    
+                    bool isSelected = i == currentRow && j == currentCol;
+                    bool isSeat = auditorium[i, j] == '●';
 
-                    if (auditorium[i, j] == ' ')
+                    if (!isSeat)
                     {
                         Console.Write("   ");
                         continue;
                     }
-                    else
-                    {
-                        double price = priceSeats.PriceSeatCalc(name, j, i);
 
-                        if (price == 38.99)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Write($" {auditorium[i, j]} ");
-                            Console.ResetColor();
-                        }
-                        else if (price == 29.99)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.Write($" {auditorium[i, j]} ");
-                            Console.ResetColor();
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.Write($" {auditorium[i, j]} ");
-                            Console.ResetColor();
-                        }
+                    if (isSelected)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Green;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.Write(" X ");
+                        Console.ResetColor();
+                        continue;
                     }
+
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write(" ● ");
+                    Console.ResetColor();
                 }
                 Console.WriteLine();
             }
@@ -118,9 +115,7 @@ public class DrawMap
     {
         Console.WriteLine();
         double priceSeat = priceSeats.PriceSeatCalc(name, currentCol, currentRow);
-        Console.WriteLine("Use the arrows to move");
         Console.WriteLine($"Price current seat: {priceSeat}");
-        Console.WriteLine("Press Enter to confirm | Escape to return");
 
         // input 
         var key = Console.ReadKey(true).Key;

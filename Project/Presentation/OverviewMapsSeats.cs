@@ -119,12 +119,4 @@ class OverviewMapsSeats : MenuOptionSelect
         Console.ReadKey();      // readkey to pause the screen
         return;
     }
-
-    // public void ShowAuditorium(int[] layout, string name, string info, string screen)
-    // {
-    //     var (aud, tiers) = _drawMap.DrawAuditorium(layout);
-
-    //     _drawMap.StartPosition(aud);
-    //     _drawMap.SeatSelection(aud, tiers, name, info, screen);
-    // }
 }
