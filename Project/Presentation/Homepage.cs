@@ -2,8 +2,8 @@ using Spectre.Console;
 
 class Homepage : MenuOptionSelect
 {
-    protected override List<string> Options { get; set; } = new List<string>(){"Inloggen", "Account aanmaken", "Doorgaan als gast", "Films bekijken", "Menukaart bekijken", "Zaal plattegronden", "Veelgestelde vragen", "Afsluiten"};
-    public override void Render()
+    protected override List<string> Options { get; set; } = new List<string>() { "Login", "Create Account", "Continue as Guest", "Search Movies", "View Food & Drinks Menu", "Auditorium Maps", "FAQ", "Exit" };
+    public void Render()
     {
         Console.Clear();
 
@@ -11,40 +11,36 @@ class Homepage : MenuOptionSelect
         {
             int selectedOption = MenuRenderer(Options);
 
-            switch(selectedOption)
+            switch (selectedOption)
             {
-                case 0:
+                case 0: // ------------ LOGIN -------------
                     Account.LogIn();
                     break;
-                case 1:     
+                case 1: // ------------ CREATE ACCOUNT -------------
                     MakeAccount makeAccount = new();
                     makeAccount.CreateAccount();
                     break;
-                case 2:
-                    //Continue as guest
-                    AnsiConsole.MarkupLine("[red bold] :construction: Deze pagina is nog onder constructie.[/]  ​​Druk op Enter om terug te keren.");
-                    Console.ReadKey();
-                    break; 
-                case 3:
+                case 2: // ------------ CONTINUE AS GUEST -------------
+                    // AnsiConsole.MarkupLine("[red bold] :construction: The guest page is being built. Not yet available.[/]  ​​Press enter to return.");
+                    // Console.ReadKey();
+                    ReservationMovie.Reserve();
+                    break;
+                case 3: // ------------ SEARCH MOVIES -------------
                     SearchMovies.SearchMovie();
                     break;
-                case 4:
-                    //Call FoodMenu.Method();
-                    AnsiConsole.MarkupLine("[red bold] :construction: De menukaart pagina is nog onder constructie.[/]  ​​Druk op Enter om terug te keren.");
-                    Console.ReadKey();
+                case 4: // ------------ FOOD & DRINKS MENU -------------
+                    ViewFoodMenu.RenderFoodMenu();
                     break;
-                case 5:
-                    // Call SeatMapOverview.Method();
+                case 5: // ------------ AUDITORIUM SEATMAP OVERVIEW -------------
                     OverviewMapsSeats overviewMapsSeats = new();
                     overviewMapsSeats.Render();
-                    
                     break;
-                case 6:
+                case 6: // ------------ FAQ-------------
                     //Call FAQ.Method()
-                    AnsiConsole.MarkupLine("[red bold] :construction: De veelgestelde vragen pagina is nog onder constructie. [/]  ​​Druk op Enter om terug te keren.");
+                    AnsiConsole.MarkupLine("[red bold] :construction: The FAQ is being built. Not yet available.[/]  ​​Press enter to return.");
                     Console.ReadKey();
                     break;
-                case 7:
+                case 7: // ------------ EXIT -------------
                     Environment.Exit(0);
                     break;
             }

@@ -1,160 +1,195 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-public class Account
+public class Account : IPage
 {
-    public static AccountLogic accountLogic = new(); 
-    private string? _type; 
-    public string Type => _type ?? "Customer"; 
-
+    protected static AccountLogic accountLogic = new();
+    private string? _type;
+    public string Type => _type ?? "Customer";
+    protected const int MaxAttempt = 3;
+    private static int _counter;
+    public static int Counter { get => _counter; set => _counter = Math.Min(value, MaxAttempt); }
+    public static void LogOut() => accountLogic.LogOff();
+    public static ConsoleKeyInfo Key { get; set; }
 
     public static void LogIn()
     {
         Display.ClearScreen();
         Console.WriteLine(@$"
 
-          _                _                           _             
- | |    ___   __ _(_)_ __    _ __   __ _  __ _(_)_ __   __ _ 
- | |   / _ \ / _` | | '_ \  | '_ \ / _` |/ _` | | '_ \ / _` |
- | |__| (_) | (_| | | | | | | |_) | (_| | (_| | | | | | (_| |
- |_____\___/ \__, |_|_| |_| | .__/ \__,_|\__, |_|_| |_|\__,_|
-             |___/          |_|          |___/               
-        
-     
-        
+          _                _                                
+ | |    ___   __ _(_)_ __    _ __   __ _  __ _  ___ 
+ | |   / _ \ / _` | | '_ \  | '_ \ / _` |/ _` |/ _ \
+ | |__| (_) | (_| | | | | | | |_) | (_| | (_| |  __/
+ |_____\___/ \__, |_|_| |_| | .__/ \__,_|\__, |\___|
+             |___/          |_|          |___/      
+
+      
         ");
 
 
         string email;
         do
         {
-            Console.WriteLine("voer je E-mail in: ");
-            email = Console.ReadLine()!; 
+            Console.WriteLine("Enter your E-mail [REQUIRED FIELD]: ");
+            email = Console.ReadLine()!;
 
             if (!accountLogic.IsEmailValid(email))
             {
-                InvalidEmailPrint(email);
+                Tools.InvalidEmailPrint(email);
             }
 
         } while (!accountLogic.IsEmailValid(email));
-        
 
-        AccountModel accountExists = accountLogic.AccountExists(email); 
+
+        AccountModel accountExists = accountLogic.AccountExists(email)!;
 
         if (accountExists != null)
         {
-            string password; 
+            Counter = 0;
+            string password;
             do
             {
-                Console.WriteLine("Voer je wachtwoord in: ");
-                password = Console.ReadLine()!; 
-                AccountModel account = accountLogic.CheckLogin(email, password); 
+                Console.WriteLine("Enter your password [REQUIRED FIELD]: ");
+                password = HidePassword(); 
+                AccountModel account = accountLogic.CheckLogin(email, password)!;
 
                 if (account != null)
                 {
-                    Tools.ApproveMessage("successvol ingelogd!! ✅✅✅");
+                    Tools.ApproveMessage("Logged in succesfully!! ✅✅✅");
                     Thread.Sleep(4000);
-                    AccountHomePage.HomePage(); 
-                    return; 
+                    AccountHomePage.HomePage();
+                    return;
                 }
                 else
                 {
-                    Tools.ErrorMessage("Wachtwoord komt niet overeen, je moet nogmaals inloggen!!"); 
-                    Thread.Sleep(4000);
-                    Program.Main(); 
-                    //Environment.Exit(0); 
+                    Counter++;
+                    Tools.ErrorMessage($"Password does not match, {Counter}/{MaxAttempt} attempts!!");
+
+                    if (Counter == MaxAttempt)
+                    {
+                        Tools.ErrorMessage("Max attempts reached! you have to wait for 30 seconds.");
+
+                        for (int i = 30; i >= 0; i--)
+                        {
+                            Console.Write($"\r{i} seconds left!");
+                            Thread.Sleep(1000);
+
+                            if (i == 0)
+                            {
+                                Console.WriteLine(); 
+                                Tools.ApproveMessage("Times up!! you can log in again [your being redirected......]");
+                                Thread.Sleep(3000);
+                                LogIn(); 
+                            }
+                            
+                        }
+                        Console.WriteLine(); 
+                    }
                 }
 
                 if (!accountLogic.IsPasswordValid(password))
                 {
-                    InvalidPasswordPrint(password);  
+                    Tools.InvalidPasswordPrint(password);
                 }
-                
-            } while (!accountLogic.IsPasswordValid(password)); 
-            
+
+            } while (!accountLogic.IsPasswordValid(password));
         }
         else
         {
-            Tools.ErrorMessage($"Een account de E-mail '{email}' is niet gevonden!  🫷🥺🫸  StAwP");
+            Tools.ErrorMessage($"E-mail '{email}' not found!  🫷🥺🫸  StAwP");
             Thread.Sleep(4000);
             LogIn();
         }
     }
-    
-    public static void InvalidNameValidationPrint(string name)
+    protected static void DeleteAccount()
     {
-        if (!accountLogic.IsNameValid(name))
+        Display.ClearScreen(); 
+        Tools.ErrorMessage("🚨⚠️[WARNING] YOU CAN'T UNDO THIS ACT AND ALL YOUR INFORMATION WILL BE LOST!!⚠️🚨");
+        Console.WriteLine("Press 'Enter' to continue.");
+        Console.ReadKey(); 
+        Display.ClearScreen(); 
+        string answer;
+        string confirmAnswer; 
+        do
+        {
+            Tools.ErrorMessage("Delete your account? (y/n)");
+            answer = Console.ReadLine()!; 
+
+            if (answer.ToLower() != "y" && answer.ToLower() != "n")
             {
-                if (string.IsNullOrEmpty(name.Trim()))
-                {
-                    //Tools.ErrorMessage("Name can't be empty! 🫷🥺🫸StAwP");
-                    Tools.ErrorMessage("Naam kan niet leeg zijn! 🫷🥺🫸  StAwP");
-                }
-
-                if (name.Length < 2)
-                {
-                    //Tools.ErrorMessage("Name can't be less then 2 characters! 🫷🥺🫸StAwP");
-                    Tools.ErrorMessage("Naam kan niet minder zijn dan 2 karakters! 🫷🥺🫸  StAwP");
-
-                }
-                
-                foreach (char x in accountLogic.characters)
-                {
-                    if (name.Contains(x))
-                    {
-                        Tools.ErrorMessage("Naam kan geen symbool bevatten! 🫷🥺🫸  StAwP");
-                        //Tools.ErrorMessage("name can't contain symbols! 🫷🥺🫸  StAwP");
-                    }
-                }
-
-                foreach (int x in accountLogic.digits)
-                {
-                    if (name.Contains(x.ToString()))
-                    {
-                        Tools.ErrorMessage("Naam kan geen getal bevatten 🫷🥺🫸  StAwP");
-                        // Tools.ErrorMessage("name can't contain a number 🫷🥺🫸  StAwP");
-                    }
-                }
-                
+                Tools.ErrorMessage("Not a valid answer! (y/n)");
             }
-    }
+            
+        } while (answer.ToLower() != "y" && answer.ToLower() != "n"); 
 
-    public static void InvalidEmailPrint(string email)
-    {
-        if (string.IsNullOrEmpty(email.Trim()))
+        if (answer == "y")
         {
-            Tools.ErrorMessage("E-mail kan niet leeg zijn! 🫷🥺🫸   StAwP");
-        }
-        if (!email.Contains('@'))
-        {
-            //Tools.ErrorMessage("E-mail must contain an '@'! 🫷🥺🫸  StAwP");
-            Tools.ErrorMessage("E-mail moet een '@' bevatten! 🫷🥺🫸   StAwP");
-        }
-    }
+            do
+            {
+                Tools.ErrorMessage("are you sure? (y/n)?"); 
+                confirmAnswer = Console.ReadLine()!; 
 
-    public static void InvalidPasswordPrint(string password)
-    {
-        if (string.IsNullOrEmpty(password.Trim()))
-        {
-            Tools.ErrorMessage("Wachtwoord kan niet leeg zijn! 🫷🥺🫸   StAwP"); 
-        }
-        if (password.Length < 8)
-        {
-            // Tools.ErrorMessage("password can't be less then 8 characters! 🫷🥺🫸StAwP");
+                if (answer.ToLower() != "y" && answer.ToLower() != "n")
+                {
+                    Tools.ErrorMessage("Not a valid answer! (y/n)");
+                }
+                
+            } while (confirmAnswer.ToLower() != "y" && confirmAnswer.ToLower() != "n"); 
 
-            Tools.ErrorMessage("Wachtwoord kan niet korter zijn dan 8 karakters! 🫷🥺🫸   StAwP"); 
-        }
+            if (confirmAnswer.ToLower() == "y")
+            {
+                Display.ClearScreen(); 
+                accountLogic.DeleteAccount(AccountLogic.CurrentAccount); 
+                Tools.ErrorMessage("YOUR ACCOUNT HAS BEEN DELETED\nYOU HAVE TO CREATE A NEW ACCOUNT TO SAVE YOUR INFORMATION");
+                Console.WriteLine("Press 'Enter' to go back to homepage");
+                Console.ReadKey(); 
+                Thread.Sleep(2000);
+                Program.Main(); 
+            }
 
-        if (!accountLogic.IsSymbol)
-        {
-            Tools.ErrorMessage("Wachtwoord moet minstens 1 symbool bevatten ( '!', '@', '#', '$', '%', '^', '&', '*')! 🫷🥺🫸   StAwP");
-            //Tools.ErrorMessage("Password must have atleast 1 symbol ( '!', '@', '#', '$', '%', '^', '&', '*') 🫷🥺🫸   StAwP");
-        }
-
-        if (!accountLogic.IsUpperLetter)
-        {
-            Tools.ErrorMessage("Wachtwoord moet minstens 1 hoofdletter bevatten 🫷🥺🫸   StAwP");
-            // Tools.ErrorMessage("Password must consist of atleast  1 upperletter 🫷🥺🫸   StAwP");
-        }
+            if (confirmAnswer.ToLower() == "n")
+            {
+                Console.WriteLine("You canceled deleting your account!\nYour being redirected to the homepage");
+                Thread.Sleep(4000); 
+                AccountHomePage.HomePage(); 
+            }
         
+        }
+
+        if (answer.ToLower() == "n")
+        {
+            Console.WriteLine("You decided not to proceed to delete your account\nYour being redirected to the homepage");
+            Thread.Sleep(4000);
+            AccountHomePage.HomePage(); 
+        }
+    }
+
+    protected static string HidePassword()
+    {
+        string password = "";
+
+        while (true)
+        {
+            Key = Console.ReadKey(true);
+            if (Key.Key == ConsoleKey.Enter)
+            {
+                Console.WriteLine();
+                break;
+            }
+
+            if (Key.Key != ConsoleKey.Backspace)
+            {
+                password += Key.KeyChar;
+                Console.Write("*");
+            }
+            else
+            {
+                if (password.Length > 0)
+                {
+                    password = password.Remove(password.Length - 1);
+                    Console.Write("\b \b");
+                }
+            }
+        }
+        return password;
+
     }
 }

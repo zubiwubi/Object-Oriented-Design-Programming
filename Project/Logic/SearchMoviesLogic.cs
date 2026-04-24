@@ -64,8 +64,7 @@ public class SearchMoviesLogic
         }
         else
         {
-            Console.WriteLine("Niet de juiste format.");
-            // Console.WriteLine("Invalid date format.");
+            Console.WriteLine("Invalid date format.");
             return false;
         }
     }

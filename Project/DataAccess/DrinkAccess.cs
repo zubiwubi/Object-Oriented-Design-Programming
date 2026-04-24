@@ -8,6 +8,12 @@ public class DrinkAccess
 
     private string Table = "Drink";
 
+    public List<DrinkModel> GetAll()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<DrinkModel>(sql).ToList();
+    }
+
     public void Write(DrinkModel drink)
     {
         string sql = $"INSERT INTO {Table} (name, description, size, price, type) VALUES (@Name, @Description,@Size, @Price, @Type)";
@@ -31,7 +37,4 @@ public class DrinkAccess
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = drink.Id });
     }
-
-
-
 }
