@@ -1,4 +1,4 @@
-public class PriceSeats
+public class PriceSeatsLogic
 {
     // This is a way for now to display the price pretty accurately based on the case images we got
     // For now this skips the db but with admin functions we will need to change this. 

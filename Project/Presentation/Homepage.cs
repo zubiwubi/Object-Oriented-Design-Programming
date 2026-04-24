@@ -21,9 +21,9 @@ class Homepage : MenuOptionSelect
                     makeAccount.CreateAccount();
                     break;
                 case 2: // ------------ CONTINUE AS GUEST -------------
-                    AnsiConsole.MarkupLine("[red bold] :construction: The guest page is being built. Not yet available.[/]  ​​Press enter to return.");
-                    Console.ReadKey();
-                    // ReservationMovie.Reserve();
+                    // AnsiConsole.MarkupLine("[red bold] :construction: The guest page is being built. Not yet available.[/]  ​​Press enter to return.");
+                    // Console.ReadKey();
+                    ReservationMovie.Reserve();
                     break;
                 case 3: // ------------ SEARCH MOVIES -------------
                     SearchMovies.SearchMovie();

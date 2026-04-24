@@ -10,7 +10,7 @@
 */
 public class DrawMap
 {
-    PriceSeats priceSeats = new();
+    PriceSeatsLogic priceSeats = new();
     int currentRow = 0;
     int currentCol = 0;
 
@@ -79,7 +79,21 @@ public class DrawMap
                         continue;
                     }
 
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    double price = priceSeats.PriceSeatCalc(name, i, j);
+
+                    if (price == 38.99)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    else if (price == 29.99)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+
                     Console.Write(" ● ");
                     Console.ResetColor();
                 }
