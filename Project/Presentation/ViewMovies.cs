@@ -4,8 +4,7 @@ public class ViewMovies
     {
         MovieModel movie = SearchMoviesLogic.GetByID(id);
 
-        Console.Clear();
-
+        Display.ClearScreen();
         Console.WriteLine("========================================");
         Console.WriteLine($"{movie.Title.ToUpper()}");
         Console.WriteLine("========================================");

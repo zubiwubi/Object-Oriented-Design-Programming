@@ -7,7 +7,7 @@ class OverviewMapsSeats : MenuOptionSelect
     public int[] auditorium2 = [16, 16, 16, 16, 16, 16, 18, 18, 18, 18, 18, 16, 16, 16, 14, 14, 14, 12, 12];
     public int[] auditorium3 = [22, 24, 24, 24, 24, 26, 28, 30, 30, 30, 30, 30, 28, 26, 26, 24, 24, 20, 16, 14];
 
-    public void Render(string caller = "", int locationId = 0)
+    public void Render(string caller = "", int locationId = 0, string callerType = "")
     {
         if (locationId == 0)
         {
@@ -15,31 +15,31 @@ class OverviewMapsSeats : MenuOptionSelect
             switch (selectedOption)
             {
                 case 0:
-                    RenderAud1(caller);
+                    RenderAud1(caller, callerType);
                     break;
 
                 case 1:
-                    RenderAud2(caller);
+                    RenderAud2(caller, callerType);
                     break;
 
 
                 case 2:
-                    RenderAud3(caller);
+                    RenderAud3(caller, callerType);
                     break;
 
             }
         }
         else if (locationId == 1)
         {
-            RenderAud1(caller);
+            RenderAud1(caller, callerType);
         }
         else if (locationId == 2)
         {
-            RenderAud2(caller);
+            RenderAud2(caller, callerType);
         }
         else if (locationId == 3)
         {
-            RenderAud3(caller);
+            RenderAud3(caller, callerType);
         }
         else
         {
@@ -48,7 +48,7 @@ class OverviewMapsSeats : MenuOptionSelect
             return;
         }
     }
-    private void RenderAud1(string caller)
+    private void RenderAud1(string caller, string callerType)
     {
         Console.WriteLine();
         char[,] aud1 = DrawMap.DrawAuditorium(auditorium1);
@@ -67,12 +67,12 @@ class OverviewMapsSeats : MenuOptionSelect
 
         // seats bekijken op de map
         DrawMap.StartPosition(aud1);
-        DrawMap.SeatSelection(caller,aud1, "Auditorium 1", info1, screen1);
+        DrawMap.SeatSelection(caller, aud1, "Auditorium 1", info1, screen1, callerType);
 
         Console.ReadKey();      // readkey to pause the screen
         return;
     }
-    private void RenderAud2(string caller)
+    private void RenderAud2(string caller, string callerType)
     {
         char[,] aud2 = DrawMap.DrawAuditorium(auditorium2);
 
@@ -90,13 +90,13 @@ class OverviewMapsSeats : MenuOptionSelect
 
         // seats bekijken op de map
         DrawMap.StartPosition(aud2);
-        DrawMap.SeatSelection(caller,aud2, "Auditorium 2", info2, screen2);
+        DrawMap.SeatSelection(caller, aud2, "Auditorium 2", info2, screen2, callerType);
 
         Console.ReadKey();      // readkey to pause the screen
 
         return;
     }
-    private void RenderAud3(string caller)
+    private void RenderAud3(string caller, string callerType)
     {
         char[,] aud3 = DrawMap.DrawAuditorium(auditorium3);
 
@@ -114,7 +114,7 @@ class OverviewMapsSeats : MenuOptionSelect
 
         // seats bekijken op de map
         DrawMap.StartPosition(aud3);
-        DrawMap.SeatSelection(caller,aud3, "Auditorium 3", info3, screen3);
+        DrawMap.SeatSelection(caller, aud3, "Auditorium 3", info3, screen3, callerType);
 
         Console.ReadKey();      // readkey to pause the screen
         return;

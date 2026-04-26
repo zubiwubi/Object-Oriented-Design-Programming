@@ -32,7 +32,7 @@ public class DrawMap
         }
     }
     // seat selection
-    public void SeatSelection(string caller, char[,] auditorium, string name, string info, string screen)
+    public void SeatSelection(string caller, char[,] auditorium, string name, string info, string screen, string callerType)
     {
         while (true)
         {
@@ -43,17 +43,13 @@ public class DrawMap
             Console.WriteLine($" {name} ");
             Console.ResetColor();
 
-            // legenda
-            Console.WriteLine("\nLegend:");
-            Console.WriteLine(
-                "Red       =   Unavailable\n" +
-                "Grey      =   Available\n" +
-                "Green     =   Selected\n\n"
-                );
-
-            // instructies
-            Console.WriteLine("Use the Arrows to move");
-            Console.WriteLine("Press Enter to confirm | Escape to return\n");
+            // // legenda
+            // Console.WriteLine("\nLegend:");
+            // Console.WriteLine(
+            //     "Red       =   Unavailable\n" +
+            //     "Grey      =   Available\n" +
+            //     "Green     =   Selected\n\n"
+            //     );
 
             // MAP
             // loop through the map
@@ -117,7 +113,9 @@ public class DrawMap
 
             if (caller == "reserve")
             {
-                bool exit = SeatSelectionArrow(auditorium, name);
+                Console.WriteLine("Use the Arrows to move");
+                Console.WriteLine("Press Enter to confirm | Escape to return\n");
+                bool exit = SeatSelectionArrow(auditorium, name, callerType);
                 if (exit)
                     return;
             }
@@ -125,10 +123,10 @@ public class DrawMap
         }
     }
 
-    public bool SeatSelectionArrow(char[,] auditorium, string name)
+    public bool SeatSelectionArrow(char[,] auditorium, string name, string callerType = "")
     {
         Console.WriteLine();
-        double priceSeat = priceSeats.PriceSeatCalc(name, currentCol, currentRow);
+        double priceSeat = priceSeats.PriceSeatCalc(name, currentRow, currentCol);
         Console.WriteLine($"Price current seat: {priceSeat}");
 
         // input 
@@ -174,7 +172,7 @@ public class DrawMap
                 Console.WriteLine($"Your chosen seat is:\nColumn: {currentCol} Row: {currentRow}");
                 Console.WriteLine($"Press enter to continue to payment");
                 Console.ReadKey();
-                Payment.Order(ReservationMovie.ChosenMovieId, seatNum);
+                Payment.Order(ReservationMovie.ChosenMovieId, seatNum, callerType);
                 return true;
 
             // exit

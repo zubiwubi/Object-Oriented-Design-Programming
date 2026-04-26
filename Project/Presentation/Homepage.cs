@@ -23,7 +23,7 @@ class Homepage : MenuOptionSelect
                 case 2: // ------------ CONTINUE AS GUEST -------------
                     // AnsiConsole.MarkupLine("[red bold] :construction: The guest page is being built. Not yet available.[/]  ​​Press enter to return.");
                     // Console.ReadKey();
-                    ReservationMovie.Reserve();
+                    ReservationMovie.Reserve("Guest");
                     break;
                 case 3: // ------------ SEARCH MOVIES -------------
                     SearchMovies.SearchMovie();

@@ -2,7 +2,7 @@ public static class ReservationMovie
 {
     public static int ChosenMovieId = 0;
 
-    public static void Reserve()
+    public static void Reserve(string callerType="")
     {
         Console.Clear();
         Console.WriteLine("========================================");
@@ -80,7 +80,7 @@ public static class ReservationMovie
             }
 
 
-            Console.Clear();
+            Display.ClearScreen();
             Console.WriteLine("========================================");
             Console.WriteLine("          CONFIRMATION");
             Console.WriteLine("========================================");
@@ -109,7 +109,7 @@ public static class ReservationMovie
                 Console.ReadKey();
 
                 OverviewMapsSeats seatScreen = new OverviewMapsSeats();
-                seatScreen.Render("reserve",chosenMovie.LocationId);
+                seatScreen.Render("reserve", chosenMovie.LocationId, callerType);
 
                 return;
             }
