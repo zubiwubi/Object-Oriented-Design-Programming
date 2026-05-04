@@ -16,9 +16,10 @@ public static class ViewFoodMenu
         }
     }
 
-    public static void RenderFoodMenu()
+    public static FoodModel? RenderFoodMenu(bool isLoungeMenu)
     {
-        AddVeganDescription(allFoods);
+        var foods = FoodMenuLogic.GetAllFoodsByType(isSnackMenu);
+        AddVeganDescription(foods);
 
         int selectedOption = 0;
 
@@ -27,6 +28,7 @@ public static class ViewFoodMenu
             Display.ClearScreen();
             AnsiConsole.MarkupLine("[black on gray] FOOD & DRINKS MENU [/]\n\n");
             AnsiConsole.MarkupLine(" BACKSPACE: :house: HOMEPAGE\n ENTER: :tropical_drink: DRINKS MENU\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
+            AnsiConsole.MarkupLine("Press S to select food.");
 
             // Draw Food Table Columns
             var table = new Table();
@@ -36,7 +38,7 @@ public static class ViewFoodMenu
             table.AddColumn("PRICE").Width(110);
             table.AddColumn("DIETARY").Width(110);
             // -------------------------------
-            foreach (var food in allFoods)
+            foreach (var food in foods)
             {
                 bool isSelected = food.Id == (selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
 
@@ -68,6 +70,11 @@ public static class ViewFoodMenu
                 selectedOption = (allFoods.Count() + selectedOption - 1 ) % allFoods.Count();
             }
 
+            if (input.Key == ConsoleKey.S)
+            {
+                return foods[selectedOption];
+            }
+
             if (input.Key == ConsoleKey.Enter)
             {
                 RenderDrinkMenu();
@@ -75,12 +82,12 @@ public static class ViewFoodMenu
 
             if (input.Key == ConsoleKey.Backspace)
             {
-                return;
+                return null;
             }
         }
     }
 
-    public static void RenderDrinkMenu()
+    public static DrinkModel? RenderDrinkMenu(bool isLoungeMenu)
     {
         AddVeganDescription(allDrinks);
         
@@ -91,6 +98,7 @@ public static class ViewFoodMenu
             Display.ClearScreen();
             AnsiConsole.MarkupLine("[black on gray] DRINKS MENU [/]\n\n");
             AnsiConsole.MarkupLine(" BACKSPACE: :fork_and_knife: FOOD MENU\n\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
+            AnsiConsole.MarkupLine("Press S to select drink.");
 
             // Drink Menu Columns 
             var drinkTable = new Table();
@@ -125,7 +133,7 @@ public static class ViewFoodMenu
 
             if (input.Key == ConsoleKey.DownArrow)
             {
-                selectedOption = (selectedOption + 1) % allFoods.Count();
+                selectedOption = (selectedOption + 1) % allDrinks.Count();
             }
 
             if (input.Key == ConsoleKey.UpArrow)
@@ -133,9 +141,14 @@ public static class ViewFoodMenu
                 selectedOption = (allDrinks.Count() + selectedOption - 1 ) % allDrinks.Count();
             }
 
+            if (input.Key == ConsoleKey.S)
+            {
+                return drink[selectedOption];
+            }
+
             if (input.Key == ConsoleKey.Backspace)
             {
-                return;
+                return null;
             }
         }
     }

@@ -11,17 +11,17 @@ public class FoodMenuLogic
 
     public static List<FoodModel> GetAllFoodsByType(bool isSnack)
     {
-        List<FoodModel> luxeFood = new();
+        List<FoodModel> loungeFood = new();
 
         foreach (var food in _foodAccess.GetAll())
         {
             if (food.IsSnack == isSnack)
             {
-                luxeFood.Add(food);
+                loungeFood.Add(food);
             }
         }
 
-        return luxeFood;
+        return loungeFood;
     }
 
     public static List<DrinkModel> GetAllDrinks() 
@@ -29,18 +29,18 @@ public class FoodMenuLogic
         return _drinkAccess.GetAll();
     }
 
-    public static List<DrinkModel> GetAllDrinksbyType(bool isLuxeDrink)
+    public static List<DrinkModel> GetAllDrinksbyType(bool isLoungeDrink)
     {
-        List<DrinkModel> luxeDrink = new();
+        List<DrinkModel> loungeDrink = new();
 
         foreach (var drink in _drinkAccess.GetAll())
         {
-            if (drink.IsLuxeDrink == isLuxeDrink)
+            if (drink.IsLoungeDrink == isLoungeDrink)
             {
-                luxeDrink.Add(drink);
+                loungeDrink.Add(drink);
             }
         }
 
-        return luxeDrink;
+        return loungeDrink;
     }
 }

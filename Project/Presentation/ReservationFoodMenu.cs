@@ -18,30 +18,34 @@ public class ReservationFoodMenu
             else if (input == "y")
             {
                 validInput = true;
-                var menu = FoodMenuLogic.GetAllFoodsByType(isSnackMenu);
+
+                FoodModel selected = ViewFoodMenu.SelectFoodItem(isSnackMenu);
 
                 // save orders
-                List<object> order = new List<object>();
+                List<FoodModel> order = new List<FoodModel>();
+                order.Add(selectedItem);
 
-                foreach (var item in menu)
-                {
-                Console.WriteLine($"{item.Name} - {item.Description} - €{item.Price}");
-                }
-
+                // string menuType = isSnackMenu ? "SNACK MENU" : "LOUNGE MENU";
+                // Console.WriteLine($"\n ---- {menuType} ----\n");
+                
+        
                 // VALIDATION LOOP
                 bool confirmValid = false;
 
                 while (!confirmValid)
                 {
+                    Console.WriteLine($"You selected: {selectedItem.Name}");
                     Console.WriteLine("Confirm order? (y/n)");
-                    string confirmInput = Console.ReadLine().ToLower();
 
-                    if (confirmInput == "n")
+                    string confirm = Console.ReadLine().ToLower();
+
+                    if (confirm == "n")
                     {
                         order.Clear();
+                        Console.WriteLine("Order cancelled.");
                         confirmValid = true;
                     }
-                    else if (confirmInput == "y")
+                    else if (confirm == "y")
                     {
                         Console.WriteLine("Redirecting to payment...");
                         Payment.Order(0, 0);

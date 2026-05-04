@@ -12,6 +12,6 @@ public class DrinkModel : ConsumableModel
     {
         Size = "";
     }
-    
-    public bool IsLuxeDrink { get; set; }
+
+    public bool IsLoungeDrink { get; set; }
 }
