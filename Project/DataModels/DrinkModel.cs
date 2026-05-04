@@ -7,4 +7,11 @@ public class DrinkModel : ConsumableModel
     {
         Size = size;
     }
+
+    public DrinkModel() : base(0, "", "", 0, "") 
+    {
+        Size = "";
+    }
+    
+    public bool IsLuxeDrink { get; set; }
 }
