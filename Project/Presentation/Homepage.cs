@@ -36,9 +36,9 @@ class Homepage : MenuOptionSelect
                     overviewMapsSeats.Render();
                     break;
                 case 6: // ------------ FAQ-------------
-                    //Call FAQ.Method()
-                    AnsiConsole.MarkupLine("[red bold] :construction: The FAQ is being built. Not yet available.[/]  ​​Press enter to return.");
-                    Console.ReadKey();
+                        //Call FAQ.Method()
+                    FaqOverview faqOverview = new();
+                    faqOverview.Render();
                     break;
                 case 7: // ------------ EXIT -------------
                     Environment.Exit(0);
