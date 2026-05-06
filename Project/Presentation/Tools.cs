@@ -12,6 +12,16 @@ public class Tools : Account
         Console.ResetColor(); 
     }
 
+    public static void SlowLine(string text, int delay = 40)
+    {
+        foreach (char c in text)
+        {
+            Console.Write(c);
+            Thread.Sleep(delay);
+        }
+        Console.WriteLine();
+    }
+
     ///////////INVALID PRINT STATEMENTS/////////////////
     
      public static void InvalidNameValidationPrint(string name)
@@ -63,24 +73,6 @@ public class Tools : Account
             return; 
         }
 
-       /*  int counter = 0; 
-        foreach (char x in email)
-        {
-            if (x == '@'); 
-            counter++; 
-
-            if (counter == 1)
-            {
-                continue; 
-            }
-
-            if (counter == 2)
-            {
-                ErrorMessage("E-mail can't have more then 1 '@'! 🫷🥺🫸  StAwP");
-                return; 
-            }
-        } */
-
         if (!email.Contains('.'))
         {
             ErrorMessage("E-mail must contain an '.'! 🫷🥺🫸  StAwP");
@@ -110,7 +102,7 @@ public class Tools : Account
         if (!accountLogic.IsUpperLetter)
         {
             ErrorMessage("Password must consist of atleast  1 upperletter 🫷🥺🫸   StAwP");
-            return; // dit fixen
+            return;
         }   
     }
 }
