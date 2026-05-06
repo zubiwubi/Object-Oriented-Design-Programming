@@ -4,7 +4,7 @@ public class ReservationMerchandise
     {
         string FirstName = "";
         string LastName = "";
-        int PhoneNumber; 
+        int PhoneNumber = 0; 
         string email = ""; 
 
 
