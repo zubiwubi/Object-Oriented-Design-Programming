@@ -12,6 +12,17 @@ public class Tools : Account
         Console.ResetColor(); 
     }
 
+    public static void ColorMagentaMessage(string message)
+    {
+        Console.WriteLine(message, Console.ForegroundColor = ConsoleColor.Magenta); 
+        Console.ResetColor(); 
+    }
+
+    public static void ColorYellowMessage(string message)
+    {
+        Console.WriteLine(message, Console.ForegroundColor = ConsoleColor.Yellow);
+        Console.ResetColor(); 
+    } 
     public static void SlowLine(string text, int delay = 40)
     {
         foreach (char c in text)
@@ -24,7 +35,7 @@ public class Tools : Account
 
     ///////////INVALID PRINT STATEMENTS/////////////////
     
-     public static void InvalidNameValidationPrint(string name)
+    public static void InvalidNameValidationPrint(string name)
     {
         if (!accountLogic.IsNameValid(name))
         {
