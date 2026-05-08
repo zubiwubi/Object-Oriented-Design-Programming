@@ -47,7 +47,7 @@ public class MakeAccount : Account
 
     }
 
-    private string AskFirstName()
+    protected string AskFirstName()
     {
         Display.ClearScreen(); 
         string firstName; 
@@ -66,7 +66,7 @@ public class MakeAccount : Account
         return firstName;   
     }
 
-    private string AskLastName()
+    protected string AskLastName()
     {
         Display.ClearScreen();
         string LastName; 
@@ -86,7 +86,7 @@ public class MakeAccount : Account
         
     }
 
-    private string AskEmail()
+    protected string AskEmail()
     {
         Display.ClearScreen();
         string email; 
