@@ -90,7 +90,7 @@ public class ReservationFoodMenu
     //             // Console.WriteLine($"\n ---- {menuType} ----\n");
                 
         
-    //             // VALIDATION LOOP
+    //             // VALIDATION LOOP // check otherwise send to payment
     //             bool confirmValid = false;
 
     //             while (!confirmValid)
