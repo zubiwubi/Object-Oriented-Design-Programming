@@ -2,80 +2,102 @@ public class Payment
 {
     protected static AccountLogic accountLogic = new();
     protected static PaymentLogic paymentLogic = new();
-    public static void Order(int movieId, int seat)
+    public static void Order(int movieId, int seat, string caller)
     {
-        // make arrow keys
         Console.WriteLine("Choose a payment system?");
-        Console.WriteLine("[1] IBAN");
+        Console.WriteLine("[1] IDeal/WERO");
         Console.WriteLine("[2] PayPal");
+
         while (true)
         {
             string? paymentChoice = Console.ReadLine()?.Trim();
 
             if (paymentChoice == "1")
             {
-                Console.WriteLine("=== Payment Information ===");
-                Console.WriteLine("Enter an IBAN card number you want to use(with or without spaces): ");
-                string newCard = Console.ReadLine()?.Trim();
+                string? newCard;
                 while (true)
                 {
-                    bool isNewCardValid = paymentLogic.IBANCheck(newCard);
-                    if (isNewCardValid)
-                    {
+                    Console.WriteLine("Enter an IBAN card number (with or without spaces): ");
+                    newCard = Console.ReadLine()?.Trim();
+
+                    if (paymentLogic.IBANCheck(newCard))
                         break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please enter a correct card:");
-                        newCard = Console.ReadLine()?.Trim();
-                    }
+
+                    Console.WriteLine("Please enter a correct IBAN.");
                 }
+
+                break;
             }
             else if (paymentChoice == "2")
             {
-                Console.WriteLine($"Enter your PayPal email:");
-                string email = Console.ReadLine()?.Trim();
-                bool emailValid = accountLogic.IsEmailValid(email);
-                if (emailValid)
+                string? email;
+                while (true)
                 {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Please enter a correct card:");
+                    Console.WriteLine("Enter your PayPal email:");
                     email = Console.ReadLine()?.Trim();
+
+                    if (accountLogic.IsEmailValid(email))
+                        break;
+
+                    Console.WriteLine("Please enter a correct email.");
                 }
 
-
+                break;
             }
+            else
+            {
+                Console.WriteLine("Invalid choice. Please select 1 or 2.");
+            }
+        }
 
-            // make arrow keys
-            // add payment overview/ticket overview with all of the data, price etc
+        while (true)
+        {
             Console.WriteLine("Confirm Payment?");
             Console.WriteLine("[1] Yes");
             Console.WriteLine("[2] No");
 
-            string? ConfirmChoice = Console.ReadLine()?.Trim();
+            string? confirmChoice = Console.ReadLine()?.Trim();
 
-            if (ConfirmChoice == "1")
+            if (confirmChoice == "1")
             {
                 Console.WriteLine("\nPurchase Confirmed.");
-                Console.WriteLine($"The order has been added to the system'");
-                // check if logged in, if not, do not save -> print QR code
-                PaymentLogic.SaveOrder(AccountLogic.CurrentAccount.Id, movieId, seat, null, null);//foodid and drinkid are null because we cannot reserve it right now
-                Console.WriteLine("\nPress any key to return to the main menu...");
-                Console.ReadKey();
-                Console.Clear();
-                AccountHomePage.HomePage();
-            }
-            else if (ConfirmChoice == "2")
-            {
-                Console.WriteLine($"The order has been cancelled");
-                Console.WriteLine("\nPress any key to return to the main menu...");
-                Console.ReadKey();
-                Console.Clear();
-                AccountHomePage.HomePage();
+                Console.WriteLine("The order has been added to the system");
 
+                if (caller == "Guest")
+                {
+                    PaymentLogic.SaveOrder(null, movieId, seat);
+                    Console.WriteLine("\nPress any key to return to the main menu...");
+                    Console.ReadKey();
+                    Display.ClearScreen();
+                    return;
+                }
+                else
+                {
+                    PaymentLogic.SaveOrder(AccountLogic.CurrentAccount.Id, movieId, seat);
+                    QRCodeGen.QrCodeGeneration(AccountLogic.CurrentAccount.EmailAddress, movieId, seat, null, null);
+                    Console.WriteLine("\nPress any key to return to the main menu...");
+                    Console.ReadKey();
+                    Display.ClearScreen();
+                    AccountHomePage.HomePage();
+                    return;
+                }
+            }
+            else if (confirmChoice == "2")
+            {
+                Console.WriteLine("The order has been cancelled");
+                Console.WriteLine("\nPress any key to return to the main menu...");
+                Console.ReadKey();
+
+                if (caller != "Guest")
+                {
+                    Display.ClearScreen();
+                    AccountHomePage.HomePage();
+                }
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice. Please select 1 or 2.");
             }
         }
     }
