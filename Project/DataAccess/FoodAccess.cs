@@ -16,7 +16,7 @@ public class FoodAccess
 
     public void Write(FoodModel food)
     {
-        string sql = $"INSERT INTO {Table} (name, description, price, type) VALUES (@Name, @Description, @Price, @Type)";
+        string sql = $"INSERT INTO {Table} (name, description, price, type, islounge) VALUES (@Name, @Description, @Price, @Type, @isLounge)";
         _connection.Execute(sql, food);
     }
 
@@ -28,7 +28,7 @@ public class FoodAccess
 
     public void Update(FoodModel food)
     {
-        string sql = $"UPDATE {Table} SET name = @Name, description = @Description, price = @Price, type = @Type  WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET name = @Name, description = @Description, price = @Price, type = @Type, islounge = @isLounge  WHERE id = @Id";
         _connection.Execute(sql, food);
     }
 

@@ -1,7 +1,52 @@
 public class ReservationFoodMenu
 {
+    public static List<FoodModel> allFoods = FoodMenuLogic.GetAllFoods();
+    public static List<DrinkModel> allDrinks = FoodMenuLogic.GetAllDrinks();
+
+    // filteren
+    public static List<FoodModel> GetAllFoodsByType(bool isLounge)
+    {
+        List<FoodModel> loungeFood = new();
+
+        foreach (var food in _foodAccess.GetAll())
+        {
+            if (food.IsSnack == isSnack)
+            {
+                loungeFood.Add(food);
+            }
+        }
+
+        return loungeFood;
+    }
+    public static List<DrinkModel> GetAllDrinksbyType(bool isLounge)
+    {
+        List<DrinkModel> loungeDrink = new();
+
+        foreach (var drink in _drinkAccess.GetAll())
+        {
+            if (drink.IsLoungeDrink == isLoungeDrink)
+            {
+                loungeDrink.Add(drink);
+            }
+        }
+
+        return loungeDrink;
+    }
+
+    public static void AddVeganDescription<T>(List<T> Consumables) where T: ConsumableModel
+    {
+        foreach (var item in Consumables)
+        {
+            if (item.isLounge == 1)
+            {
+                SnackList.Add;
+            }
+        }
+    }
+
     public void ShowMenu(bool isSnackMenu)
     {
+        
         bool validInput = false;
 
         while (!validInput)

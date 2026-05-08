@@ -16,7 +16,7 @@ public class DrinkAccess
 
     public void Write(DrinkModel drink)
     {
-        string sql = $"INSERT INTO {Table} (name, description, size, price, type) VALUES (@Name, @Description,@Size, @Price, @Type)";
+        string sql = $"INSERT INTO {Table} (name, description, size, price, type, islounge) VALUES (@Name, @Description,@Size, @Price, @Type, @isLounge)";
         _connection.Execute(sql, drink);
     }
 
@@ -28,7 +28,7 @@ public class DrinkAccess
 
     public void Update(DrinkModel drink)
     {
-        string sql = $"UPDATE {Table} SET name = @Name, description = @Description, size  = @Size, price = @Price, type = @Type  WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET name = @Name, description = @Description, size  = @Size, price = @Price, type = @Type, islounge = @isLounge  WHERE id = @Id";
         _connection.Execute(sql, drink);
     }
 
