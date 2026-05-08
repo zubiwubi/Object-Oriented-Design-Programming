@@ -65,7 +65,7 @@ public class Payment
 
                 if (caller == "Guest")
                 {
-                    PaymentLogic.SaveOrder(null, movieId, seat, null, null);
+                    PaymentLogic.SaveOrder(null, movieId, seat);
                     Console.WriteLine("\nPress any key to return to the main menu...");
                     Console.ReadKey();
                     Display.ClearScreen();
@@ -73,7 +73,8 @@ public class Payment
                 }
                 else
                 {
-                    PaymentLogic.SaveOrder(AccountLogic.CurrentAccount.Id, movieId, seat, null, null);
+                    PaymentLogic.SaveOrder(AccountLogic.CurrentAccount.Id, movieId, seat);
+                    QRCodeGen.QrCodeGeneration(AccountLogic.CurrentAccount.EmailAddress, movieId, seat, null, null);
                     Console.WriteLine("\nPress any key to return to the main menu...");
                     Console.ReadKey();
                     Display.ClearScreen();

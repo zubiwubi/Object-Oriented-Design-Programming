@@ -43,11 +43,11 @@ public class PaymentLogic
 
     }
 
-    public static void SaveOrder(long? customerId, int movieId, int seatId, int? drinkId, int? foodId)
+    public static void SaveOrder(long? customerId, int movieId, int seatId)
     {
         string date = DateTime.Now.ToString("dd-MM-yyyy");
 
-        var order = new OrderModel(customerId, movieId, seatId, drinkId, foodId, date, "null");
+        var order = new OrderModel(customerId, movieId, seatId, date, "null");
         OAccess.Write(order);
 
     }
