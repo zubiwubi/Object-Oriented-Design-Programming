@@ -5,7 +5,7 @@
         // Homepage homepage = new();
 
         // homepage.Render();
-        ReservationFoodMenu menu = new ReservationFoodMenu();
-        menu.ShowMenu(true);
+
+        ReservationFoodMenu.Render();
     }
 }
