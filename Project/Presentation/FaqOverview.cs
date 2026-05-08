@@ -19,6 +19,10 @@ class FaqOverview : MenuOptionSelect
             {
                 case 0: // ------------ FAQ -------------
                         //type code here 
+
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+
                     Console.WriteLine(@"
                     FAQ - Press any key to continue
 
@@ -42,10 +46,12 @@ class FaqOverview : MenuOptionSelect
 
 
                     Console.ReadKey();
-
+                    Console.ResetColor();
                     break;
                 case 1: // ------------ About us -------------
-                    // codehere
+                        // codehere
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine(@"
                         Welcome to Rotterdam Cinema, your home for the ultimate movie experience.
     
@@ -71,10 +77,13 @@ class FaqOverview : MenuOptionSelect
                     
                     ");
                     Console.ReadKey();
+                    Console.ResetColor();
 
                     break;
                 case 2: // ------------ Contact -------------
-                    //code here
+                        //code here
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine(@"
                     
                     Rotterdam Cinema
@@ -84,14 +93,18 @@ class FaqOverview : MenuOptionSelect
                     
                     ");
                     Console.ReadKey();
+                    Console.ResetColor();
 
                     break;
                 case 3: // ------------ Adress information -------------
-                    //code here
+                        //code here
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine(@"
                     Schouwburgplein 101, 3012 CL Rotterdam
                     ");
                     Console.ReadKey();
+                    Console.ResetColor();
                     break;
                 case 4: // ------------ Return to homepage -------------
                     return;//haalt je uit elke loop. handig voor void methods
