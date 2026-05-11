@@ -1,6 +1,6 @@
 public class ViewMerchandise : ReservationMerchandise
 {  
-    public static List<string> Menu {get; set;} = new() {"Hoodies", "Tshirts", "Accessories", "Stickers", "Mugs", "Posters"};
+    public static new List<string> Menu {get; set;} = new() {"Hoodies", "Tshirts", "Accessories", "Stickers", "Mugs", "Posters"};
     public static void StartPage()
     {
         Display.ClearScreen(); 
@@ -18,7 +18,7 @@ public class ViewMerchandise : ReservationMerchandise
         Tools.SlowLine("In this section you can view and include some fun and cool items to go for your movie order :)"); 
 
         Console.WriteLine();
-        Tools.ColorYellowMessage("Press 'Enter' to view the merchandise :)  or 'Backspace' to go back");
+        Tools.ColorYellowMessage("Press 'ENTER' to view the merchandise :)  or 'BACKSPACE' to go back");
         ConsoleKeyInfo key = Console.ReadKey();
 
         if (key.Key == ConsoleKey.Backspace)
@@ -38,7 +38,7 @@ public class ViewMerchandise : ReservationMerchandise
         while (!IsOptionSelected)
         {
             Display.ClearScreen(); 
-            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'Backspace' to go back.");
+            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'BACKSPACE' to go back.");
 
             for (int i = 0; i < Menu.Count; i++)
             {
@@ -122,17 +122,16 @@ public class ViewMerchandise : ReservationMerchandise
 
     public static void ViewHoodies()
     {
-        //Console.WriteLine("╰──ID────NAME────────────────────────PRICE──────TYPE─────SIZE──DESCRIPTION───────────────°❀");
         IsOptionSelected = false; 
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Console.WriteLine(); 
 
             Console.WriteLine("❀° ┄───────────────────────────────────╮");
             Console.WriteLine($"                {Menu[0]}");
             Console.WriteLine("╰──────────────────────────────────────┄ °❀");
 
-            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'Backspace' to go back.");
+            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'BACKSPACE' to go back.");
 
             for (int i = 0; i < Hoodies.Count; i++)
             {   
@@ -151,7 +150,7 @@ public class ViewMerchandise : ReservationMerchandise
                 }
             }
 
-            KeyControlViewMerch(); 
+            KeyControlViewMerch(Hoodies); 
         }
     }
                 
@@ -169,7 +168,7 @@ public class ViewMerchandise : ReservationMerchandise
             Console.WriteLine($"                {Menu[1]}");
             Console.WriteLine("╰──────────────────────────────────────┄ °❀");
 
-            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'Backspace' to go back.");
+            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'BACKSPACE' to go back.");
             for (int i = 0; i < TShirts.Count; i++)
             {   
                 if (i == Arrow)
@@ -187,7 +186,7 @@ public class ViewMerchandise : ReservationMerchandise
                 }
             }
 
-            KeyControlViewMerch(); 
+            KeyControlViewMerch(TShirts); 
         }
        
     }
@@ -202,7 +201,7 @@ public class ViewMerchandise : ReservationMerchandise
             Console.WriteLine($"                {Menu[2]}");
             Console.WriteLine("╰──────────────────────────────────────┄ °❀");
         
-            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'Backspace' to go back.");
+            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'BACKSPACE' to go back.");
             for (int i = 0; i < Accessories.Count; i++)
             {   
                 if (i == Arrow)
@@ -220,7 +219,7 @@ public class ViewMerchandise : ReservationMerchandise
                 }
             }
 
-            KeyControlViewMerch();
+            KeyControlViewMerch(Accessories);
         } 
     }
 
@@ -235,7 +234,7 @@ public class ViewMerchandise : ReservationMerchandise
             Console.WriteLine($"                {Menu[3]}");
             Console.WriteLine("╰──────────────────────────────────────┄ °❀");
 
-            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'Backspace' to go back.");
+            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'BACKSPACE' to go back.");
             for (int i = 0; i < Stickers.Count; i++)
             {   
                 if (i == Arrow)
@@ -253,7 +252,7 @@ public class ViewMerchandise : ReservationMerchandise
                 }
             }
 
-            KeyControlViewMerch(); 
+            KeyControlViewMerch(Stickers); 
         }
     }
 
@@ -268,7 +267,7 @@ public class ViewMerchandise : ReservationMerchandise
             Console.WriteLine($"                {Menu[4]}");
             Console.WriteLine("╰──────────────────────────────────────┄ °❀");
 
-            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'Backspace' to go back.");
+            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'BACKSPACE' to go back.");
             for (int i = 0; i < Mugs.Count; i++)
             {   
                 if (i == Arrow)
@@ -285,7 +284,7 @@ public class ViewMerchandise : ReservationMerchandise
                 Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            KeyControlViewMerch(); 
+            KeyControlViewMerch(Mugs); 
         }
     }
 
@@ -300,7 +299,7 @@ public class ViewMerchandise : ReservationMerchandise
             Console.WriteLine($"                {Menu[5]}");
             Console.WriteLine("╰──────────────────────────────────────┄ °❀");
 
-            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'Backspace' to go back.");
+            Tools.ColorYellowMessage("DISCLAIMER: PRESS 'BACKSPACE' to go back.");
             for (int i = 0; i < Posters.Count; i++)
             {   
                 if (i == Arrow)
@@ -318,11 +317,11 @@ public class ViewMerchandise : ReservationMerchandise
                 }
             }
 
-            KeyControlViewMerch(); 
+            KeyControlViewMerch(Posters); 
         }
     }
 
-    private static void KeyControlViewMerch()
+    private static void KeyControlViewMerch(List<MerchandiseModel> example)
     {
         Key = Console.ReadKey(); 
 
@@ -332,14 +331,14 @@ public class ViewMerchandise : ReservationMerchandise
 
                 if (Arrow < 0)
                 {
-                    Arrow = Posters.Count - 1;
+                    Arrow = example.Count - 1;
                 }
             }
         else if (Key.Key == ConsoleKey.DownArrow)
         {
             Arrow++;
 
-            if (Arrow >= Posters.Count)
+            if (Arrow >= example.Count)
             {
                 Arrow = 0;
             }
