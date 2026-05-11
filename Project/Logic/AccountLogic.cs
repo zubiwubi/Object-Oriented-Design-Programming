@@ -141,6 +141,28 @@ public class AccountLogic
         return true;
     }
 
+    public bool IsPhoneNumberValid(string PhoneNumber)
+    {
+        if (!PhoneNumber.StartsWith("06"))
+        {
+            return false; 
+        }
+
+        if (PhoneNumber.Length < 8 || PhoneNumber.Length > 10)
+        {
+            return false; 
+        }
+
+        foreach (char x in PhoneNumber)
+        {
+            if (char.IsLetter(x) || char.IsSymbol(x))
+            {
+                return false; 
+            }
+        }
+        return true; 
+    }
+
     public void DeleteAccount(AccountModel account)
     {
         _access.Delete(account);

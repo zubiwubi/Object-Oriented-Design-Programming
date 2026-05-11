@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+using Spectre.Console;
 public class Tools : Account
 {
     public static void ErrorMessage(string message)
@@ -31,6 +33,39 @@ public class Tools : Account
             Thread.Sleep(delay);
         }
         Console.WriteLine();
+    }
+
+    //---------------EXTRAS-------------------------
+
+    public static void ProgressBar()
+    {
+        AnsiConsole.Progress().Start(x =>
+        {
+            var progress = x.AddTask("Loading page..."); 
+
+            while (!x.IsFinished)
+            {
+                progress.Increment(5); 
+                Thread.Sleep(50); 
+            }
+        });
+    }
+    public static void Timer()
+    {
+        for (int i = 5; i >= 0; i--)
+        {
+            string message = $"\r{i} seconds left";
+            Console.Write(message, Console.ForegroundColor = ConsoleColor.DarkBlue); 
+            Console.ResetColor(); 
+            Thread.Sleep(1000);
+
+            if (i == 0)
+            {
+                Program.Main();
+            }
+        }
+        Console.WriteLine(); 
+        
     }
 
     ///////////INVALID PRINT STATEMENTS/////////////////
@@ -115,5 +150,28 @@ public class Tools : Account
             ErrorMessage("Password must consist of atleast  1 upperletter 🫷🥺🫸   StAwP");
             return;
         }   
+    }
+    public static void InvalidPhoneNumberPrint(string PhoneNumber)
+    {
+        if (!PhoneNumber.StartsWith("06") && !string.IsNullOrEmpty(PhoneNumber) && !string.IsNullOrWhiteSpace(PhoneNumber))
+        {
+            ErrorMessage("Phone number must start with 06");
+            return; 
+        }
+        
+        if (PhoneNumber.Length < 8 || PhoneNumber.Length > 10)
+        {
+            ErrorMessage("Phone number can't be less then 8 characters and not longer then 10");
+            return; 
+        }
+
+        foreach (char x in PhoneNumber)
+        {
+            if (char.IsLetter(x) || char.IsSymbol(x))
+            {
+                ErrorMessage("Phone number can't contain a letter and/or symbol");
+                return; 
+            }
+        }
     }
 }
