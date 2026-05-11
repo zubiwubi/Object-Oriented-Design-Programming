@@ -7,5 +7,10 @@ public class DrinkModel : ConsumableModel
     {
         Size = size;
     }
+    public DrinkModel(string name, string description, string size, double price, string type, long islounge)
+        : base(name, description, price, type, islounge)
+    {
+        Size = size;
+    }
 
 }
