@@ -86,11 +86,21 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                 {
                     if (snackId == snack.Id)
                     {
-                        AnsiConsole.MarkupLine($"[black on white] CURRENT ORDER:\n €{snack.Price.ToString("0.00")} {snack.Name} [/]\n Please press anything to confirm.");
+                        AnsiConsole.MarkupLine($"[black on white] CURRENT ORDER:\n €{snack.Price.ToString("0.00")} {snack.Name} [/]\n");
+                        RenderDrinkMenu(movieId, seatNum, callerType, snackId);
                     }
                 }
-                Console.ReadKey();
-                RenderDrinkMenu(movieId, seatNum, callerType, snackId);
+                // Console.WriteLine(" Please press anything to confirm.\n Press BACKSPACE to re-select your items.");
+                // var confirmKey = Console.ReadKey();
+
+                // if (confirmKey.Key == ConsoleKey.Backspace)
+                // {
+                //     return;
+                // }
+                // else
+                // {
+                //     RenderDrinkMenu(movieId, seatNum, callerType, snackId);
+                // }
             }
         }
     }
@@ -136,15 +146,7 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                 var rowContent = new[] { $"{drink.Id}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Size}", $"{drink.Type}" };
                 var rowContentSelected = new[] { $"[bold]{drink.Id}[/]", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"{drink.Size}", $"[bold]{drink.Type}[/]" };
  
-                if (isSelected)
-                {
-                    drinkTable.AddRow(rowContentSelected);
-                }
- 
-                else
-                {
-                    drinkTable.AddRow(rowContent);
-                }
+                drinkTable.AddRow(isSelected ? rowContentSelected : rowContent);
             }
  
             AnsiConsole.Write(drinkTable); // --------------- END OF DRINK TABLE DRAWING ------------------
@@ -179,13 +181,22 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                         AnsiConsole.MarkupLine("[black on gray] SELECTED FOOD ITEMS  \n[/]" +
                             $"[black on white]\n ------------------------------- \n  ● {snackName} | € {snackPrice:F2}  [/]\n" +
                             $"[black on white]  ● {drink.Name} ({drink.Size}) | € {drink.Price:F2}  [/]" +
-                            $"[black on white]\n ============================== \n[bold] TOTAL: € {total:F2}  [/][/]\n\n" +
-                            " Please press anything to confirm (this will add the selected items to the current order and send you to the payment screen).\n");                    
+                            $"[black on white]\n ============================== \n[bold] TOTAL: € {total:F2}  [/][/]\n\n");
                     }
                 }
-                Console.ReadKey();
-                Payment.Order(movieId, seatNum, callerType);
-                // Payment.Order(movieId, seatNum, callerType, snackId, drinkId); ORDER CURRENTLY TAKES 3 ARGUMENTS
+
+                Console.WriteLine(" Please press anything to confirm (this will add the selected items to the current order and send you to the payment screen).\n Press BACKSPACE to re-select your items.\n");
+                var confirmKey = Console.ReadKey();
+
+                if (confirmKey.Key == ConsoleKey.Backspace)
+                {
+                    return;
+                }
+                else
+                {
+                    Payment.Order(movieId, seatNum, callerType);
+                    // Payment.Order(movieId, seatNum, callerType, snackId, drinkId); ORDER CURRENTLY TAKES 3 ARGUMENTS
+                }
             }
         }
     }
