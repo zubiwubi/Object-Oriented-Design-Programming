@@ -5,7 +5,5 @@
         Homepage homepage = new();
 
         homepage.Render();
-
-        //ReservationFoodMenu.Render();
     }
 }
