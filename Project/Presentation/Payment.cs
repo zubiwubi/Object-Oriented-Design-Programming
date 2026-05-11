@@ -65,7 +65,19 @@ public class Payment
 
                 if (caller == "Guest")
                 {
-                    PaymentLogic.SaveOrder(null, movieId, seat);
+                    string? emailForTicket;
+                    while (true)
+                    {
+                        Console.WriteLine("Please enter your email to receive your ticket:");
+                        emailForTicket = Console.ReadLine()?.Trim();
+
+                        if (accountLogic.IsEmailValid(emailForTicket))
+                            break;
+
+                        Console.WriteLine("Please enter a correct email.");
+                    }
+                    int orderId = PaymentLogic.SaveOrder(null, movieId, seat);
+                    QRCodeGen.QrCodeGeneration(emailForTicket, orderId, movieId, seat);
                     Console.WriteLine("\nPress any key to return to the main menu...");
                     Console.ReadKey();
                     Display.ClearScreen();
@@ -73,8 +85,8 @@ public class Payment
                 }
                 else
                 {
-                    PaymentLogic.SaveOrder(AccountLogic.CurrentAccount.Id, movieId, seat);
-                    //QRCodeGen.QrCodeGeneration(AccountLogic.CurrentAccount.EmailAddress, movieId, seat, null, null);
+                    int orderId = PaymentLogic.SaveOrder(AccountLogic.CurrentAccount.Id, movieId, seat);
+                    QRCodeGen.QrCodeGeneration(AccountLogic.CurrentAccount.EmailAddress, orderId, movieId, seat);
                     Console.WriteLine("\nPress any key to return to the main menu...");
                     Console.ReadKey();
                     Display.ClearScreen();

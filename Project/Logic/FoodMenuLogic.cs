@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 public class FoodMenuLogic
 {
     private static readonly FoodAccess _foodAccess = new();
