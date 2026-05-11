@@ -170,9 +170,10 @@ public class DrawMap
             case ConsoleKey.Enter:
                 int seatNum = int.Parse($"{currentCol}{currentRow}");
                 Console.WriteLine($"Your chosen seat is:\nColumn: {currentCol} Row: {currentRow}");
-                Console.WriteLine($"Press enter to continue to payment");
+                Console.WriteLine($"Press enter to continue");
                 Console.ReadKey();
-                Payment.Order(ReservationMovie.ChosenMovieId, seatNum, callerType);
+                ReservationFoodMenu.FoodOrderChecker(ReservationMovie.ChosenMovieId, seatNum, callerType); // REDIRECT TO FOOD ORDER
+                //Payment.Order(ReservationMovie.ChosenMovieId, seatNum, callerType);
                 return true;
 
             // exit

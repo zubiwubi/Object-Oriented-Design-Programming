@@ -1,14 +1,17 @@
-public abstract class MenuOptionSelect
+public class CustomMessageWithMenuOS
 {
-    protected abstract List<string> Options { get; set; }
+    protected static List<string> Options { get; set; }
+    protected static string Message { get; set; } // custom message or question to display
 
-    public static int MenuRenderer(List<string> options)
+    public static int MenuRenderer(List<string> options, string message)
     {
         int selectedOption = 0;
 
         while (true)
         {
             Display.ClearScreen();
+            Console.WriteLine(message);
+            Console.WriteLine();
 
             for (int i = 0; i < options.Count; i++)
             {
@@ -41,6 +44,7 @@ public abstract class MenuOptionSelect
             else if (input.Key == ConsoleKey.Enter)
             {
                 Display.ClearScreen();
+                Console.WriteLine(Message);
 
                 for (int i = 0; i < options.Count; i++)
                 {
