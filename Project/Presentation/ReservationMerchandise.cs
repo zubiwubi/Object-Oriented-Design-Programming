@@ -1,7 +1,6 @@
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
-using Spectre.Console;
-public class ReservationMerchandise : MakeAccount, IPage
+public class ReservationMerchandise : MakeAccount
 { 
     public static MerchandiseLogic merchandiseLogic = new(); 
     public static List<MerchandiseModel> Hoodies = merchandiseLogic.GetHoodies();
@@ -11,7 +10,6 @@ public class ReservationMerchandise : MakeAccount, IPage
     public static List<MerchandiseModel> Stickers = merchandiseLogic.GetStickers(); 
     public static List<MerchandiseModel> Posters = merchandiseLogic.GetPosters(); 
     public static Dictionary<string, int> OrderedMerch = new(); 
-    public static ConsoleKeyInfo Key { get; set; }
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
