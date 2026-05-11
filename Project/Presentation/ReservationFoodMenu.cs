@@ -1,64 +1,100 @@
-public class ReservationFoodMenu
+public class ReservationFoodMenu : CustomMessageWithMenuOS
 {
-    public static List<FoodModel> allFoods = FoodMenuLogic.GetAllFoods();
-    public static List<DrinkModel> allDrinks = FoodMenuLogic.GetAllDrinks();
+    protected static List<string> Options { get; set; } = new List<string>() { "VIEW SNACKS", "CONTINUE TO PAYMENT WITHOUT SNACKS" };
+    protected static string Message { get; set; } = "";
+    
+    // Filtered Lists with all the Movie Snacks & Drinks
+    public static List<FoodModel> allSnacks{ get; set; } = FoodMenuLogic.GetAllFoods().Where(f => f.IsLounge == 0).ToList();
+    public static List<DrinkModel> allMovieDrinks { get; set; } = FoodMenuLogic.GetAllDrinks().Where(d => d.IsLounge == 0).ToList();
 
-    // filteren
-
-    //public static List<DrinkModel> allLoungeDrinks = [];
-    public static List<FoodModel> allLoungeFood = [];
-    //public static List<T> allLoungeConsumables = [];
-
-    public static void Render()
+    public static void FoodOrderChecker(int movieId, int seatNum, string callerType) // Confirm First
     {
-        FilterLoungeFood();
+        Console.Clear();
+        
+        Message = $"\tCurrent order: Movie #{movieId} | Seat #{seatNum}\n\tAre you interested in adding anything to eat to your order? (This will open the snack menu)";
 
-        foreach (var food in allLoungeFood)
+        while (true)
         {
-            Console.WriteLine(food.Name);
+            int selectedOption = MenuRenderer(Options, Message);
+
+            switch (selectedOption)
+            {
+                case 0: // ------------ VIEW SNACKS -------------
+                    FoodOrder();
+                    Console.ReadKey();
+                    break;
+                case 1: // ------------ CONTINUE WITHOUT SNACKS -------------
+                    Payment.Order(movieId, seatNum, callerType); // REDIRECT TO PAYMENT SCREEN
+                    break;
+            }
         }
     }
 
-    public static void FilterLoungeFood()
+    // public static void Render<T>(List<T> Cart) where T: ConsumableModel // Collect the IDs
+    // {
+        
+    // }
+    public static void FoodOrder() // send foodid 
     {
-        foreach (var food in allFoods)
+        Display.ClearScreen();
+
+        Console.WriteLine($"\tFOOD MENU");
+
+        foreach (var food in allSnacks)
         {
-            if (food.IsLounge == 1) // if true
+            Console.WriteLine($"{food.Id} || {food.Name}");
+        }
+
+        Console.WriteLine($"\tDRINK MENU");
+
+        foreach (var drink in allMovieDrinks)
+        {
+            Console.WriteLine($"{drink.Id} || {drink.Name}");
+        }
+
+        Console.WriteLine("Please select the ID for the food you want to order.");
+        long foodId = Convert.ToInt64(Console.ReadLine());
+
+        Console.WriteLine("Please select the ID for the drink you want to order.");
+        long drinkId = Convert.ToInt64(Console.ReadLine());
+
+        Display.ClearScreen();
+
+        Console.WriteLine($"Confirm your order. Your order is: ");
+
+        foreach (var drink in allMovieDrinks)
+        {
+            if (drinkId == drink.Id)
             {
-                allLoungeFood.Add(food);
+                Console.WriteLine($"{drink.Name} ({drink.Size}) || {drink.Price}");
             }
         }
+
+        foreach (var food in allSnacks)
+        {
+            if (foodId == food.Id)
+            {
+                Console.WriteLine($"{food.Name} || {food.Price}");
+            }
+        }
+
+        Console.WriteLine($"Is that correct?");
+        string input = Console.ReadLine();
+
+        if (input == "y")
+        {
+            Console.WriteLine("Continuing to payment screen.");
+        }
+        else
+        {
+            Console.WriteLine("Ok let's re-order");
+        }
+
+        //Payment.Order(movieId, seatNum, callerType, foodId, drinkId);
     }
 }
 
 
-    
-
-    // public static List<DrinkModel> GetAllDrinksbyType(bool isLounge)
-    // {
-    //     List<DrinkModel> loungeDrink = new();
-
-    //     foreach (var drink in _drinkAccess.GetAll())
-    //     {
-    //         if (drink.IsLoungeDrink == isLoungeDrink)
-    //         {
-    //             loungeDrink.Add(drink);
-    //         }
-    //     }
-
-    //     return loungeDrink;
-    // }
-
-    // public static void AddVeganDescription<T>(List<T> Consumables) where T: ConsumableModel
-    // {
-    //     foreach (var item in Consumables)
-    //     {
-    //         if (item.isLounge == 1)
-    //         {
-    //             SnackList.Add;
-    //         }
-    //     }
-    // }
 
     // public void ShowMenu(bool isSnackMenu)
     // {
@@ -90,7 +126,7 @@ public class ReservationFoodMenu
     //             // Console.WriteLine($"\n ---- {menuType} ----\n");
                 
         
-    //             // VALIDATION LOOP // check otherwise send to payment
+    //             // VALIDATION LOOP // check otherwise send to payment  
     //             bool confirmValid = false;
 
     //             while (!confirmValid)
