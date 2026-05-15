@@ -1,38 +1,40 @@
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 public class ReservationMerchandise : MakeAccount
-{ 
-    public static MerchandiseLogic merchandiseLogic = new(); 
+{
+    public static MerchandiseLogic merchandiseLogic = new();
     public static List<MerchandiseModel> Hoodies = merchandiseLogic.GetHoodies();
     public static List<MerchandiseModel> TShirts = merchandiseLogic.GetTshirts();
-    public static List<MerchandiseModel> Accessories = merchandiseLogic.GetAcccesories(); 
-    public static List<MerchandiseModel> Mugs = merchandiseLogic.GetMugs(); 
-    public static List<MerchandiseModel> Stickers = merchandiseLogic.GetStickers(); 
-    public static List<MerchandiseModel> Posters = merchandiseLogic.GetPosters(); 
-    public static Dictionary<string, int> OrderedMerch = new(); 
+    public static List<MerchandiseModel> Accessories = merchandiseLogic.GetAcccesories();
+    public static List<MerchandiseModel> Mugs = merchandiseLogic.GetMugs();
+    public static List<MerchandiseModel> Stickers = merchandiseLogic.GetStickers();
+    public static List<MerchandiseModel> Posters = merchandiseLogic.GetPosters();
+    protected static OrderedExtrasLogic orderedExtrasLogic = new();
+    public static Dictionary<string, int> OrderedMerch = new();
+    public static Dictionary<long, int> OrderedMerchById = new();
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> Merchandise {get; set;} = new() {"Hoodies", "Tshirts", "Accessories", "Stickers", "Mugs", "Posters"};
-    public static List<string> Menu {get; set;} = new() { "Yes", "No"}; 
-    public static void CreateMenu()
+    public static List<string> Merchandise { get; set; } = new() { "Hoodies", "Tshirts", "Accessories", "Stickers", "Mugs", "Posters" };
+    public static List<string> Menu { get; set; } = new() { "Yes", "No" };
+    public static void CreateMenu(int movieId, int seat, string caller, long? foodId = null, long? drinkId = null)
     {
-       
-        IsOptionSelected = false; 
+
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             Console.WriteLine("       ╔═ ❀° ════════════════════════════════════════╗");
             Tools.ColorMagentaMessage("            Would you like to order some merch?");
             Console.WriteLine("       ╚════════════════════════════════════════ ❀° ═╝");
-            Console.WriteLine(); 
+            Console.WriteLine();
 
             for (int i = 0; i < Menu.Count; i++)
             {
                 if (i == Arrow)
                 {
-                    Console.Write("➥ "); 
+                    Console.Write("➥ ");
                     Tools.ColorMagentaMessage($" [{i + 1}] {Menu[i]}");
                 }
                 else
@@ -42,7 +44,7 @@ public class ReservationMerchandise : MakeAccount
             }
 
 
-            Key = Console.ReadKey(); 
+            Key = Console.ReadKey();
 
             if (Key.Key == ConsoleKey.UpArrow)
             {
@@ -71,24 +73,41 @@ public class ReservationMerchandise : MakeAccount
 
         switch (MenuChoice)
         {
-            case 0: 
-                Tools.ProgressBar(); 
-                SelectHeaderOrder(); 
-                break; 
-            case 1: 
+            case 0:
+                Tools.ProgressBar();
+                SelectHeaderOrder(movieId, seat, caller, foodId, drinkId);
+                break;
+            case 1:
                 Tools.ColorMagentaMessage("You'll be redirected to the payment page :) ");
-                Tools.ProgressBar(); 
-                
-                //Payment.Order(); vragen
-                break; 
+                Tools.ProgressBar();
+                if (foodId == 0 && drinkId == 0)
+                {
+                    Payment.Order(movieId, seat, caller);
+                }
+                // else if (foodId == 0)
+                // {
+                //     int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, drinkId, 1, null, null);
+                //     Payment.Order(movieId, seat, caller, orderedExtrasId);
+                // }
+                // else if (drinkId == 0)
+                // {
+                //     int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, null, null, null, null);
+                //     Payment.Order(movieId, seat, caller, orderedExtrasId);
+                // }
+                else
+                {
+                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, drinkId, 1, null, null);
+                    Payment.Order(movieId, seat, caller, orderedExtrasId);
+                }
+                break;
         }
     }
-    public static void SelectHeaderOrder()
+    public static void SelectHeaderOrder(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
-        IsOptionSelected = false; 
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
             Tools.ColorYellowMessage("DISCLAIMER: press 'BACKSPACE' to go back.");
 
             for (int i = 0; i < Merchandise.Count; i++)
@@ -105,11 +124,11 @@ public class ReservationMerchandise : MakeAccount
                     Console.WriteLine("❀° ┄───────────────────────────────────╮");
                     Console.WriteLine($"                   [{i + 1}] {Merchandise[i]}");
                     Console.WriteLine("╰──────────────────────────────────────┄ °❀");
-                    
+
                 }
             }
 
-            Key = Console.ReadKey(); 
+            Key = Console.ReadKey();
 
 
             if (Key.Key == ConsoleKey.UpArrow)
@@ -137,46 +156,46 @@ public class ReservationMerchandise : MakeAccount
             }
             else if (Key.Key == ConsoleKey.Backspace)
             {
-                Tools.ProgressBar(); 
-                Program.Main(); 
+                Tools.ProgressBar();
+                Program.Main();
             }
         }
 
         switch (MenuChoice)
         {
-            case 0: 
-                Tools.ProgressBar(); 
-                OrderHoodies(); 
-                break; 
-            case 1: 
-                Tools.ProgressBar(); 
-                OrderTshirts();
-                break; 
-            case 2: 
-                Tools.ProgressBar(); 
-                OrderAccessories(); 
-                break; 
-            case 3: 
-                Tools.ProgressBar(); 
-                OrderStickers(); 
-                break; 
-            case 4: 
-                Tools.ProgressBar(); 
-                OrderMugs(); 
-                break; 
-            case 5: 
-                Tools.ProgressBar(); 
-                OrderPosters(); 
-                break; 
-        } 
+            case 0:
+                Tools.ProgressBar();
+                OrderHoodies(movieId, seat, caller, foodId, drinkId);
+                break;
+            case 1:
+                Tools.ProgressBar();
+                OrderTshirts(movieId, seat, caller, foodId, drinkId);
+                break;
+            case 2:
+                Tools.ProgressBar();
+                OrderAccessories(movieId, seat, caller, foodId, drinkId);
+                break;
+            case 3:
+                Tools.ProgressBar();
+                OrderStickers(movieId, seat, caller, foodId, drinkId);
+                break;
+            case 4:
+                Tools.ProgressBar();
+                OrderMugs(movieId, seat, caller, foodId, drinkId);
+                break;
+            case 5:
+                Tools.ProgressBar();
+                OrderPosters(movieId, seat, caller, foodId, drinkId);
+                break;
+        }
     }
- 
-    public static void OrderHoodies()
+
+    public static void OrderHoodies(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
-        IsOptionSelected = false; 
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             Console.WriteLine("❀° ┄───────────────────────────────────╮");
             Console.WriteLine($"                {Merchandise[0]}");
@@ -186,7 +205,7 @@ public class ReservationMerchandise : MakeAccount
             Tools.ColorYellowMessage("press 'ENTER' to add an item to your cart.");
 
             for (int i = 0; i < Hoodies.Count; i++)
-            {   
+            {
                 if (i == Arrow)
                 {
                     Console.WriteLine("❀° ┄───────────────────────────────────────────────────────────────────────────────────╮");
@@ -198,19 +217,19 @@ public class ReservationMerchandise : MakeAccount
                 {
                     Console.WriteLine("❀° ┄───────────────────────────────────────────────────────────────────────────────────╮");
                     Console.WriteLine($" [{i + 1}] {Hoodies[i].Name} | €{Hoodies[i].Price} | {Hoodies[i].Type} | {Hoodies[i].Size} | {Hoodies[i].Description} ");
-                Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
+                    Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(Hoodies); 
+            OrderControlKey(Hoodies, movieId, seat, caller, foodId, drinkId);
         }
     }
 
-    public static void OrderTshirts()
+    public static void OrderTshirts(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
-        IsOptionSelected = false; 
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             Console.WriteLine("❀° ┄───────────────────────────────────╮");
             Console.WriteLine($"                {Merchandise[1]}");
@@ -220,7 +239,7 @@ public class ReservationMerchandise : MakeAccount
             Tools.ColorYellowMessage("press 'ENTER' to add an item to your cart.");
 
             for (int i = 0; i < TShirts.Count; i++)
-            {   
+            {
                 if (i == Arrow)
                 {
                     Console.WriteLine("❀° ┄───────────────────────────────────────────────────────────────────────────────────╮");
@@ -232,19 +251,19 @@ public class ReservationMerchandise : MakeAccount
                 {
                     Console.WriteLine("❀° ┄───────────────────────────────────────────────────────────────────────────────────╮");
                     Console.WriteLine($" [{i + 1}] {TShirts[i].Name} | €{TShirts[i].Price} | {TShirts[i].Type} | {TShirts[i].Size} | {TShirts[i].Description} ");
-                Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
+                    Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(TShirts); 
+            OrderControlKey(TShirts, movieId, seat, caller, foodId, drinkId);
         }
-        
+
     }
-    public static void OrderAccessories()
+    public static void OrderAccessories(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
-        IsOptionSelected = false; 
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             Console.WriteLine("❀° ┄───────────────────────────────────╮");
             Console.WriteLine($"                {Merchandise[2]}");
@@ -254,7 +273,7 @@ public class ReservationMerchandise : MakeAccount
             Tools.ColorYellowMessage("press 'ENTER' to add an item to your cart.");
 
             for (int i = 0; i < Accessories.Count; i++)
-            {   
+            {
                 if (i == Arrow)
                 {
                     Console.WriteLine("❀° ┄───────────────────────────────────────────────────────────────────────────────────╮");
@@ -266,18 +285,18 @@ public class ReservationMerchandise : MakeAccount
                 {
                     Console.WriteLine("❀° ┄───────────────────────────────────────────────────────────────────────────────────╮");
                     Console.WriteLine($" [{i + 1}] {Accessories[i].Name} | €{Accessories[i].Price} | {Accessories[i].Type} | {Accessories[i].Size} | {Accessories[i].Description} ");
-                Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
+                    Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(Accessories); 
+            OrderControlKey(Accessories, movieId, seat, caller, foodId, drinkId);
         }
     }
-    public static void OrderStickers()
+    public static void OrderStickers(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
-        IsOptionSelected = false; 
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             Console.WriteLine("❀° ┄───────────────────────────────────╮");
             Console.WriteLine($"                {Merchandise[3]}");
@@ -287,7 +306,7 @@ public class ReservationMerchandise : MakeAccount
             Tools.ColorYellowMessage("press 'ENTER' to add an item to your cart.");
 
             for (int i = 0; i < Stickers.Count; i++)
-            {   
+            {
                 if (i == Arrow)
                 {
                     Console.WriteLine("❀° ┄───────────────────────────────────────────────────────────────────────────────────╮");
@@ -302,15 +321,15 @@ public class ReservationMerchandise : MakeAccount
                     Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(Stickers); 
+            OrderControlKey(Stickers, movieId, seat, caller, foodId, drinkId);
         }
     }
-    public static void OrderMugs()
+    public static void OrderMugs(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
-        IsOptionSelected = false; 
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             Console.WriteLine("❀° ┄───────────────────────────────────╮");
             Console.WriteLine($"                {Merchandise[4]}");
@@ -320,7 +339,7 @@ public class ReservationMerchandise : MakeAccount
             Tools.ColorYellowMessage("press 'ENTER' to add an item to your cart.");
 
             for (int i = 0; i < Mugs.Count; i++)
-            {   
+            {
                 if (i == Arrow)
                 {
                     Console.WriteLine("❀° ┄───────────────────────────────────────────────────────────────────────────────────╮");
@@ -335,15 +354,15 @@ public class ReservationMerchandise : MakeAccount
                     Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(Mugs); 
+            OrderControlKey(Mugs, movieId, seat, caller, foodId, drinkId);
         }
     }
-    public static void OrderPosters()
+    public static void OrderPosters(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
-        IsOptionSelected = false; 
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             Console.WriteLine("❀° ┄───────────────────────────────────╮");
             Console.WriteLine($"                {Merchandise[5]}");
@@ -353,7 +372,7 @@ public class ReservationMerchandise : MakeAccount
             Tools.ColorYellowMessage("press 'ENTER' to add an item to your cart.");
 
             for (int i = 0; i < Posters.Count; i++)
-            {   
+            {
                 if (i == Arrow)
                 {
                     Console.WriteLine("❀° ┄───────────────────────────────────────────────────────────────────────────────────╮");
@@ -365,18 +384,18 @@ public class ReservationMerchandise : MakeAccount
                 {
                     Console.WriteLine("❀° ┄───────────────────────────────────────────────────────────────────────────────────╮");
                     Console.WriteLine($" [{i + 1}] {Posters[i].Name} | €{Posters[i].Price} | {Posters[i].Type} | {Posters[i].Size} | {Posters[i].Description} ");
-                Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
+                    Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(Posters); 
+            OrderControlKey(Posters, movieId, seat, caller, foodId, drinkId);
         }
     }
-    public static void OrderedMerchSummary()
+    public static void OrderedMerchSummary(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
         if (OrderedMerch.Count == 0)
         {
-            Tools.ErrorMessage("Your cart is empty"); 
-            return; 
+            Tools.ErrorMessage("Your cart is empty");
+            return;
         }
 
 
@@ -389,49 +408,71 @@ public class ReservationMerchandise : MakeAccount
             Console.WriteLine($"ITEM(S): {i.Key}");
             Console.WriteLine($"QUANTITY: {i.Value}x");
         }
-
-        Console.WriteLine(); 
+        Console.WriteLine();
         Tools.ColorYellowMessage("Press 'ENTER' to continue to your payment :) ");
-        Console.ReadKey(); 
+        Console.ReadKey();
+        int MerchCount = OrderedMerch.Count();
 
-        if (AccountLogic.CurrentAccount != null)
+        if (MerchCount == 1)
         {
-            Tools.ColorYellowMessage("redirecting.. this might take a moment"); 
-            Tools.Timer();
-            // payment method call 
-        }
-        else
-        {
-            Tools.ColorYellowMessage("redirecting.. this might take a moment"); 
-            Tools.Timer();
-            AskGuestInfo(); 
-            //payment method call  
-        }
-
-    }
-  
-    public static (string, string, string, string) AskGuestInfo()
-    {
-        string FirstName = AskFirstName();
-        string LastName = AskLastName();
-        string PhoneNumber = AskPhoneNumber(); 
-        string email = AskEmail(); 
-
-        return (FirstName, LastName, PhoneNumber, email); 
-    }
-    private static void OrderControlKey(List<MerchandiseModel> example)
-    {
-        Key = Console.ReadKey(); 
-
-        if (Key.Key == ConsoleKey.UpArrow)
+            if (foodId == null && drinkId == null)
             {
-                Arrow--;
-
-                if (Arrow < 0)
+                foreach (KeyValuePair<long, int> i in OrderedMerchById)
                 {
-                    Arrow = example.Count - 1;
+                    long merchId = i.Key;
+                    int merchQuant = i.Value;
+                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, null, null, merchId, merchQuant);
+                    Payment.Order(movieId, seat, caller, orderedExtrasId);
                 }
             }
+            else
+            {
+
+                foreach (KeyValuePair<long, int> i in OrderedMerchById)
+                {
+                    long merchId = i.Key;
+                    int merchQuant = i.Value;
+                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, drinkId, 1, merchId, merchQuant);
+                    Payment.Order(movieId, seat, caller, orderedExtrasId);
+                }
+            }
+        }
+        else if (MerchCount > 1)
+        {
+            int? orderedExtrasId = null;
+            int? firstOrderedExtrasId = null;
+            bool first = true;
+            foreach (KeyValuePair<long, int> i in OrderedMerchById)
+            {
+                long merchId = i.Key;
+                int merchQuant = i.Value;
+                if (first)
+                {
+                    firstOrderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, drinkId, 1, merchId, merchQuant);
+                    first = false;
+                }
+                else
+                {
+                    orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, null, null, merchId, merchQuant);
+                }
+            }
+            Payment.Order(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
+        }
+
+    }
+    private static void OrderControlKey(List<MerchandiseModel> example, int movieId, int seat, string caller, long? foodId, long? drinkId)
+    {
+        Key = Console.ReadKey();
+
+        if (Key.Key == ConsoleKey.UpArrow)
+        {
+            Arrow--;
+
+            if (Arrow < 0)
+            {
+                Arrow = example.Count - 1;
+            }
+        }
         else if (Key.Key == ConsoleKey.DownArrow)
         {
             Arrow++;
@@ -445,26 +486,26 @@ public class ReservationMerchandise : MakeAccount
         {
             //IsOptionSelected = true; 
             Tools.ProgressBar();
-            SelectHeaderOrder(); 
+            SelectHeaderOrder(movieId, seat, caller, foodId, drinkId);
         }
         else if (Key.Key == ConsoleKey.Enter)
         {
-            IsOptionSelected = true; 
-            MenuChoice = Arrow; 
+            IsOptionSelected = true;
+            MenuChoice = Arrow;
 
             int subArrow = 0;
-            int subMenuChoice = 0; 
-            bool IsSelected = false; 
-            ConsoleKeyInfo subKey; 
+            int subMenuChoice = 0;
+            bool IsSelected = false;
+            ConsoleKeyInfo subKey;
 
             while (!IsSelected)
             {
-                Display.ClearScreen(); 
-                Console.WriteLine(); 
+                Display.ClearScreen();
+                Console.WriteLine();
                 Console.WriteLine($"Currently selected item: {example[MenuChoice].Name}\nAdd to to cart?");
-                Console.WriteLine();  
+                Console.WriteLine();
 
-                for (int i = 0; i < Menu.Count; i++) 
+                for (int i = 0; i < Menu.Count; i++)
                 {
                     if (i == subArrow)
                     {
@@ -477,7 +518,7 @@ public class ReservationMerchandise : MakeAccount
                     }
 
                 }
-                subKey = Console.ReadKey(); 
+                subKey = Console.ReadKey();
                 if (subKey.Key == ConsoleKey.UpArrow)
                 {
                     subArrow--;
@@ -498,45 +539,47 @@ public class ReservationMerchandise : MakeAccount
                 }
                 else if (subKey.Key == ConsoleKey.Enter)
                 {
-                    IsSelected = true; 
-                    subMenuChoice = subArrow; 
+                    IsSelected = true;
+                    subMenuChoice = subArrow;
                 }
             }
             switch (subMenuChoice)
             {
-                case 0: 
-                    
-                    int Amount; 
+                case 0:
+
+                    int Amount;
                     do
                     {
                         Console.WriteLine($"How many of '{example[MenuChoice].Name}' would you like to order?");
-                  
+
                     } while (!int.TryParse(Console.ReadLine(), out Amount) || Amount <= 0);
 
                     if (OrderedMerch.ContainsKey(example[MenuChoice].Name))
                     {
-                        OrderedMerch[example[MenuChoice].Name] += Amount; 
+                        OrderedMerch[example[MenuChoice].Name] += Amount;
+                        OrderedMerchById[example[MenuChoice].Id] += Amount;
                     }
                     else
                     {
                         OrderedMerch.Add(example[MenuChoice].Name, Amount);
-                    } 
+                        OrderedMerchById.Add(example[MenuChoice].Id, Amount);
+                    }
                     Tools.ApproveMessage($"'{example[MenuChoice].Name}' added successfully to your cart with a quantity of {Amount}");
 
                     int subArrow2 = 0;
-                    int subMenuChoice2 = 0; 
-                    ConsoleKeyInfo subKey2; 
-                    bool IsYesOrNoSelected = false; 
+                    int subMenuChoice2 = 0;
+                    ConsoleKeyInfo subKey2;
+                    bool IsYesOrNoSelected = false;
 
 
                     while (!IsYesOrNoSelected)
                     {
-                        Display.ClearScreen(); 
+                        Display.ClearScreen();
                         Console.WriteLine("Would you like to order more items? ");
 
                         for (int i = 0; i < Menu.Count; i++)
                         {
-                            
+
                             if (i == subArrow2)
                             {
                                 Console.Write("➥ ");
@@ -548,7 +591,7 @@ public class ReservationMerchandise : MakeAccount
                             }
                         }
 
-                        subKey2 = Console.ReadKey(); 
+                        subKey2 = Console.ReadKey();
                         if (subKey2.Key == ConsoleKey.UpArrow)
                         {
                             subArrow2--;
@@ -569,28 +612,28 @@ public class ReservationMerchandise : MakeAccount
                         }
                         else if (subKey2.Key == ConsoleKey.Enter)
                         {
-                            IsYesOrNoSelected = true; 
-                            subMenuChoice2 = subArrow2; 
-                        }       
+                            IsYesOrNoSelected = true;
+                            subMenuChoice2 = subArrow2;
+                        }
                     }
 
                     switch (subMenuChoice2)
                     {
                         case 0:
-                            Tools.ProgressBar(); 
-                            SelectHeaderOrder(); 
-                            break; 
-                        case 1: 
                             Tools.ProgressBar();
-                            OrderedMerchSummary();  
-                            break; 
-                    }      
-                    break; 
+                            SelectHeaderOrder(movieId, seat, caller, foodId, drinkId);
+                            break;
+                        case 1:
+                            Tools.ProgressBar();
+                            OrderedMerchSummary(movieId, seat, caller, foodId, drinkId);
+                            break;
+                    }
+                    break;
                 case 1:
                     Tools.ErrorMessage("Cancelled order.");
-                    Tools.ProgressBar(); 
-                    SelectHeaderOrder(); 
-                    break; 
+                    Tools.ProgressBar();
+                    SelectHeaderOrder(movieId, seat, caller, foodId, drinkId);
+                    break;
             }
         }
     }

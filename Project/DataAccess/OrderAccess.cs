@@ -10,7 +10,7 @@ public class OrderAccess
 
     public int Write(OrderModel order)
     {
-        string sql = $"INSERT INTO {Table} (customerId, movieId, seatId, orderedExtrasId, date , fileNameQRCode, partySize) VALUES (@CustomerId, @MovieId, @SeatId,@OrderedExtrasId,@Date, @FileNameQRCode, @PartySize);SELECT last_insert_rowid();";
+        string sql = $"INSERT INTO {Table} (customerId, movieId, seatId, date , fileNameQRCode, partySize) VALUES (@CustomerId, @MovieId, @SeatId,@Date, @FileNameQRCode, @PartySize);SELECT last_insert_rowid();";
         return _connection.QuerySingle<int>(sql, order);
     }
 
@@ -28,7 +28,7 @@ public class OrderAccess
 
     public void Update(OrderModel order)
     {
-        string sql = $"UPDATE {Table} SET customerId = @CustomerId, movieId = @MovieId, orderedExtrasId=@OrderedExtrasId, date = @Date, fileNameQRCode = @FileNameQRCode, partySize = @PartySize WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET customerId = @CustomerId, movieId = @MovieId, date = @Date, fileNameQRCode = @FileNameQRCode, partySize = @PartySize WHERE id = @Id";
         _connection.Execute(sql, order);
     }
 
