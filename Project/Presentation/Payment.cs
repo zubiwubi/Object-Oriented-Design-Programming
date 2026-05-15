@@ -129,7 +129,7 @@ public class Payment
                             orderedExtrasLogic.Update(orderUpdate);
                         }
                     }
-                    // voor nu is het voor 1 orderedextra's -> persoon kan dus 1 soort merch bestellen maar wel 100 van die merch bv
+
                     QRCodeGen.QrCodeGeneration(AccountLogic.CurrentAccount.EmailAddress, orderId, movieId, seat);
                     Console.WriteLine("\nPress any key to return to the main menu...");
                     Console.ReadKey();
