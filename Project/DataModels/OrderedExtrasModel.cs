@@ -30,6 +30,9 @@ public class OrderedExtrasModel
         MerchandiseId = merchandiseId;
         MerchandiseQuantity = merchandiseQuantity;
     }
+    public OrderedExtrasModel()
+    {
+    }
 
 
 }
