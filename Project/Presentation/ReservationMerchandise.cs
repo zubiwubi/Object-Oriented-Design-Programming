@@ -68,6 +68,7 @@ public class ReservationMerchandise : MakeAccount
             {
                 MenuChoice = Arrow;
                 IsOptionSelected = true;
+                Arrow = 0;
             }
         }
 
@@ -153,6 +154,7 @@ public class ReservationMerchandise : MakeAccount
             {
                 MenuChoice = Arrow;
                 IsOptionSelected = true;
+                Arrow = 0;
             }
             else if (Key.Key == ConsoleKey.Backspace)
             {
