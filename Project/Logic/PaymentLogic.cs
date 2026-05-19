@@ -43,11 +43,11 @@ public class PaymentLogic
 
     }
 
-    public int SaveOrder(long? customerId, int movieId, int seatId)
+    public int SaveOrder(long? accountId, int movieId, int seatId)
     {
         string date = DateTime.Now.ToString("dd-MM-yyyy");
 
-        var order = new OrderModel(customerId, movieId, seatId, date, "null", null); //  null is voor ordered extrasID, s'null' is voor de opslaan van de qr code/de url. De NULL is voor partysize.
+        var order = new OrderModel(accountId, movieId, seatId, date, "null", null); //  null is voor ordered extrasID, s'null' is voor de opslaan van de qr code/de url. De NULL is voor partysize.
         int orderId = OAccess.Write(order);
         return orderId;
 
