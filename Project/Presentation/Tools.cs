@@ -76,13 +76,13 @@ public class Tools : Account
         {
             if (string.IsNullOrEmpty(name.Trim()))
             {
-                ErrorMessage("Name can't be empty! 🫷🥺🫸  StAwP");
+                ErrorMessage("Name can't be empty!");
                 return; 
             }
 
             if (name.Length < 2)
             {
-                ErrorMessage("Name can't be less then 2 characters! 🫷🥺🫸  StAwP");
+                ErrorMessage("Name can't be less then 2 characters!");
                 return;
             }
             
@@ -90,7 +90,7 @@ public class Tools : Account
             {
                 if (name.Contains(x))
                 {
-                    ErrorMessage("name can't contain symbols! 🫷🥺🫸  StAwP");
+                    ErrorMessage("name can't contain symbols!");
                     return;
                 }
             }
@@ -99,7 +99,7 @@ public class Tools : Account
             {
                 if (name.Contains(x.ToString()))
                 {
-                    ErrorMessage("name can't contain a number 🫷🥺🫸  StAwP");
+                    ErrorMessage("name can't contain a number");
                     return; 
                 }
             }
@@ -110,18 +110,18 @@ public class Tools : Account
     {
         if (string.IsNullOrEmpty(email.Trim()))
         {
-            ErrorMessage("E-mail can't be empty! 🫷🥺🫸   StAwP");
+            ErrorMessage("E-mail can't be empty!");
             return; 
         }
         if (!email.Contains('@'))
         {
-            ErrorMessage("E-mail must contain an '@'! 🫷🥺🫸  StAwP");
+            ErrorMessage("E-mail must contain an '@'!");
             return; 
         }
 
         if (!email.Contains('.'))
         {
-            ErrorMessage("E-mail must contain an '.'! 🫷🥺🫸  StAwP");
+            ErrorMessage("E-mail must contain an '.'!");
             return; 
         }
     }
@@ -130,24 +130,24 @@ public class Tools : Account
     {
         if (string.IsNullOrEmpty(password.Trim()))
         {
-            ErrorMessage("Password can't be empty! 🫷🥺🫸   StAwP"); 
+            ErrorMessage("Password can't be empty!"); 
             return; 
         }
         if (password.Length < 8)
         {
-            ErrorMessage("password can't be less then 8 characters! 🫷🥺🫸StAwP");
+            ErrorMessage("password can't be less then 8 characters!");
             return; 
         }
 
         if (!accountLogic.IsSymbol)
         {
-            ErrorMessage("Password must have atleast 1 symbol ( '!', '@', '#', '$', '%', '^', '&', '*', '.') 🫷🥺🫸   StAwP");
+            ErrorMessage("Password must have atleast 1 symbol ( '!', '@', '#', '$', '%', '^', '&', '*', '.')");
             return; 
         }
 
         if (!accountLogic.IsUpperLetter)
         {
-            ErrorMessage("Password must consist of atleast  1 upperletter 🫷🥺🫸   StAwP");
+            ErrorMessage("Password must consist of atleast  1 upperletter");
             return;
         }   
     }

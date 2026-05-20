@@ -12,14 +12,15 @@ public class MerchandiseAccess
         string sql = $"Select * FROM {Table}"; 
         return _connection.Query<MerchandiseModel>(sql).ToList(); 
     }
-    public void Write(MerchandiseModel merchandise)
+    public void Add(MerchandiseModel merchandise)
     {
         string sql = $"INSERT INTO {Table} (Name, Description, Price, Type, Size) VALUES (@Name, @Description, @Price, @Type, @Size)";
         _connection.Execute(sql, merchandise);
     }
     public void Update(MerchandiseModel merchandise)
     {
-        string sql = $"UPDATE ";
+        string sql = $"UPDATE {Table} SET Name = @Name, Description = @Description, Price = @Price, Type = @Type, Size = @Size,  WHERE id = @Id";
+        _connection.Execute(sql, merchandise);
     }
     public void Delete(MerchandiseModel merchandise)
     {
