@@ -168,7 +168,7 @@ public class AccountLogic
         _access.Delete(account);
     }
 
-    public void LogOff()
+    public static void LogOff()
     {
         CurrentAccount = null;
     }

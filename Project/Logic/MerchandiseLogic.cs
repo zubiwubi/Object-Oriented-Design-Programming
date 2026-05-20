@@ -2,9 +2,9 @@ public class MerchandiseLogic
 {
     private static MerchandiseAccess _access = new(); 
 
-    public static void Write(MerchandiseModel merchandise)
+    public static void Add(MerchandiseModel merchandise)
     {
-        _access.Write(merchandise); 
+        _access.Add(merchandise); 
     }
 
     public static void Update(MerchandiseModel merchandise)
