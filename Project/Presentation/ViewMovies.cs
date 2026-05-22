@@ -1,8 +1,9 @@
 public class ViewMovies
 {
+    public static SearchMoviesLogic searchMoviesLogic = new();
     public static void ViewMovie(int id)
     {
-        MovieModel movie = SearchMoviesLogic.GetByID(id);
+        MovieModel movie = searchMoviesLogic.GetByID(id);
 
         Display.ClearScreen();
         Console.WriteLine("========================================");

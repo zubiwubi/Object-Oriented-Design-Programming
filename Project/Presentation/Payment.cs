@@ -1,8 +1,11 @@
 public class Payment
 {
+    private static Homepage homepage = new();
     protected static AccountLogic accountLogic = new();
     protected static PaymentLogic paymentLogic = new();
-    public static void Order(int movieId, int seat, string caller)
+    protected static OrderedExtrasLogic orderedExtrasLogic = new();
+    public static void Order(int movieId, int seat, string caller, int? orderedExtrasId = null, int? firstOrderedExtrasId = null)
+    // null instead of 0;
     {
         Console.WriteLine("Choose a payment system?");
         Console.WriteLine("[1] IDeal/WERO");
@@ -65,15 +68,69 @@ public class Payment
 
                 if (caller == "Guest")
                 {
-                    PaymentLogic.SaveOrder(null, movieId, seat, null, null);
+                    string? emailForTicket;
+                    while (true)
+                    {
+                        Console.WriteLine("Please enter your email to receive your ticket:");
+                        emailForTicket = Console.ReadLine()?.Trim();
+
+                        if (accountLogic.IsEmailValid(emailForTicket))
+                            break;
+
+                        Console.WriteLine("Please enter a correct email.");
+                    }
+                    int orderId = paymentLogic.SaveOrder(null, movieId, seat);
+                    if (orderedExtrasId != null)
+                    {
+                        if (firstOrderedExtrasId != null)
+                        {
+                            for (int? i = firstOrderedExtrasId; i <= orderedExtrasId; i++)
+                            {
+                                OrderedExtrasModel orderUpdates = orderedExtrasLogic.GetById(i);
+                                orderUpdates.OrderId = orderId;
+                                orderedExtrasLogic.Update(orderUpdates);
+                            }
+                        }
+                        else
+                        {
+
+                            OrderedExtrasModel orderUpdate = orderedExtrasLogic.GetById(orderedExtrasId);
+                            orderUpdate.OrderId = orderId;
+                            orderedExtrasLogic.Update(orderUpdate);
+                        }
+                    }
+
+                    QRCodeGen.QrCodeGeneration(emailForTicket, orderId, movieId, seat);
                     Console.WriteLine("\nPress any key to return to the main menu...");
                     Console.ReadKey();
                     Display.ClearScreen();
+                    homepage.Render();
                     return;
                 }
                 else
                 {
-                    PaymentLogic.SaveOrder(AccountLogic.CurrentAccount.Id, movieId, seat, null, null);
+                    int orderId = paymentLogic.SaveOrder(AccountLogic.CurrentAccount.Id, movieId, seat);
+                    if (orderedExtrasId != null)
+                    {
+                        if (firstOrderedExtrasId != null)
+                        {
+                            for (int? i = firstOrderedExtrasId; i <= orderedExtrasId; i++)
+                            {
+                                OrderedExtrasModel orderUpdates = orderedExtrasLogic.GetById(i);
+                                orderUpdates.OrderId = orderId;
+                                orderedExtrasLogic.Update(orderUpdates);
+                            }
+                        }
+                        else
+                        {
+
+                            OrderedExtrasModel orderUpdate = orderedExtrasLogic.GetById(orderedExtrasId);
+                            orderUpdate.OrderId = orderId;
+                            orderedExtrasLogic.Update(orderUpdate);
+                        }
+                    }
+
+                    QRCodeGen.QrCodeGeneration(AccountLogic.CurrentAccount.EmailAddress, orderId, movieId, seat);
                     Console.WriteLine("\nPress any key to return to the main menu...");
                     Console.ReadKey();
                     Display.ClearScreen();

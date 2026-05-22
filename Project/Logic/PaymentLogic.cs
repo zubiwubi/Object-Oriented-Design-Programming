@@ -1,6 +1,6 @@
 public class PaymentLogic
 {
-    public static OrderAccess OAccess = new();
+    public OrderAccess OAccess = new();
     private static readonly Dictionary<string, int> IbanLengths = new Dictionary<string, int>
     {
         { "AL", 28 }, { "AD", 24 }, { "AT", 20 }, { "AZ", 28 },
@@ -43,12 +43,13 @@ public class PaymentLogic
 
     }
 
-    public static void SaveOrder(long? customerId, int movieId, int seatId, int? drinkId, int? foodId)
+    public int SaveOrder(long? accountId, int movieId, int seatId)
     {
         string date = DateTime.Now.ToString("dd-MM-yyyy");
 
-        var order = new OrderModel(customerId, movieId, seatId, drinkId, foodId, date, "null");
-        OAccess.Write(order);
+        var order = new OrderModel(accountId, movieId, seatId, date, "null", null); //  null is voor ordered extrasID, s'null' is voor de opslaan van de qr code/de url. De NULL is voor partysize.
+        int orderId = OAccess.Write(order);
+        return orderId;
 
     }
 }

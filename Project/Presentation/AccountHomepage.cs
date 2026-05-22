@@ -6,14 +6,14 @@ public class AccountHomePage : Account, IPage
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> Menu { get; set; } = new() { "Make a movie reservation", "manage your account", "view previous orders", "Log off", "Delete your account" };
+    public static List<string> Menu { get; set; } = new() { "Make a reservation", "Manage your account", "View previous orders", "Log off", "Delete your account" };
 
     public static void HomePage()
     {
         Display.ClearScreen();
         Console.WriteLine(@$"
 
-             _                             _                
+     _                             _                
     / \   ___ ___ ___  _   _ _ __ | |_              
    / _ \ / __/ __/ _ \| | | | '_ \| __|             
   / ___ \ (_| (_| (_) | |_| | | | | |_              

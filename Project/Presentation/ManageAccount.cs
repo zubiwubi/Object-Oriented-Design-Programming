@@ -1,12 +1,8 @@
-using System.IO.Pipelines;
-using System.Reflection.PortableExecutable;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 public class ManageAccount : Account
 {
     public static void Start()
     {
-        Display.ClearScreen(); 
+        Display.ClearScreen();
         Console.WriteLine(@$"
 
           __  __                                    
@@ -29,15 +25,15 @@ public class ManageAccount : Account
 
     private static void UpdatePassword(AccountModel currentAccount)
     {
-        string password; 
+        string password;
         do
         {
             Console.WriteLine("Enter your current password [REQUIRED FIELD]: ");
-            password = HidePassword(); 
+            password = HidePassword();
 
             if (!accountLogic.IsPasswordValid(password))
             {
-                Tools.InvalidPasswordPrint(password); 
+                Tools.InvalidPasswordPrint(password);
             }
 
         } while (!accountLogic.IsPasswordValid(password));
@@ -47,13 +43,13 @@ public class ManageAccount : Account
         do
         {
             Console.WriteLine("Enter a new password [REQUIRED FIELD]: ");
-            newPassword = HidePassword(); 
+            newPassword = HidePassword();
 
-             if (!accountLogic.IsPasswordValid(newPassword))
+            if (!accountLogic.IsPasswordValid(newPassword))
             {
-                Tools.InvalidPasswordPrint(newPassword); 
+                Tools.InvalidPasswordPrint(newPassword);
             }
-            
+
             if (password == newPassword)
             {
                 Tools.ErrorMessage("new password can't be the current password!!");
@@ -73,38 +69,38 @@ public class ManageAccount : Account
             {
                 Tools.ErrorMessage("new password can't contain your last name!!");
             }
-                
-        } while (!accountLogic.IsPasswordValid(newPassword) || password == newPassword || newPassword.Contains(currentAccount.EmailAddress) || newPassword.Contains(currentAccount.FirstName) 
-        || newPassword.Contains(currentAccount.LastName)); 
 
-        string confirmPassword; 
+        } while (!accountLogic.IsPasswordValid(newPassword) || password == newPassword || newPassword.Contains(currentAccount.EmailAddress) || newPassword.Contains(currentAccount.FirstName)
+        || newPassword.Contains(currentAccount.LastName));
+
+        string confirmPassword;
         do
         {
             Console.WriteLine("Confirm your password [REQUIRED FIELD]: ");
-            confirmPassword = HidePassword(); 
+            confirmPassword = HidePassword();
 
             if (!accountLogic.IsPasswordValid(confirmPassword))
             {
-                Tools.InvalidPasswordPrint(confirmPassword); 
+                Tools.InvalidPasswordPrint(confirmPassword);
             }
 
             if (confirmPassword != newPassword)
             {
                 Tools.ErrorMessage("Passwords does not match!! try again");
-                
-            }  
+
+            }
 
         } while (!accountLogic.IsPasswordValid(confirmPassword) || confirmPassword != newPassword);
 
         if (newPassword == confirmPassword)
         {
-            accountLogic.ChangePassword(currentAccount.Id, confirmPassword); 
-            Display.ClearScreen(); 
+            accountLogic.ChangePassword(currentAccount.Id, confirmPassword);
+            Display.ClearScreen();
 
             Tools.ApproveMessage("your password has been successfully updated!! you can log in again! ");
             Thread.Sleep(3000);
-            Program.Main(); 
+            Program.Main();
         }
 
-    }   
+    }
 }

@@ -1,34 +1,31 @@
 public class OrderModel
 {
     public long Id { get; set; }
-    public long? CustomerId { get; set; }
+    public long? AccountId { get; set; }
     public int MovieId { get; set; }
     public int SeatId { get; set; }
-    public int? DrinkId { get; set; }
-    public int? FoodId { get; set; }
     public string Date { get; set; }
     public string FileNameQRCode { get; set; }
+    public int? PartySize { get; set; }
 
-    public OrderModel(long id, long? customerId, int movieId, int seatId, int? drinkId, int? foodId, string date, string fileNameQRCode)
+    public OrderModel(long id, long? accountId, int movieId, int seatId, string date, string fileNameQRCode, int? partySize)
     {
         Id = id;
-        CustomerId = customerId;
+        AccountId = accountId;
         MovieId = movieId;
         SeatId = seatId;
-        DrinkId = drinkId;
-        FoodId = foodId;
         Date = date;
         FileNameQRCode = fileNameQRCode;
+        PartySize = partySize;
     }
-    public OrderModel(long? customerId, int movieId, int seatId, int? drinkId, int? foodId, string date, string fileNameQRCode)
+    public OrderModel(long? accountId, int movieId, int seatId, string date, string fileNameQRCode, int? partySize)
     {
-        CustomerId = customerId;
+        AccountId = accountId;
         MovieId = movieId;
         SeatId = seatId;
-        DrinkId = drinkId;
-        FoodId = foodId;
         Date = date;
         FileNameQRCode = fileNameQRCode;
+        PartySize = partySize;
     }
 }
 

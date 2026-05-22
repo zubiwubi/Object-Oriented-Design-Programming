@@ -47,7 +47,7 @@ public class MakeAccount : Account
 
     }
 
-    private string AskFirstName()
+    public static string AskFirstName()
     {
         Display.ClearScreen(); 
         string firstName; 
@@ -66,7 +66,7 @@ public class MakeAccount : Account
         return firstName;   
     }
 
-    private string AskLastName()
+    public static string AskLastName()
     {
         Display.ClearScreen();
         string LastName; 
@@ -86,7 +86,7 @@ public class MakeAccount : Account
         
     }
 
-    private string AskEmail()
+    public static string AskEmail()
     {
         Display.ClearScreen();
         string email; 
@@ -106,7 +106,29 @@ public class MakeAccount : Account
         return email;
         
     }
-    private string CreatePassword()
+    protected static string AskPhoneNumber()
+    {
+        Display.ClearScreen(); 
+        string PhoneNumber; 
+        do
+        {
+            Console.WriteLine("Enter your phone number [OPTIONAL FIELD]: ");
+            PhoneNumber = Console.ReadLine()!; 
+
+            if (!accountLogic.IsPhoneNumberValid(PhoneNumber))
+            {
+                Tools.InvalidPhoneNumberPrint(PhoneNumber);
+            }
+
+            if (string.IsNullOrEmpty(PhoneNumber) || string.IsNullOrWhiteSpace(PhoneNumber))
+            {
+                PhoneNumber = "-"; 
+            }
+        
+        } while (!accountLogic.IsPhoneNumberValid(PhoneNumber)); 
+        return PhoneNumber;
+    }
+    private static string CreatePassword()
     {
         Display.ClearScreen();
         string password; 
