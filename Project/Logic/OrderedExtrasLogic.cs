@@ -17,4 +17,16 @@ public class OrderedExtrasLogic
         return OEAccess.GetById(id);
 
     }
+
+    public OrderedExtrasModel GetByOrderId(long? orderId)
+    {
+        return OEAccess.GetByOrderId(orderId);
+
+    }
+    public List<OrderedExtrasModel> GetAllByOrderId(long? orderId)
+    {
+        return OEAccess.GetAllByOrderId(orderId);
+
+    }
+
 }

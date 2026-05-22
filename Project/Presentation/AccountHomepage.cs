@@ -74,6 +74,7 @@ public class AccountHomePage : Account, IPage
             {
                 MenuChoice = Arrow;
                 IsOptionSelected = true;
+                Arrow = 0;
             }
         }
 
@@ -90,11 +91,9 @@ public class AccountHomePage : Account, IPage
                 ManageAccount.Start();
                 break;
             case 2:
-                Tools.ErrorMessage("this function does not exist yet.");
-                Console.WriteLine("Press 'Enter' to go back");
-                Console.ReadKey();
-                Thread.Sleep(3000);
-                HomePage();
+                Console.WriteLine("You chose to see your previous orders.");
+                Thread.Sleep(1000);
+                PreviousOrders.ViewPreviousOrders();
                 break;
             case 3:
                 Console.WriteLine("Loggin off.....");
@@ -102,11 +101,11 @@ public class AccountHomePage : Account, IPage
                 LogOut();
                 Program.Main();
                 break;
-            case 4: 
-            Console.WriteLine("your being redirected....");
-                Thread.Sleep(3000); 
-                DeleteAccount(); 
-                break; 
+            case 4:
+                Console.WriteLine("your being redirected....");
+                Thread.Sleep(3000);
+                DeleteAccount();
+                break;
         }
     }
 }

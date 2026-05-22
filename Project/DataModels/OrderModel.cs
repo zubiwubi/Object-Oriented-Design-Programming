@@ -27,5 +27,6 @@ public class OrderModel
         FileNameQRCode = fileNameQRCode;
         PartySize = partySize;
     }
+    public OrderModel() { }
 }
 

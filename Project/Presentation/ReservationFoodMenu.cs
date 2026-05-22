@@ -4,8 +4,8 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
 {
     protected static List<string> Options { get; set; } = new List<string>() { "VIEW SNACKS", "CONTINUE TO PAYMENT WITHOUT SNACKS" };
     protected static string Message { get; set; } = "";
-    public static List<FoodModel> allSnacks { get; set; } = FoodMenuLogic.GetAllFoods().Where(f => f.IsLounge == 0).ToList();
-    public static List<DrinkModel> allMovieDrinks { get; set; } = FoodMenuLogic.GetAllDrinks().Where(d => d.IsLounge == 0).ToList();
+    public static List<FoodModel> allSnacks { get; set; } = FoodLogic.GetAllFoods().Where(f => f.IsLounge == 0).ToList();
+    public static List<DrinkModel> allMovieDrinks { get; set; } = DrinkLogic.GetAllDrinks().Where(d => d.IsLounge == 0).ToList();
 
     public static void FoodOrderChecker(int movieId, int seatNum, string callerType) // Confirm First
     {
@@ -90,17 +90,6 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                         RenderDrinkMenu(movieId, seatNum, callerType, snackId);
                     }
                 }
-                // Console.WriteLine(" Please press anything to confirm.\n Press BACKSPACE to re-select your items.");
-                // var confirmKey = Console.ReadKey();
-
-                // if (confirmKey.Key == ConsoleKey.Backspace)
-                // {
-                //     return;
-                // }
-                // else
-                // {
-                //     RenderDrinkMenu(movieId, seatNum, callerType, snackId);
-                // }
             }
         }
     }
@@ -195,8 +184,6 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                 else
                 {
                     ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, snackId, drinkId);
-                    // Wouden we niet dat een persoon meer dan 1 drank/snack kon bestellen? 
-                    // gebruiker wordt geforceerd om beide te kiezen, wat als die alleen een drankje wil? of alleen een snack? 
 
                 }
             }

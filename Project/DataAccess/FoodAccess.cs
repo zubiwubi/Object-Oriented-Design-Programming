@@ -20,7 +20,7 @@ public class FoodAccess
         _connection.Execute(sql, food);
     }
 
-    public FoodModel? GetById(int id)
+    public FoodModel? GetById(long? id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<FoodModel>(sql, new { Id = id });
