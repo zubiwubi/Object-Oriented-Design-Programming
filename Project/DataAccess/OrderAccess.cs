@@ -14,15 +14,15 @@ public class OrderAccess
         return _connection.QuerySingle<int>(sql, order);
     }
 
-    public OrderModel? GetById(int id)
+    public OrderModel? GetById(long id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<OrderModel>(sql, new { Id = id });
     }
 
-    public List<OrderModel> GetByCustomerId(long accountId)
+    public List<OrderModel> GetByAccountId(long accountId)
     {
-        string sql = $"SELECT * FROM \"{Table}\" WHERE accountId = @AccountId";
+        string sql = $"SELECT * FROM {Table} WHERE accountId = @AccountId";
         return _connection.Query<OrderModel>(sql, new { AccountId = accountId }).AsList();
     }
 

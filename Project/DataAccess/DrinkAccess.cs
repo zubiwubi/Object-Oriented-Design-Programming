@@ -20,7 +20,7 @@ public class DrinkAccess
         _connection.Execute(sql, drink);
     }
 
-    public DrinkModel? GetById(int id)
+    public DrinkModel? GetById(long? id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<DrinkModel>(sql, new { Id = id });
