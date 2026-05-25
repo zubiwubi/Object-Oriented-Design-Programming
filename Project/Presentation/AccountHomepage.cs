@@ -74,7 +74,6 @@ public class AccountHomePage : Account, IPage
             {
                 MenuChoice = Arrow;
                 IsOptionSelected = true;
-                Arrow = 0;
             }
         }
 
@@ -82,30 +81,32 @@ public class AccountHomePage : Account, IPage
         {
             case 0:
                 Console.WriteLine("you chose to make a reservation.");
-                Thread.Sleep(2000);
+                Tools.ProgressBar();
                 ReservationMovie.Reserve();
                 break;
             case 1:
                 Console.WriteLine("you chose to manage your account.");
-                Thread.Sleep(3000);
+                Tools.ProgressBar();
                 ManageAccount.Start();
                 break;
             case 2:
-                Console.WriteLine("You chose to see your previous orders.");
-                Thread.Sleep(1000);
-                PreviousOrders.ViewPreviousOrders();
+                Tools.ErrorMessage("this function does not exist yet.");
+                Tools.ColorYellowMessage("Press 'ENTER' to go back");
+                Console.ReadKey();
+                Tools.ProgressBar();
+                HomePage();
                 break;
             case 3:
                 Console.WriteLine("Loggin off.....");
-                Thread.Sleep(3000);
+                Tools.ProgressBar();
                 LogOut();
                 Program.Main();
                 break;
-            case 4:
-                Console.WriteLine("your being redirected....");
-                Thread.Sleep(3000);
-                DeleteAccount();
-                break;
+            case 4: 
+            Console.WriteLine("your being redirected....");
+                Tools.ProgressBar();
+                DeleteAccount(); 
+                break; 
         }
     }
 }
