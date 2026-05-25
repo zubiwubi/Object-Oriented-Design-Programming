@@ -1,13 +1,13 @@
-public class AdminHomePage : IPage 
+public class AdminHomePage : IPage
 {
     public static ConsoleKeyInfo Key { get; set; }
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> Menu {get; set;} = new() {"Manage food/drink menu" , "Manage seat price" , "Manage merchandise" , "Manage movies" , "Data overview" , "Log off" };
+    public static List<string> Menu { get; set; } = new() { "Manage food/drink menu", "Manage seat price", "Manage merchandise", "Manage movies", "Data overview", "Log off" };
     public static void Homepage()
     {
-        Display.ClearScreen(); 
+        Display.ClearScreen();
         Console.WriteLine(@$"
 
      _       _           _                          
@@ -40,7 +40,7 @@ public class AdminHomePage : IPage
             if (Key.Key == ConsoleKey.Backspace)
             {
                 Tools.ProgressBar();
-                Program.Main(); 
+                Program.Main();
             }
         }
     }
@@ -98,38 +98,37 @@ public class AdminHomePage : IPage
             case 0:
                 // manage food/drink menu method call
                 Tools.ErrorMessage("this function does not exist yet.");
-                Tools.ColorYellowMessage("PRESS 'ENTER' to go back");;
-                Console.ReadKey(); 
+                Tools.ColorYellowMessage("PRESS 'ENTER' to go back"); ;
+                Console.ReadKey();
                 Homepage();
                 break;
             case 1:
-                // manage seat price method call 
-                Tools.ErrorMessage("this function does not exist yet.");
-                Tools.ColorYellowMessage("PRESS 'ENTER' to go back");;
-                Console.ReadKey(); 
-                Homepage();
+
+                Console.WriteLine("You selected to change the seat prices");
+                Thread.Sleep(1000);
+                AdminManageSeatPrice.SeatSelect();
                 break;
             case 2:
-                Tools.ProgressBar(); 
-                AdminManageMerchandise.StartPage(); 
+                Tools.ProgressBar();
+                AdminManageMerchandise.StartPage();
                 break;
             case 3: // manage movies method call 
                 Tools.ErrorMessage("this function does not exist yet.");
-                Tools.ColorYellowMessage("PRESS 'ENTER' to go back");;
+                Tools.ColorYellowMessage("PRESS 'ENTER' to go back"); ;
                 Console.ReadKey();
                 Homepage();
                 break;
             case 4: // data overview method call
                 Tools.ErrorMessage("this function does not exist yet.");
-                Tools.ColorYellowMessage("PRESS 'ENTER' to go back");;
-                Console.ReadKey(); 
+                Tools.ColorYellowMessage("PRESS 'ENTER' to go back"); ;
+                Console.ReadKey();
                 Homepage();
                 break;
-            case 5: 
-                Account.LogOut(); 
-                Tools.ProgressBar(); 
-                Program.Main(); 
+            case 5:
+                Account.LogOut();
+                Tools.ProgressBar();
+                Program.Main();
                 break;
-        } 
+        }
     }
 }

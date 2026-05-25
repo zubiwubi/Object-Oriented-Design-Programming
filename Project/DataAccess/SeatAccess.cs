@@ -5,41 +5,48 @@ public class SeatAccess
 {
     private SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private string Table = "Seat";
-
-    public void Write(SeatModel seat)
-    {
-        string sql = $"INSERT INTO {Table} (locationId, seatNumber, tier) VALUES (@LocationId, @SeatNumber, @Tier)";
-        _connection.Execute(sql, seat);
-    }
+    private string Table = "Seats";
 
 
-    public SeatModel? GetByID(int id)
+    public void UpdateSeatType(int locationId, int row, int col, string type)
     {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<SeatModel>(sql, new { Id = id });
-    }
-    public SeatModel? GetBySeatNumber(int seatNumber)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE seatNumber = @SeatNumber";
-        return _connection.QueryFirstOrDefault<SeatModel>(sql, new { seatNumber = seatNumber });
-    }
-    public List<SeatModel?> GetByTier(int tier)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE tier = @Tier";
-        return [_connection.QueryFirstOrDefault<SeatModel>(sql, new { Tier = tier })];
+        string sql = @"
+        UPDATE Seats
+        SET Type = @Type
+        WHERE LocationId = @LocationId
+        AND Row = @Row
+        AND Col = @Col";
+
+        _connection.Execute(sql, new
+        {
+            LocationId = locationId,
+            Row = row,
+            Col = col,
+            Type = type
+        });
     }
 
-    public void Update(SeatModel seat)
+    public List<(int Row, int Col)> GetSeatCoordinates(int locationId, string type)
     {
-        string sql = $"UPDATE {Table} SET locationId = @LocationId, seatNumber = @SeatNumber, tier = @Tier WHERE id = @Id";
-        _connection.Execute(sql, seat);
+        string sql = @"
+        SELECT Row, Col
+        FROM Seats
+        WHERE LocationId = @LocationId
+        AND Type = @Type";
+
+        return _connection.Query<(int Row, int Col)>(sql, new { LocationId = locationId, Type = type })
+                          .ToList();
     }
 
-    public void Delete(SeatModel seat)
+    public List<SeatModel> GetSeatsByLocation(int locationId)
     {
-        string sql = $"DELETE FROM {Table} WHERE id = @Id";
-        _connection.Execute(sql, new { Id = seat.Id });
+        string sql = @"
+        SELECT *
+        FROM Seats
+        WHERE LocationId = @LocationId";
+
+        return _connection.Query<SeatModel>(sql, new { LocationId = locationId }).ToList();
     }
+
 
 }
