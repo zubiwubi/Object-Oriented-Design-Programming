@@ -81,20 +81,20 @@ public class ReservationMerchandise : MakeAccount
             case 1:
                 Tools.ColorMagentaMessage("You'll be redirected to the payment page :) ");
                 Tools.ProgressBar();
-                if (foodId == 0 && drinkId == 0)
+                if (foodId == null && drinkId == null)
                 {
                     Payment.Order(movieId, seat, caller);
                 }
-                // else if (foodId == 0)
-                // {
-                //     int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, drinkId, 1, null, null);
-                //     Payment.Order(movieId, seat, caller, orderedExtrasId);
-                // }
-                // else if (drinkId == 0)
-                // {
-                //     int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, null, null, null, null);
-                //     Payment.Order(movieId, seat, caller, orderedExtrasId);
-                // }
+                else if (foodId == null)
+                {
+                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, drinkId, 1, null, null);
+                    Payment.Order(movieId, seat, caller, orderedExtrasId);
+                }
+                else if (drinkId == null)
+                {
+                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, null, null, null, null);
+                    Payment.Order(movieId, seat, caller, orderedExtrasId);
+                }
                 else
                 {
                     int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, drinkId, 1, null, null);

@@ -1,4 +1,4 @@
-class OverviewMapsSeats : MenuOptionSelect
+public class OverviewMapsSeats : MenuOptionSelect
 {
     protected override List<string> Options { get; set; } = new List<string>() { "Auditorium 1", "Auditorium 2", "Auditorium 3" };
 
@@ -51,7 +51,7 @@ class OverviewMapsSeats : MenuOptionSelect
     private void RenderAud1(string caller, string callerType)
     {
         Console.WriteLine();
-        char[,] aud1 = DrawMap.DrawAuditorium(auditorium1);
+        char[,] aud1 = DrawMap.DrawAuditorium(auditorium1, 1);
 
         string info1 =
             "Amount of seats    :    150\n" +
@@ -67,14 +67,14 @@ class OverviewMapsSeats : MenuOptionSelect
 
         // seats bekijken op de map
         DrawMap.StartPosition(aud1);
-        DrawMap.SeatSelection(caller, aud1, "Auditorium 1", info1, screen1, callerType);
+        DrawMap.SeatSelection(caller, aud1, "Auditorium 1", info1, screen1, callerType, 1);
 
         Console.ReadKey();      // readkey to pause the screen
         return;
     }
     private void RenderAud2(string caller, string callerType)
     {
-        char[,] aud2 = DrawMap.DrawAuditorium(auditorium2);
+        char[,] aud2 = DrawMap.DrawAuditorium(auditorium2, 2);
 
         string info2 =
             "Amount of seats    :    300\n" +
@@ -90,7 +90,7 @@ class OverviewMapsSeats : MenuOptionSelect
 
         // seats bekijken op de map
         DrawMap.StartPosition(aud2);
-        DrawMap.SeatSelection(caller, aud2, "Auditorium 2", info2, screen2, callerType);
+        DrawMap.SeatSelection(caller, aud2, "Auditorium 2", info2, screen2, callerType, 2);
 
         Console.ReadKey();      // readkey to pause the screen
 
@@ -98,7 +98,7 @@ class OverviewMapsSeats : MenuOptionSelect
     }
     private void RenderAud3(string caller, string callerType)
     {
-        char[,] aud3 = DrawMap.DrawAuditorium(auditorium3);
+        char[,] aud3 = DrawMap.DrawAuditorium(auditorium3, 3);
 
         string info3 =
             "Amount of seats    :    500\n" +
@@ -114,7 +114,7 @@ class OverviewMapsSeats : MenuOptionSelect
 
         // seats bekijken op de map
         DrawMap.StartPosition(aud3);
-        DrawMap.SeatSelection(caller, aud3, "Auditorium 3", info3, screen3, callerType);
+        DrawMap.SeatSelection(caller, aud3, "Auditorium 3", info3, screen3, callerType, 3);
 
         Console.ReadKey();      // readkey to pause the screen
         return;

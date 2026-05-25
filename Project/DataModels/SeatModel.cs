@@ -2,14 +2,28 @@ public class SeatModel
 {
     public long Id { get; set; }
     public int LocationId { get; set; }
-    public int SeatNumber { get; set; }
-    public int Tier { get; set; }
+    public int Row { get; set; }
+    public int Col { get; set; }
+    public string Type { get; set; }
 
-    public SeatModel(long id, int locationId, int seatNumber, int tier)
+    public SeatModel(long id, int locationId, int row, int col, string type)
     {
         Id = id;
         LocationId = locationId;
-        SeatNumber = seatNumber;
-        Tier = tier;
+        Row = row;
+        Col = col;
+        Type = type;
+    }
+    public SeatModel(int locationId, int row, int col, string type)
+    {
+        LocationId = locationId;
+        Row = row;
+        Col = col;
+        Type = type;
+    }
+
+    public SeatModel()
+    {
+
     }
 }
