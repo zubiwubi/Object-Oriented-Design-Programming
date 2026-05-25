@@ -9,14 +9,19 @@ public class MerchandiseAccess
 
     public List<MerchandiseModel> GetAllMerchandise()
     {
-        string sql = $"Select * FROM {Table}";
-        return _connection.Query<MerchandiseModel>(sql).ToList();
+        string sql = $"Select * FROM {Table}"; 
+        return _connection.Query<MerchandiseModel>(sql).ToList(); 
     }
 
     public MerchandiseModel? GetById(long? id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<MerchandiseModel>(sql, new { Id = id });
+    }
+    public MerchandiseModel? CheckMerchExist(MerchandiseModel merchandise)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Name = @Name AND Description = @Description AND Price = @Price AND Type = @Type AND Size = @Size";
+        return _connection.QueryFirstOrDefault<MerchandiseModel>(sql, new {merchandise.Name, merchandise.Description, merchandise.Price, merchandise.Type, merchandise.Size});
     }
     public void Add(MerchandiseModel merchandise)
     {
@@ -25,7 +30,7 @@ public class MerchandiseAccess
     }
     public void Update(MerchandiseModel merchandise)
     {
-        string sql = $"UPDATE {Table} SET Name = @Name, Description = @Description, Price = @Price, Type = @Type, Size = @Size,  WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET Name = @Name, Description = @Description, Price = @Price, Type = @Type, Size = @Size  WHERE id = @Id";
         _connection.Execute(sql, merchandise);
     }
     public void Delete(MerchandiseModel merchandise)
@@ -36,37 +41,36 @@ public class MerchandiseAccess
     public List<MerchandiseModel> GetHoodies()
     {
         string sql = $"SELECT * FROM {Table} WHERE Type = @Type";
-        return _connection.Query<MerchandiseModel>(sql, new { Type = "Hoodie" }).ToList();
+        return _connection.Query<MerchandiseModel>(sql, new { Type = "Hoodie"}).ToList(); 
     }
 
     public List<MerchandiseModel> GetTshirts()
     {
         string sql = $"SELECT * FROM {Table} WHERE Type = @Type";
-        return _connection.Query<MerchandiseModel>(sql, new { Type = "T-shirt" }).ToList();
+        return _connection.Query<MerchandiseModel>(sql, new {Type = "T-shirt"} ).ToList(); 
     }
 
     public List<MerchandiseModel> GetAccessories()
     {
         string sql = $"SELECT * FROM {Table} WHERE Type = @Type";
-        return _connection.Query<MerchandiseModel>(sql, new { Type = "Accessory" }).ToList();
+        return _connection.Query<MerchandiseModel>(sql, new {Type = "Accessory"} ).ToList(); 
     }
     public List<MerchandiseModel> GetStickers()
     {
         string sql = $"SELECT * FROM {Table} WHERE Type = @Type";
-        return _connection.Query<MerchandiseModel>(sql, new { Type = "Sticker" }).ToList();
+        return _connection.Query<MerchandiseModel>(sql, new {Type = "Sticker"} ).ToList(); 
     }
 
     public List<MerchandiseModel> GetMugs()
     {
-        string sql = $"SELECT * FROM {Table} WHERE Type = @Type";
-        return _connection.Query<MerchandiseModel>(sql, new { Type = "Mug" }).ToList();
+        string sql = $"SELECT * FROM {Table} WHERE Type = @Type"; 
+        return _connection.Query<MerchandiseModel>(sql, new {Type = "Mug"} ).ToList(); 
     }
 
     public List<MerchandiseModel> GetPosters()
     {
-        string sql = $"SELECT * FROM {Table} WHERE Type = @Type";
-        return _connection.Query<MerchandiseModel>(sql, new { Type = "Poster" }).ToList();
-
+        string sql = $"SELECT * FROM {Table} WHERE Type = @Type"; 
+        return _connection.Query<MerchandiseModel>(sql, new {Type = "Poster"} ).ToList(); 
+        
     }
-
 }

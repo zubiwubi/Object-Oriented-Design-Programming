@@ -15,13 +15,12 @@ public class MakeAccount : Account
         AccountModel Account = new AccountModel(FirstName, LastName, Email, Password, Type); 
         accountLogic.MakeAccount(Account); 
         Display.ClearScreen();
-
         Tools.ApproveMessage($"Account '{Email}' created succesfully!! ✅✅✅");
 
 
         Console.WriteLine(@$"
 
-             _                             _             
+     _                             _             
     / \   ___ ___ ___  _   _ _ __ | |_           
    / _ \ / __/ __/ _ \| | | | '_ \| __|          
   / ___ \ (_| (_| (_) | |_| | | | | |_           
@@ -105,28 +104,6 @@ public class MakeAccount : Account
 
         return email;
         
-    }
-    protected static string AskPhoneNumber()
-    {
-        Display.ClearScreen(); 
-        string PhoneNumber; 
-        do
-        {
-            Console.WriteLine("Enter your phone number [OPTIONAL FIELD]: ");
-            PhoneNumber = Console.ReadLine()!; 
-
-            if (!accountLogic.IsPhoneNumberValid(PhoneNumber))
-            {
-                Tools.InvalidPhoneNumberPrint(PhoneNumber);
-            }
-
-            if (string.IsNullOrEmpty(PhoneNumber) || string.IsNullOrWhiteSpace(PhoneNumber))
-            {
-                PhoneNumber = "-"; 
-            }
-        
-        } while (!accountLogic.IsPhoneNumberValid(PhoneNumber)); 
-        return PhoneNumber;
     }
     private static string CreatePassword()
     {

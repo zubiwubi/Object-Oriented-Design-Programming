@@ -24,7 +24,7 @@ public class Account : IPage
         ");
 
 
-        Tools.ColorYellowMessage("press 'BACKSPACE' to go back to homepage");
+        Tools.ColorYellowMessage("DISLCLAIMER: press 'BACKSPACE' to go back to homepage");
         Tools.ColorYellowMessage("press 'ENTER' to log in");
         Console.WriteLine(); 
 
@@ -40,6 +40,7 @@ public class Account : IPage
             string email;
             do
             {
+                Tools.ColorYellowMessage("DISCLAIMER: your mail must contain an '@' & an '.'");
                 Console.WriteLine("Enter your E-mail [REQUIRED FIELD]: ");
                 email = Console.ReadLine()!;
 
@@ -59,6 +60,7 @@ public class Account : IPage
                 string password;
                 do
                 {
+                    Tools.ColorYellowMessage("DISCLAIMER: must contain atleast 1 upperletter & symbol\nMust be atleast 8 characters long.");
                     Console.WriteLine("Enter your password [REQUIRED FIELD]: ");
                     password = HidePassword(); 
                     AccountModel account = accountLogic.CheckLogin(email, password)!;
@@ -96,7 +98,7 @@ public class Account : IPage
                                 if (i == 0)
                                 {
                                     Console.WriteLine(); 
-                                    Tools.ApproveMessage("Times up!! you can log in again [your being redirected......]");
+                                    Tools.ApproveMessage("Times up!! you can log in again.");
                                     Tools.ProgressBar(); 
                                     Thread.Sleep(3000);
                                     LogIn(); 
@@ -124,8 +126,8 @@ public class Account : IPage
     protected static void DeleteAccount()
     {
         Display.ClearScreen(); 
-        Tools.ErrorMessage("🚨⚠️[WARNING] YOU CAN'T UNDO THIS ACT AND ALL YOUR INFORMATION WILL BE LOST!!⚠️🚨");
-        Console.WriteLine("Press 'Enter' to continue.");
+        Tools.ErrorMessage("🚨⚠️[WARNING] YOU CAN'T UNDO THIS ACT AND ALL YOUR INFORMATION WILL BE LOST!! [WARNING] ⚠️🚨");
+        Tools.ColorYellowMessage("Press 'ENTER' to continue.");
         Console.ReadKey(); 
         Display.ClearScreen(); 
         string answer;
@@ -161,16 +163,16 @@ public class Account : IPage
                 Display.ClearScreen(); 
                 accountLogic.DeleteAccount(AccountLogic.CurrentAccount); 
                 Tools.ErrorMessage("YOUR ACCOUNT HAS BEEN DELETED\nYOU HAVE TO CREATE A NEW ACCOUNT TO SAVE YOUR INFORMATION");
-                Console.WriteLine("Press 'Enter' to go back to homepage");
+                Tools.ColorYellowMessage("Press 'ENTER' to go back to homepage");
                 Console.ReadKey(); 
-                Thread.Sleep(2000);
+                Tools.ProgressBar(); 
                 Program.Main(); 
             }
 
             if (confirmAnswer.ToLower() == "n")
             {
                 Console.WriteLine("You canceled deleting your account!\nYour being redirected to the homepage");
-                Thread.Sleep(4000); 
+                Tools.ProgressBar(); 
                 AccountHomePage.HomePage(); 
             }
         
@@ -179,7 +181,7 @@ public class Account : IPage
         if (answer.ToLower() == "n")
         {
             Console.WriteLine("You decided not to proceed to delete your account\nYour being redirected to the homepage");
-            Thread.Sleep(4000);
+            Tools.ProgressBar(); 
             AccountHomePage.HomePage(); 
         }
     }
