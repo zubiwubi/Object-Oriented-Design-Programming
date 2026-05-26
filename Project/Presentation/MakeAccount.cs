@@ -2,20 +2,21 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using System.Transactions;
 
-public class MakeAccount : Account 
+public class MakeAccount : Account
 {
+    static StudentAccountLogic studentAccountLogic = new();
     public void CreateAccount()
-    {  
-        string FirstName = AskFirstName(); 
-        string LastName = AskLastName(); 
-        string Email = AskEmail(); 
-        string Password = CreatePassword(); 
-        
+    {
+        string FirstName = AskFirstName();
+        string LastName = AskLastName();
+        string Email = AskEmail();
+        string Password = CreatePassword();
 
-        AccountModel Account = new AccountModel(FirstName, LastName, Email, Password, Type); 
-        accountLogic.MakeAccount(Account); 
+
+        AccountModel Account = new AccountModel(FirstName, LastName, Email, Password, Type);
+        accountLogic.MakeAccount(Account);
         Display.ClearScreen();
-        Tools.ApproveMessage($"Account '{Email}' created succesfully!! ✅✅✅");
+        Tools.ApproveMessage($"Account '{Email}' created successfully!! ✅✅✅");
 
 
         Console.WriteLine(@$"
@@ -41,87 +42,93 @@ public class MakeAccount : Account
 
 
         Console.WriteLine("Press 'Enter' to log into your account");
-        Console.ReadKey(); 
-        LogIn(); 
+        Console.ReadKey();
+        LogIn();
 
     }
 
     public static string AskFirstName()
     {
-        Display.ClearScreen(); 
-        string firstName; 
+        Display.ClearScreen();
+        string firstName;
         do
         {
             Console.WriteLine("Enter your first name [FIELD REQUIRED]: ");
-            firstName = Console.ReadLine()!; 
+            firstName = Console.ReadLine()!;
 
             if (!accountLogic.IsNameValid(firstName))
             {
-                Tools.InvalidNameValidationPrint(firstName); 
+                Tools.InvalidNameValidationPrint(firstName);
             }
-            
+
         } while (!accountLogic.IsNameValid(firstName));
 
-        return firstName;   
+        return firstName;
     }
 
     public static string AskLastName()
     {
         Display.ClearScreen();
-        string LastName; 
+        string LastName;
         do
         {
             Console.WriteLine("Enter your last name [REQUIRED FIELD]: ");
-            LastName = Console.ReadLine()!; 
+            LastName = Console.ReadLine()!;
 
             if (!accountLogic.IsNameValid(LastName))
             {
-                Tools.InvalidNameValidationPrint(LastName); 
+                Tools.InvalidNameValidationPrint(LastName);
             }
 
-        } while (!accountLogic.IsNameValid(LastName)); 
+        } while (!accountLogic.IsNameValid(LastName));
 
-        return LastName; 
-        
+        return LastName;
+
     }
 
     public static string AskEmail()
     {
         Display.ClearScreen();
-        string email; 
+        string email;
 
         do
         {
-            Console.WriteLine("Enter a valid E-mail Adress [REQUIRED FIELD]: ");
-            email = Console.ReadLine()!; 
+            Console.WriteLine("Enter a valid E-mail Address [REQUIRED FIELD]: ");
+            Console.WriteLine("(Students with a Dutch school E-Mail Address get 20% off their order!) ");
+            email = Console.ReadLine()!;
 
             if (!accountLogic.IsEmailValid(email))
             {
-                Tools.InvalidEmailPrint(email); 
+                Tools.InvalidEmailPrint(email);
             }
-            
-        } while (!accountLogic.IsEmailValid(email)); 
+
+        } while (!accountLogic.IsEmailValid(email));
+        if (studentAccountLogic.IsSchoolEmail(email))
+        {
+            Console.WriteLine("You entered a valid school email address.\nYou are eligible for the student discount!");
+            Thread.Sleep(2000);
+        }
 
         return email;
-        
+
     }
     private static string CreatePassword()
     {
         Display.ClearScreen();
-        string password; 
+        string password;
 
         do
         {
             Console.WriteLine("Create your password [REQUIRED FIELD]: ");
-            password = HidePassword(); 
+            password = HidePassword();
 
             if (!accountLogic.IsPasswordValid(password))
             {
-                Tools.InvalidPasswordPrint(password); 
+                Tools.InvalidPasswordPrint(password);
             }
 
-        } while (!accountLogic.IsPasswordValid(password)); 
+        } while (!accountLogic.IsPasswordValid(password));
 
-        return password;    
-    }  
-} 
+        return password;
+    }
+}
