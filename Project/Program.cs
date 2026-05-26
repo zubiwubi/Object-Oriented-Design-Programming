@@ -2,8 +2,10 @@
 {
     public static void Main()
     {
-        Homepage homepage = new();
+        //Homepage homepage = new();
 
-        homepage.Render();
+        //homepage.Render();
+
+        AdminManageFoodMenu.AddConsumable();
     }
 }

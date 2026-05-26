@@ -95,15 +95,10 @@ public class AdminHomePage : IPage
 
         switch (MenuChoice)
         {
-            case 0:
-                // manage food/drink menu method call
-                Tools.ErrorMessage("this function does not exist yet.");
-                Tools.ColorYellowMessage("PRESS 'ENTER' to go back"); ;
-                Console.ReadKey();
-                Homepage();
+            case 0: // --------- FOOD MENU ADMIN ------------
+                AdminManageFoodMenu.MenuCreator();
                 break;
             case 1:
-
                 Console.WriteLine("You selected to change the seat prices");
                 Thread.Sleep(1000);
                 AdminManageSeatPrice.SeatSelect();

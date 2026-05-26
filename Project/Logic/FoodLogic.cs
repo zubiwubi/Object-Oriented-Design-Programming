@@ -10,4 +10,8 @@ public class FoodLogic
         return _foodAccess.GetById(id);
     }
 
+    public void Add(FoodModel food)
+    {
+        _foodAccess.Write(food);
+    }
 }
