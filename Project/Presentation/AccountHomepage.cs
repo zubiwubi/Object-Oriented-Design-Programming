@@ -102,11 +102,11 @@ public class AccountHomePage : Account, IPage
                 LogOut();
                 Program.Main();
                 break;
-            case 4: 
-            Console.WriteLine("your being redirected....");
+            case 4:
+                Console.WriteLine("your being redirected....");
                 Tools.ProgressBar();
-                DeleteAccount(); 
-                break; 
+                DeleteAccount();
+                break;
         }
     }
 }
