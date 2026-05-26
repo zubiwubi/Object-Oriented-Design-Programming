@@ -7,11 +7,13 @@ public class Payment
     protected static StudentAccountLogic studentAccountLogic = new();
     public static void Order(int movieId, int seat, string caller, int? orderedExtrasId = null, int? firstOrderedExtrasId = null)
     {
-        // bool isStudentEmail = studentAccountLogic.IsSchoolEmail(AccountLogic.CurrentAccount.EmailAddress);
-        // if (isStudentEmail)
-        // {
-        //     Console.WriteLine("YOU ARE A STUDENT, YOU RECEIVED A 20% DISCOUNT ON YOUR ORDER! ");
-        // }
+        bool isStudentEmail = studentAccountLogic.IsSchoolEmail(AccountLogic.CurrentAccount.EmailAddress);
+        if (isStudentEmail)
+        {
+            Console.WriteLine();
+            Console.WriteLine("You are a student, you received a 20% discount on your order! ");
+            Console.WriteLine();
+        }
         Console.WriteLine("Choose a payment system?");
         Console.WriteLine("[1] IDeal/WERO");
         Console.WriteLine("[2] PayPal");
