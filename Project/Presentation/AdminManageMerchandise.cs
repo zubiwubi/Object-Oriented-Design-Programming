@@ -9,8 +9,7 @@ public class AdminManageMerchandise : IPage
     public static bool IsOptionSelected { get; set; }
     public static List<string> ManageOptions {get; set;} = new() {"Add merchandise","Update merchandise","go back"};
     public static List<string> Menu {get; set;} = new() {"Yes", "No"};
-    public static List<MerchandiseModel> AllMerchandise = merchandiseLogic.GetAllMerchandise(); 
-    //public static List<MerchandiseModel> OrderedMerchandise = AllMerchandise.GroupBy(x => x.Type).OrderBy(x => x.Count()).ToList(); 
+    public static List<MerchandiseModel> AllMerchandise = merchandiseLogic.GetAllMerchandise();  
 
     public static void StartPage()
     {
@@ -294,7 +293,71 @@ public class AdminManageMerchandise : IPage
                 IsOptionSelected = true;
 
                 Display.ClearScreen(); 
+                Console.WriteLine($"Currently selected item: {AllMerchandise[MenuChoice].Name}");
+                Tools.ErrorMessage("[WARNING] THIS ACTION CAN'T BE UNDONE [WARNING]");
+                Tools.ColorYellowMessage("Are you sure you want to delete this item?");
+
+                int subArrow = 0;
+                int subMenuChoice = 0;
+                bool IsSelected = false;
+                ConsoleKeyInfo subKey;
+
+                while (!IsSelected)
+                {
+                    for (int i = 0; i < Menu.Count; i++)
+                    {
+                        if (i == subArrow)
+                        {
+                            Console.Write("➥ ");
+                            Tools.ColorMagentaMessage($"{i + 1} {Menu[i]}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{i + 1} {Menu[i]}"); 
+                        }
+
+                    }
+
+                    subKey = Console.ReadKey();
+                    if (subKey.Key == ConsoleKey.UpArrow)
+                    {
+                        subArrow--;
+
+                        if (subArrow < 0)
+                        {
+                            subArrow = Menu.Count - 1;
+                        }
+                    }
+                    else if (subKey.Key == ConsoleKey.DownArrow)
+                    {
+                        subArrow++;
+
+                        if (subArrow >= Menu.Count)
+                        {
+                            subArrow = 0;
+                        }
+                    }
+
+                    else if (subKey.Key == ConsoleKey.Enter)
+                    {
+                        subMenuChoice = subArrow;
+                        IsSelected = true;
+                    }
+
+                }
+
+                switch (subMenuChoice)
+                {
+                    case 0: 
+                        // change bool to false and hide it in db 
+                        break;
+                    case 1: 
+                        CreateManageMenu(); 
+                        break; 
+                }
+
             }
+            
         }
     }
 
