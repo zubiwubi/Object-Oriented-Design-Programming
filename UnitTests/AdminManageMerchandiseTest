@@ -1,0 +1,97 @@
+using System.Data;
+
+namespace UnitTests;
+
+[TestClass]
+public sealed class AdminManageMerchandiseTest 
+{
+    [DataTestMethod]
+    [DataRow("", false)] // string null or empty 
+    [DataRow("s", false)] // less then 2 char
+    [DataRow("3D BRIL (1pc)", true)] // with symbols and numbers
+    [DataRow("Hoodie RTX MODEL", true)] // without symbols or numbers
+    [DataRow("'@' shaped stickers", true),] // with symbols 
+
+    public void IsMerchNameValidTest(string name, bool expected)
+    {    
+         // arrange
+        MerchandiseLogic merchandiseLogic = new(); 
+        // act 
+        bool result = merchandiseLogic.IsMerchNameValid(name); 
+        // assert
+        Assert.AreEqual(expected, result);
+    }
+
+    [DataTestMethod]
+    [DataRow("0", false)] // round number 0 (int)
+    [DataRow("0.0", false)] // 0 in decimals (double)
+    [DataRow("-29", false)] // negative digit 
+    [DataRow("-1", false)] // negative digit 2
+    [DataRow("10", true)] // round number (int)
+    [DataRow("23.99", true)] // decimal
+    public void IsPriceValidTest(double price, bool expected)
+    {
+        // arrange 
+        MerchandiseLogic merchandiseLogic = new(); 
+        // act 
+        bool result = merchandiseLogic.IsPriceValid(name); 
+        // assert
+        Assert.AreEqual(expected, result);
+    }
+
+
+    [DataTestMethod]
+    [DataRow("", false)] // empty
+    [DataRow("s", false)] // lower case s
+    [DataRow("m", false)] // lower case m
+    [DataRow("l", false)] // lower case l 
+    [DataRow("onesize", false)] // lower case onesize
+    [DataRow("ONE SIZE", false)] // space between 
+    [DataRow("errthnb", false)] // anything other then specified sizes
+    [DataRow("trhgnb3456", false)] // wrong and number
+    [DataRow("wergfv234*&&", false)] // wrong and symbols and numbers
+    [DataRow("rtghb&*", false)] // wrong and symbols
+    [DataRow("&&&", false)] // only symbols
+    [DataRow("1234", false)] // only numbers
+    [DataRow("S", true)]
+    [DataRow("M", true)]
+    [DataRow("L", true)]
+    [DataRow("ONESIZE", true)]
+
+    public void IsSizeValidTest(string size, bool expected)
+    {
+        // arrange 
+        MerchandiseLogic merchandiseLogic = new(); 
+        // act 
+        bool result = merchandiseLogic.IsPriceValid(name); 
+        // assert
+        Assert.AreEqual(expected, result);
+        
+    }
+
+    [DataTestMethod]
+
+    [DataRow("", false)] // empty
+    [DataRow("Hoodies", false)] // added 's' to true case 
+    [DataRow("feerohnk", false)] // letters that dont fit the required types
+    [DataRow("1234", false)] // only numbers
+    [DataRow("%%", false)] // only symbols 
+    [DataRow("blablac245", false)] // letters and number
+    [DayaRow("blabla$%", false)] // letters and symbols
+    [DataRow("Hoodie", true)] 
+    [DataRow("Accessory", true)]
+    [DataRow("T-shirt", true)]
+    [DataRow("Mug", true)]
+    [DataRow("Poster", true)]
+    [DataRow("Sticker", true)]
+
+    public void IsTypeValidTest(string size, bool expected)
+    {
+        // arrange 
+        MerchandiseLogic merchandiseLogic = new(); 
+        // act 
+        bool result = merchandiseLogic.IsPriceValid(name); 
+        // assert
+        Assert.AreEqual(expected, result);
+    }   
+}
