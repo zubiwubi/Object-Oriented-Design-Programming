@@ -86,8 +86,17 @@ public class ViewMerchandise : ReservationMerchandise
             }
             else if (Key.Key == ConsoleKey.Backspace)
             {
-                Tools.ProgressBar(); 
-                Program.Main(); 
+                if (AccountLogic.CurrentAccount != null && AccountLogic.CurrentAccount.Type == "admin")
+                {
+                    Tools.ProgressBar(); 
+                    AdminManageMerchandise.CreateManageMenu(); 
+                }
+                else
+                {
+                    Tools.ProgressBar(); 
+                    Program.Main(); 
+                    
+                }
             }
         }
 
@@ -122,6 +131,7 @@ public class ViewMerchandise : ReservationMerchandise
 
     public static void ViewHoodies()
     {
+        List<MerchandiseModel> Hoodies = merchandiseLogic.GetHoodies(); 
         IsOptionSelected = false; 
         while (!IsOptionSelected)
         {
@@ -157,6 +167,7 @@ public class ViewMerchandise : ReservationMerchandise
  
     public static void ViewTshirts()
     {
+        List<MerchandiseModel> TShirts = merchandiseLogic.GetTshirts();
        IsOptionSelected = false; 
         while (!IsOptionSelected)
         {
@@ -192,6 +203,8 @@ public class ViewMerchandise : ReservationMerchandise
     }
     public static void ViewAccessories()
     {
+        List<MerchandiseModel> Accessories = merchandiseLogic.GetAcccesories();
+
         IsOptionSelected = false; 
         while (!IsOptionSelected)
         {
@@ -225,6 +238,7 @@ public class ViewMerchandise : ReservationMerchandise
 
     public static void ViewStickers()
     {
+        List<MerchandiseModel> Stickers = merchandiseLogic.GetStickers();
         IsOptionSelected = false; 
         while (!IsOptionSelected)
         {
@@ -258,6 +272,7 @@ public class ViewMerchandise : ReservationMerchandise
 
     public static void ViewMugs()
     {
+        List<MerchandiseModel> Mugs = merchandiseLogic.GetMugs();
        IsOptionSelected = false; 
         while (!IsOptionSelected)
         {
@@ -290,7 +305,8 @@ public class ViewMerchandise : ReservationMerchandise
 
     public static void ViewPosters()
     {
-       IsOptionSelected = false; 
+        List<MerchandiseModel> Posters = merchandiseLogic.GetPosters();
+        IsOptionSelected = false; 
         while (!IsOptionSelected)
         {
             Display.ClearScreen(); 
