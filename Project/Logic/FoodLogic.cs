@@ -12,6 +12,6 @@ public class FoodLogic
 
     public void Add(FoodModel food)
     {
-        _foodAccess.Write(food);
+        _foodAccess.Add(food);
     }
 }
