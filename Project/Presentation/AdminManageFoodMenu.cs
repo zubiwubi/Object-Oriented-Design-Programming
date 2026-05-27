@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 public class AdminManageFoodMenu : CustomMessageWithMenuOS
 {
     protected static List<string> Options { get; set; } = new List<string>() { "VIEW FOOD/DRINK", "ADD FOOD/DRINK", "UPDATE FOOD/DRINK", "DELETE FOOD/DRINK" };
+    protected static List<string> FoodOrDrinkOptions { get; set; } = new List<string>() { "FOOD ", "DRINK" };
     protected static string Message { get; set; } = " Welcome to the admin's control panel for the food menu. Please select an option using the arrow keys.";
     public static FoodLogic foodLogic = new();
     public static void MenuCreator()
@@ -58,7 +59,23 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
 
     public static void DeleteConsumable()
     {
-        // T consumable
-    }
+        Console.Clear();
 
+        string question = "Is the following item food or drink?";
+
+        while (true)
+        {
+            int selectedOption = MenuRenderer(FoodOrDrinkOptions, question);
+
+            switch (selectedOption)
+            {
+                case 0: // ------------ Food ----------
+                    long foodid = RenderConsumableMenu.RenderFoodMenu();
+                    break;
+                case 1: // ------------ Drink -------------
+                    long drinkid = RenderConsumableMenu.RenderDrinkMenu();
+                    break;
+            }
+        }
+    }
 }
