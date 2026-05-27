@@ -25,6 +25,10 @@ public class MerchandiseLogic : AccountLogic
     {
         _access.Update(merchandise);
     }
+    public void UpdateBool(MerchandiseModel merchandise)
+    {
+        _access.UpdateBool(merchandise); 
+    }
 
     public void Delete(MerchandiseModel merchandise)
     {

@@ -6,7 +6,7 @@ public class MerchandiseModel
     public double Price {get; set;}
     public string Type {get; set;}
     public string Size {get; set;}
-
+    public bool IsVisible {get; set;} = true; 
 
     public MerchandiseModel(long id, string name, string description, double price, string type, string size)
     {
@@ -26,4 +26,6 @@ public class MerchandiseModel
         Type = type; 
         Size = size; 
     }
+
+    public MerchandiseModel() {} 
 }

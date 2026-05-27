@@ -37,6 +37,7 @@ public class Account : IPage
         }
         else
         {
+            Display.ClearScreen(); 
             string email;
             do
             {

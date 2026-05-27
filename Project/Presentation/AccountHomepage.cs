@@ -44,9 +44,12 @@ public class AccountHomePage : Account, IPage
                 if (i == Arrow)
                 {
                     Console.Write("➥ ");
+                    Tools.ColorMagentaMessage($"[{i + 1}] {Menu[i]}");
                 }
-
-                Console.WriteLine($"[{i + 1}] {Menu[i]}");
+                else
+                {
+                    Console.WriteLine($"[{i + 1}] {Menu[i]}");
+                }
             }
 
 
