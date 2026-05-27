@@ -93,11 +93,9 @@ public class AccountHomePage : Account, IPage
                 ManageAccount.Start();
                 break;
             case 2:
-                Tools.ErrorMessage("this function does not exist yet.");
-                Tools.ColorYellowMessage("Press 'ENTER' to go back");
-                Console.ReadKey();
+                Console.WriteLine("You chose to view your previous orders.");
                 Tools.ProgressBar();
-                HomePage();
+                PreviousOrders.ViewPreviousOrders();
                 break;
             case 3:
                 Console.WriteLine("Loggin off.....");
