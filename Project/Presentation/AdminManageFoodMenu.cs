@@ -30,10 +30,25 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
         }
     }
 
-    //public static Func<string, bool> IsValidInput = input => string.IsNullOrEmpty(input.Trim()) && input.Length >= 2; // Check below 2 chars & if empty
     public static void AddConsumable()
     {
         string name = InputValidator.AskName();
+        string description = InputValidator.AskDescription();
+        double price = InputValidator.AskPrice();
+        string type = InputValidator.AskType();
+        long islounge = InputValidator.AskIsLounge();
+
+        FoodModel newFood = new FoodModel(name, description, price, type, islounge);
+        
+        foodLogic.Add(newFood);
+        Tools.ApproveMessage($"'{newFood.Name}' succesfully added! ✅"); 
+        Tools.ColorYellowMessage("DISCLAIMER: press 'ENTER' to go back to the menu");
+        var input = Console.ReadKey();
+
+        if (input.Key == ConsoleKey.Enter) // Continue
+        {
+            Tools.ProgressBar(); 
+        } 
     }
 
     public static void UpdateConsumable()

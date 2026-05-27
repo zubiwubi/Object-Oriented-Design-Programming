@@ -1,15 +1,8 @@
+using System.Globalization;
+
 public class InputValidator
 {
-    public static string AskName()
-    {
-        string name = GetInput("Enter the new item's name: ", strInput => strInput, nameCheck =>
-        {
-            if (string.IsNullOrEmpty(nameCheck)) return "Name cannot be empty.";
-            if (nameCheck.Length < 2) return "Name must be at least 2 characters.";
-            return null;
-        });
-        return name;
-    }
+    // name, description, price, type, islounge
 
     public static T GetInput<T>(string prompt, Func<string, T> typeConvert, Func<T, string?> validator)
     {
@@ -17,7 +10,13 @@ public class InputValidator
         {
             Console.WriteLine(prompt);
             string input = Console.ReadLine();
-            
+
+            if (string.IsNullOrEmpty(input))
+            {
+                Console.WriteLine("❌ Input cannot be empty. Please try again.");
+                continue;
+            }
+
             T value = typeConvert(input);
             string? error = validator(value);
 
@@ -30,5 +29,54 @@ public class InputValidator
         }
     }
 
+    public static string AskName()
+    {
+        string name = GetInput("Enter the new item's name [REQUIRED FIELD]: ", strName => strName.Trim(), nameCheck =>
+        {
+            if (nameCheck.Length < 2) return "Name must be at least 2 characters.";
+            return null;
+        });
+        return name;
+    }
 
+    public static string AskDescription()
+    {
+        string description = GetInput("Enter the description for the item [REQUIRED FIELD]: ", strDesc => strDesc.Trim(), descCheck =>
+        {
+            if (descCheck.Length < 10) return "Description must have at least 10 characters.";
+            return null;
+        });
+        return description;
+    }
+
+    public static double AskPrice()
+    {
+        double price = GetInput("Enter the cost for the item (ex: 11.5) [REQUIRED FIELD]: ", p => double.Parse(p, CultureInfo.InvariantCulture), priceCheck =>
+        {
+            if (priceCheck <= 0) return "Price must be greater than zero.";
+            if (priceCheck > 1000) return "Price is too high.";
+            return null;
+        });
+        return price;
+    }
+
+    public static string AskType()
+    {
+        string type = GetInput("Enter the dietary notes (ex.: a. \"*Contains: Gluten & Meat\", b. \"Vegan & Dairy-Free\" ) [REQUIRED FIELD]: ", t => t.Trim(), typeCheck =>
+        {
+            if (typeCheck.Length < 2) return "Write at least 2 characters.";
+            return null;
+        });
+        return type;
+    }
+
+    public static long AskIsLounge()
+    {
+        long islounge = GetInput("Is this item for the lounge only (1 = yes, 0 = no)? [REQUIRED FIELD]: ", l => long.Parse(l.Trim()), loungeCheck =>
+        {
+            if (loungeCheck != 1 && loungeCheck != 0) return "Enter either 1 for yes, or 0 for no.";
+            return null;
+        });
+        return islounge;
+    }
 }
