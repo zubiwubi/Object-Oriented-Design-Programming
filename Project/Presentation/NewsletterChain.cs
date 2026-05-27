@@ -1,4 +1,4 @@
-class NewsletterChain
+public class NewsletterChain
 {
     static void Main()
     {
