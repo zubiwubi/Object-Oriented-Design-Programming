@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 public class AdminManageFoodMenu : CustomMessageWithMenuOS
 {
     protected static List<string> Options { get; set; } = new List<string>() { "VIEW FOOD/DRINK", "ADD FOOD/DRINK", "UPDATE FOOD/DRINK", "DELETE FOOD/DRINK" };
@@ -28,24 +30,10 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
         }
     }
 
-    public static Func<string, bool> IsValidInput = input => string.IsNullOrEmpty(input.Trim()) && input.Length >= 2; // Check below 2 chars & if empty
+    //public static Func<string, bool> IsValidInput = input => string.IsNullOrEmpty(input.Trim()) && input.Length >= 2; // Check below 2 chars & if empty
     public static void AddConsumable()
     {
-        Console.WriteLine("Please write a name");
-        string? name = Console.ReadLine();
-        Console.WriteLine("Please write a desc");
-        string? description = Console.ReadLine();
-        Console.WriteLine("Please write a price");
-        double price = double.Parse(Console.ReadLine()!);
-        Console.WriteLine("Please write a type");
-        string? type = Console.ReadLine();
-        Console.WriteLine("Please write if it's a lounge item (0 or 1)");
-        long islounge = long.Parse(Console.ReadLine()!);
-
-  
-        FoodModel newFood = new(name, description, price, type, islounge);
-        foodLogic.Add(newFood);
-    
+        string name = InputValidator.AskName();
     }
 
     public static void UpdateConsumable()
@@ -58,8 +46,4 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
         // T consumable
     }
 
-    public static void AskFoodName()
-    {
-        
-    }
 }
