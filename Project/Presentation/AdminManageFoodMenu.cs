@@ -7,7 +7,7 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
     protected static string Message { get; set; } = " Welcome to the admin's control panel for the food and drink's menu. Please select an option using the arrow keys.";
     private static FoodLogic _foodLogic = new();
     private static DrinkLogic _drinkLogic = new();
-    public static void MenuCreator()
+    public static void MenuCreator() // main
     {
         Console.Clear();
         while (true)
@@ -58,10 +58,10 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
                     
                     _foodLogic.Add(newFood);
                     Tools.ApproveMessage($"'{newFood.Name}' successfully added! ✅"); 
-                    Tools.ColorYellowMessage("DISCLAIMER: Press anything to go back to the menu");
+                    Tools.ColorYellowMessage("Press anything to go back to the menu");
                     Console.ReadKey();
-                    MenuCreator();
-                    break;
+                    return;
+
                 case 1: // ------------ Drink -------------
                     string drinkName = InputValidator.AskName();
                     string drinkDescription = InputValidator.AskDescription();
@@ -74,10 +74,9 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
                     
                     _drinkLogic.Add(newDrink);
                     Tools.ApproveMessage($"'{newDrink.Name}' successfully added! ✅"); 
-                    Tools.ColorYellowMessage("DISCLAIMER: Press anything to go back to the menu");
+                    Tools.ColorYellowMessage("Press anything to go back to the menu");
                     Console.ReadKey();
-                    MenuCreator();
-                    break;
+                    return;
             }
         }
     }
@@ -95,13 +94,13 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
             switch (selectedOption)
             {
                 case 0: // ------------ Food ----------
-                    FoodModel currentFood = RenderConsumableMenu.RenderFoodMenu();
-                    Console.WriteLine($"Currently selected item: \"{currentFood.Name}\". Press ENTER to confirm, BACKSPACE to return");
+                    FoodModel selectedFood = RenderConsumableMenu.RenderFoodMenu();
+                    Console.WriteLine($"Currently selected item: \"{selectedFood.Name}\". Press ENTER to confirm, BACKSPACE to return");
                     
                     var userinput = Console.ReadKey();
-                    if (userinput.Key == ConsoleKey.Enter)
+                    if (userinput.Key == ConsoleKey.Enter) // --- CONFIRM --- 
                     {
-                        Tools.SlowLine($"{currentFood.Name} selected ✅", 10);
+                        Tools.SlowLine($"{selectedFood.Name} selected ✅", 10);
 
                         string foodName = InputValidator.AskName();
                         string foodDescription = InputValidator.AskDescription();
@@ -109,21 +108,22 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
                         string foodType = InputValidator.AskType();
                         long Fislounge = InputValidator.AskIsLounge();
 
-                        FoodModel updatedFood = new(foodName, foodDescription, foodPrice, foodType, Fislounge);
-
+                        FoodModel updatedFood = new(selectedFood.Id, foodName, foodDescription, foodPrice, foodType, Fislounge);
+                        
                         _foodLogic.Update(updatedFood);
                         Tools.ApproveMessage($"'{updatedFood.Name}' successfully updated! ✅");
-                        Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
+                        Tools.ColorYellowMessage("Press anything to go back to the menu");
                         Console.ReadKey();
-                        MenuCreator();
+                        return;
                     }
 
                     if (userinput.Key == ConsoleKey.Backspace) // just call the method again to restart
                     {
-                        UpdateConsumable();
+                        break;
                     }
 
-                    break;
+                    return;
+
                 case 1: // ------------ Drink -------------
                     DrinkModel selectedDrink = RenderConsumableMenu.RenderDrinkMenu();
                     Console.WriteLine($"Currently selected item: \"{selectedDrink.Name}\". Press ENTER to confirm, BACKSPACE to return");
@@ -144,17 +144,17 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
 
                         _drinkLogic.Update(updatedDrink);
                         Tools.ApproveMessage($"'{updatedDrink.Name}' successfully updated! ✅");
-                        Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
+                        Tools.ColorYellowMessage("Press anything to go back to the menu");
                         Console.ReadKey();
-                        MenuCreator();
+                        return;
                     }
 
-                    if (uinput.Key == ConsoleKey.Backspace) // --- RETURN --- 
+                    if (uinput.Key == ConsoleKey.Backspace)
                     {
-                        UpdateConsumable();
+                        break;
                     }
-
-                    break;
+                    
+                    return;
             }
         }
     }
@@ -172,44 +172,82 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
             switch (selectedOption)
             {
                 case 0: // ------------ Food ----------
-                    FoodModel CurrentFood = RenderConsumableMenu.RenderFoodMenu();
-                    Console.WriteLine($"Currently selected item: ID #{CurrentFood.Id}: {CurrentFood.Name}. Press ENTER to confirm, BACKSPACE to return");
+                    FoodModel selectedFood = RenderConsumableMenu.RenderFoodMenu();
+                    Console.WriteLine($"Currently selected item: \"{selectedFood.Name}\". Press ENTER to confirm, BACKSPACE to return");
                     
                     var userinput = Console.ReadKey();
                     if (userinput.Key == ConsoleKey.Enter)
                     {
                         Tools.ErrorMessage("[WARNING] THIS ACTION CAN'T BE UNDONE [WARNING]");
-                        Tools.ColorYellowMessage($"Are you sure you want to delete ID #{CurrentFood.Id}: {CurrentFood.Name}? Press ENTER to permanently delete, BACKSPACE to return");
+                        Tools.ColorYellowMessage($"Are you sure you want to delete \"{selectedFood.Name}\"? Press ENTER to permanently delete, BACKSPACE to return");
 
                         userinput = Console.ReadKey();
                         if (userinput.Key == ConsoleKey.Enter) // CONFIRM TO DELETE
                         {
-                            FoodModel FoodToDelete = CurrentFood;
+                            FoodModel FoodToDelete = selectedFood;
                             _foodLogic.Delete(FoodToDelete);
-                            Tools.ApproveMessage($"'{CurrentFood.Name}' successfully deleted! ✅");
-                            Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
+                            Tools.ApproveMessage($"'{selectedFood.Name}' successfully deleted! ✅");
+                            Tools.ColorYellowMessage("Press anything to go back to the menu");
                             Console.ReadKey();
-                            MenuCreator();
+                            return;
                         }
 
                         else
                         {
                             Tools.ErrorMessage("[WARNING] Deletion cancelled. [WARNING]");
-                            Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
+                            Tools.ColorYellowMessage("Press anything to go back to the menu");
                             Console.ReadKey();
-                            MenuCreator();
+                            return;
                         }
                     }
 
                     if (userinput.Key == ConsoleKey.Backspace) // just call the method again to restart
                     {
-                        MenuCreator();
+                        Tools.ErrorMessage("[WARNING] Deletion cancelled. [WARNING]");
+                        Tools.ColorYellowMessage("Press anything to go back to the menu");
+                        Console.ReadKey();
+                        break;
                     }
-                    
-                    break;
+                    return;
+
                 case 1: // ------------ Drink -------------
-                    DrinkModel drinktodelete = RenderConsumableMenu.RenderDrinkMenu();
-                    break;
+                    DrinkModel selectedDrink = RenderConsumableMenu.RenderDrinkMenu();
+                    Console.WriteLine($"Currently selected item: \"{selectedDrink.Name}\". Press ENTER to confirm, BACKSPACE to return");
+
+                    var uinput = Console.ReadKey();
+                    if (uinput.Key == ConsoleKey.Enter)
+                    {
+                        Tools.ErrorMessage("[WARNING] THIS ACTION CAN'T BE UNDONE [WARNING]");
+                        Tools.ColorYellowMessage($"Are you sure you want to delete \"{selectedDrink.Name}\"? Press ENTER to permanently delete, BACKSPACE to return");
+
+                        userinput = Console.ReadKey();
+                        if (userinput.Key == ConsoleKey.Enter) // CONFIRM TO DELETE
+                        {
+                            DrinkModel drinkToDelete = selectedDrink;
+                            _drinkLogic.Delete(drinkToDelete);
+                            Tools.ApproveMessage($"'{selectedDrink.Name}' successfully deleted! ✅");
+                            Tools.ColorYellowMessage("Press anything to go back to the menu");
+                            Console.ReadKey();
+                            return;
+                        }
+
+                        else
+                        {
+                            Tools.ErrorMessage("[WARNING] Deletion cancelled. [WARNING]");
+                            Tools.ColorYellowMessage("Press anything to go back to the menu");
+                            Console.ReadKey();
+                            return;
+                        }
+                    }
+
+                    if (uinput.Key == ConsoleKey.Backspace) // just call the method again to restart
+                    {
+                        Tools.ErrorMessage("[WARNING] Deletion cancelled. [WARNING]");
+                        Tools.ColorYellowMessage("Press anything to go back to the menu");
+                        Console.ReadKey();
+                        return;
+                    }
+                return;
             }
         }
     }

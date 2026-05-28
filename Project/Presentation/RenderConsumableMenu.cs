@@ -31,7 +31,7 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
 
                 int displayId = (i + 1);
 
-                bool isSelected = displayId == selectedOption + 1; // +1 because it starts at 0, so this is to make it match the ids
+                bool isSelected = (displayId == selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
                 
                 var rowContent = new[] { $"{displayId}", $"{food.Name}", $"€ {food.Price.ToString("0.00")}", $"{food.Type}" };
                 var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {food.Name}  [/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" };
@@ -99,7 +99,7 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
 
                 int displayId = (i + 1);
 
-                bool isSelected = displayId == selectedOption + 1; // +1 because it starts at 0, so this is to make it match the ids
+                bool isSelected = (displayId == selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
                 
                 var rowContent = new[] { $"{displayId}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Type}" };
                 var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"[bold]{drink.Type}[/]" };
@@ -112,7 +112,7 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
                 }
             }
             
-            AnsiConsole.Write(drinkTable); // --------------- END OF FOOD TABLE DRAWING ------------------
+            AnsiConsole.Write(drinkTable); // --------------- END OF DRINK TABLE DRAWING ------------------
 
             var input = Console.ReadKey();
 
@@ -131,7 +131,7 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
                 AdminManageFoodMenu.MenuCreator();
             }
 
-            else if (input.Key == ConsoleKey.Enter) // Full order 
+            else if (input.Key == ConsoleKey.Enter) 
             {
                 break;
             }

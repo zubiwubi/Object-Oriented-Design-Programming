@@ -95,25 +95,21 @@ public static class ViewFoodMenu
             drinkTable.AddColumn("SIZE").Width(100);
             drinkTable.AddColumn("DIETARY").Width(100);
             // --------------------------------------
-            foreach (var drink in allDrinks)
-            {
-                bool isSelected = drink.Id == (selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
+            for(int i = 0; i < allDrinks.Count(); i++)
+            {   
+                DrinkModel drink = allDrinks[i];
 
-                var rowContent = new[] { $"{drink.Id}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Size}", $"{drink.Type}" };
-                var rowContentSelected = new[] { $"[bold]{drink.Id}[/]", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"{drink.Size}", $"[bold]{drink.Type}[/]" };
+                int displayId = (i + 1);
 
-                if (isSelected)
-                {
-                    drinkTable.AddRow(rowContentSelected);
-                }
+                bool isSelected = (displayId == selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
+                
+                var rowContent = new[] { $"{displayId}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Type}" };
+                var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"[bold]{drink.Type}[/]" };
 
-                else
-                {
-                    drinkTable.AddRow(rowContent);
-                }
+                drinkTable.AddRow(isSelected ? rowContentSelected : rowContent);
             }
-
-            AnsiConsole.Write(drinkTable); // ---------------end of table------------------
+            
+            AnsiConsole.Write(drinkTable); // --------------- END OF DRINK TABLE DRAWING ------------------
 
             var input = Console.ReadKey();
 
