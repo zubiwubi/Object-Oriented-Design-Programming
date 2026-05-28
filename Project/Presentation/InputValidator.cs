@@ -1,9 +1,9 @@
 using System.Globalization;
+using System.Security.Cryptography;
 
 public class InputValidator
 {
-    // name, description, price, type, islounge
-
+    // validates different types: str name, str description, double price, str type, long islounge
     public static T GetInput<T>(string prompt, Func<string, T> typeConvert, Func<T, string?> validator)
     {
         while (true)
@@ -13,7 +13,7 @@ public class InputValidator
 
             if (string.IsNullOrEmpty(input))
             {
-                Console.WriteLine("❌ Input cannot be empty. Please try again.");
+                Console.WriteLine("❌ Input may not be empty. Please try again.");
                 continue;
             }
 
@@ -63,7 +63,7 @@ public class InputValidator
     public static string AskType()
     
     {
-        string type = GetInput("Enter the dietary notes (ex.: a. \"*Contains: Gluten & Meat\", b. \"Vegan & Dairy-Free\" ) [REQUIRED FIELD]: ", t => t.Trim(), typeCheck =>
+        string type = GetInput("Enter the dietary notes (ex.: a. \"* Contains: Gluten & Meat\", b. \"Vegan & Dairy-Free\" ) [REQUIRED FIELD]: ", t => t.Trim(), typeCheck =>
         {
             if (typeCheck.Length < 2) return "Write at least 2 characters.";
             return null;
@@ -79,5 +79,16 @@ public class InputValidator
             return null;
         });
         return islounge;
+    }
+
+    public static string AskSize()
+    {
+        string size = GetInput("Enter the size of the drink (ex. 250ml) * Please include: \"ml\" [REQUIRED FIELD]: ", s => s.Trim(), sizeCheck =>
+        {
+           if (sizeCheck.Length < 2) return "Write at least 2 characters.";
+           if (!sizeCheck.ToLower().EndsWith("ml")) return "Please include the size in \"ml\"";
+           return null; 
+        });
+        return size;
     }
 }

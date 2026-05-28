@@ -1,6 +1,5 @@
 using Spectre.Console; 
 
-// Renders food menu and returns the ID to avoid rewriting code
 public class RenderConsumableMenu : CustomMessageWithMenuOS
 {
     public static List<FoodModel> allFood { get; set; } = FoodLogic.GetAllFoods().ToList();
@@ -10,7 +9,7 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
     {
         ViewFoodMenu.AddVeganDescription(allFood);
 
-        FoodModel CurrentFood = new(default, default, default, default, default);
+        FoodModel currentFood = new(default, default, default, default, default);
         
         int selectedOption = 0;
         while (true)
@@ -41,7 +40,7 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
 
                 if (isSelected)
                 {
-                    CurrentFood = food;
+                    currentFood = food;
                 }
             }
             
@@ -69,26 +68,22 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
                 break;
             }
         }
-        return CurrentFood;
+        return currentFood;
     }
 
-    public static long RenderDrinkMenu()
+    public static DrinkModel RenderDrinkMenu()
     {
         ViewFoodMenu.AddVeganDescription(allDrinks);
-
-        long drinkId = 0;
-
+        
+        DrinkModel currentDrink = new(default, default, default, default, default, default);
+        
         int selectedOption = 0;
-
         while (true)
         {
-            drinkId = selectedOption + 1;
             Display.ClearScreen();
             AnsiConsole.MarkupLine("[black on gray] DRINKS MENU [/]\n\n");
-            AnsiConsole.MarkupLine(" SPACEBAR: CONTINUE TO PAYMENT WITHOUT A DRINK ");
             AnsiConsole.MarkupLine(" BACKSPACE: RETURN\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
             AnsiConsole.MarkupLine($"\n Please select the drink with ENTER.");
-
 
             var drinkTable = new Table();
             drinkTable.Border(TableBorder.HeavyHead);
@@ -98,17 +93,26 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
             drinkTable.AddColumn("PRICE").Width(100);
             drinkTable.AddColumn("SIZE").Width(100);
             drinkTable.AddColumn("DIETARY").Width(100);
-            foreach (var drink in allDrinks) // ----- TABLE ROWS ------------------
-            {
-                bool isSelected = drink.Id == (selectedOption + 1); // +1 to match with IDs
+            for(int i = 0; i < allDrinks.Count(); i++)
+            {   
+                DrinkModel drink = allDrinks[i];
 
-                var rowContent = new[] { $"{drink.Id}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Size}", $"{drink.Type}" };
-                var rowContentSelected = new[] { $"[bold]{drink.Id}[/]", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"{drink.Size}", $"[bold]{drink.Type}[/]" };
+                int displayId = (i + 1);
+
+                bool isSelected = displayId == selectedOption + 1; // +1 because it starts at 0, so this is to make it match the ids
+                
+                var rowContent = new[] { $"{displayId}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Type}" };
+                var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"[bold]{drink.Type}[/]" };
 
                 drinkTable.AddRow(isSelected ? rowContentSelected : rowContent);
-            }
 
-            AnsiConsole.Write(drinkTable); // --------------- END OF DRINK TABLE DRAWING ------------------
+                if (isSelected)
+                {
+                    currentDrink = drink;
+                }
+            }
+            
+            AnsiConsole.Write(drinkTable); // --------------- END OF FOOD TABLE DRAWING ------------------
 
             var input = Console.ReadKey();
 
@@ -132,6 +136,6 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
                 break;
             }
         }
-        return drinkId;
+        return currentDrink;
     }
 }

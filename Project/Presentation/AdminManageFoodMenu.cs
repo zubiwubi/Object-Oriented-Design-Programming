@@ -3,9 +3,10 @@ using System.ComponentModel.DataAnnotations;
 public class AdminManageFoodMenu : CustomMessageWithMenuOS
 {
     protected static List<string> Options { get; set; } = new List<string>() { "VIEW FOOD/DRINK", "ADD FOOD/DRINK", "UPDATE FOOD/DRINK", "DELETE FOOD/DRINK", "RETURN" };
-    protected static List<string> FoodOrDrinkOptions { get; set; } = new List<string>() { "FOOD ", "DRINK" };
-    protected static string Message { get; set; } = " Welcome to the admin's control panel for the food menu. Please select an option using the arrow keys.";
-    public static FoodLogic foodLogic = new();
+    protected static List<string> FoodOrDrinkOptions { get; set; } = new List<string>() { "FOOD", "DRINK" };
+    protected static string Message { get; set; } = " Welcome to the admin's control panel for the food and drink's menu. Please select an option using the arrow keys.";
+    private static FoodLogic _foodLogic = new();
+    private static DrinkLogic _drinkLogic = new();
     public static void MenuCreator()
     {
         Console.Clear();
@@ -38,7 +39,7 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
     {
         Console.Clear();
 
-        string question = "Do you want to ADD a FOOD or DRINK?";
+        string question = "Do you want to ADD FOOD or DRINK?";
 
         while (true)
         {
@@ -47,21 +48,35 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
             switch (selectedOption)
             {
                 case 0: // ------------ Food ----------
-                    string name = InputValidator.AskName();
-                    string description = InputValidator.AskDescription();
-                    double price = InputValidator.AskPrice();
-                    string type = InputValidator.AskType();
-                    long islounge = InputValidator.AskIsLounge();
+                    string foodName = InputValidator.AskName();
+                    string foodDescription = InputValidator.AskDescription();
+                    double foodPrice = InputValidator.AskPrice();
+                    string foodType = InputValidator.AskType();
+                    long Fislounge = InputValidator.AskIsLounge();
 
-                    FoodModel newFood = new FoodModel(name, description, price, type, islounge);
+                    FoodModel newFood = new(foodName, foodDescription, foodPrice, foodType, Fislounge);
                     
-                    foodLogic.Add(newFood);
+                    _foodLogic.Add(newFood);
                     Tools.ApproveMessage($"'{newFood.Name}' successfully added! ✅"); 
-                    Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
+                    Tools.ColorYellowMessage("DISCLAIMER: Press anything to go back to the menu");
                     Console.ReadKey();
                     MenuCreator();
                     break;
                 case 1: // ------------ Drink -------------
+                    string drinkName = InputValidator.AskName();
+                    string drinkDescription = InputValidator.AskDescription();
+                    string drinkSize = InputValidator.AskSize();
+                    double drinkPrice = InputValidator.AskPrice();
+                    string drinkType = InputValidator.AskType();
+                    long dIsLounge = InputValidator.AskIsLounge();
+
+                    DrinkModel newDrink = new(drinkName, drinkDescription, drinkSize, drinkPrice, drinkType, dIsLounge);
+                    
+                    _drinkLogic.Add(newDrink);
+                    Tools.ApproveMessage($"'{newDrink.Name}' successfully added! ✅"); 
+                    Tools.ColorYellowMessage("DISCLAIMER: Press anything to go back to the menu");
+                    Console.ReadKey();
+                    MenuCreator();
                     break;
             }
         }
@@ -71,7 +86,7 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
     {
        Console.Clear();
 
-        string question = "Do you want to UPDATE a FOOD or DRINK?";
+        string question = "Do you want to UPDATE FOOD or DRINK?";
 
         while (true)
         {
@@ -80,24 +95,23 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
             switch (selectedOption)
             {
                 case 0: // ------------ Food ----------
-                    FoodModel CurrentFood = RenderConsumableMenu.RenderFoodMenu();
-                    Console.WriteLine($"Currently selected item: ID#{CurrentFood.Id}: {CurrentFood.Name}. Press ENTER to confirm, BACKSPACE to return");
+                    FoodModel currentFood = RenderConsumableMenu.RenderFoodMenu();
+                    Console.WriteLine($"Currently selected item: \"{currentFood.Name}\". Press ENTER to confirm, BACKSPACE to return");
                     
                     var userinput = Console.ReadKey();
                     if (userinput.Key == ConsoleKey.Enter)
                     {
-                        Tools.SlowLine($"ID# {CurrentFood.Id}: {CurrentFood.Name} selected ✅", 10);
+                        Tools.SlowLine($"{currentFood.Name} selected ✅", 10);
 
-                        long id = CurrentFood.Id;
-                        string name = InputValidator.AskName();
-                        string description = InputValidator.AskDescription();
-                        double price = InputValidator.AskPrice();
-                        string type = InputValidator.AskType();
-                        long islounge = InputValidator.AskIsLounge();
+                        string foodName = InputValidator.AskName();
+                        string foodDescription = InputValidator.AskDescription();
+                        double foodPrice = InputValidator.AskPrice();
+                        string foodType = InputValidator.AskType();
+                        long Fislounge = InputValidator.AskIsLounge();
 
-                        FoodModel updatedFood = new FoodModel(id, name, description, price, type, islounge);
+                        FoodModel updatedFood = new(foodName, foodDescription, foodPrice, foodType, Fislounge);
 
-                        foodLogic.Update(updatedFood);
+                        _foodLogic.Update(updatedFood);
                         Tools.ApproveMessage($"'{updatedFood.Name}' successfully updated! ✅");
                         Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
                         Console.ReadKey();
@@ -108,10 +122,38 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
                     {
                         UpdateConsumable();
                     }
-                    
+
                     break;
                 case 1: // ------------ Drink -------------
-                    long drinkid = RenderConsumableMenu.RenderDrinkMenu();
+                    DrinkModel selectedDrink = RenderConsumableMenu.RenderDrinkMenu();
+                    Console.WriteLine($"Currently selected item: \"{selectedDrink.Name}\". Press ENTER to confirm, BACKSPACE to return");
+                    
+                    var uinput = Console.ReadKey();
+                    if (uinput.Key == ConsoleKey.Enter) // --- CONFIRM --- 
+                    {
+                        Tools.SlowLine($"{selectedDrink.Name} selected ✅", 10);
+
+                        string drinkName = InputValidator.AskName();
+                        string drinkDescription = InputValidator.AskDescription();
+                        string drinkSize = InputValidator.AskSize();
+                        double drinkPrice = InputValidator.AskPrice();
+                        string drinkType = InputValidator.AskType();
+                        long dIsLounge = InputValidator.AskIsLounge();
+
+                        DrinkModel updatedDrink = new(selectedDrink.Id, drinkName, drinkDescription, drinkSize, drinkPrice, drinkType, dIsLounge);
+
+                        _drinkLogic.Update(updatedDrink);
+                        Tools.ApproveMessage($"'{updatedDrink.Name}' successfully updated! ✅");
+                        Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
+                        Console.ReadKey();
+                        MenuCreator();
+                    }
+
+                    if (uinput.Key == ConsoleKey.Backspace) // --- RETURN --- 
+                    {
+                        UpdateConsumable();
+                    }
+
                     break;
             }
         }
@@ -121,7 +163,7 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
     {
         Console.Clear();
 
-        string question = "Do you want to DELETE a FOOD or DRINK?";
+        string question = "Do you want to DELETE FOOD or DRINK?";
 
         while (true)
         {
@@ -143,7 +185,7 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
                         if (userinput.Key == ConsoleKey.Enter) // CONFIRM TO DELETE
                         {
                             FoodModel FoodToDelete = CurrentFood;
-                            foodLogic.Delete(FoodToDelete);
+                            _foodLogic.Delete(FoodToDelete);
                             Tools.ApproveMessage($"'{CurrentFood.Name}' successfully deleted! ✅");
                             Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
                             Console.ReadKey();
@@ -166,7 +208,7 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
                     
                     break;
                 case 1: // ------------ Drink -------------
-                    long drinkid = RenderConsumableMenu.RenderDrinkMenu();
+                    DrinkModel drinktodelete = RenderConsumableMenu.RenderDrinkMenu();
                     break;
             }
         }
