@@ -54,7 +54,24 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
 
     public static void UpdateConsumable()
     {
-        // T consumable
+       Console.Clear();
+
+        string question = "Is the following item food or drink?";
+
+        while (true)
+        {
+            int selectedOption = MenuRenderer(FoodOrDrinkOptions, question);
+
+            switch (selectedOption)
+            {
+                case 0: // ------------ Food ----------
+                    long foodid = RenderConsumableMenu.RenderFoodMenu();
+                    break;
+                case 1: // ------------ Drink -------------
+                    long drinkid = RenderConsumableMenu.RenderDrinkMenu();
+                    break;
+            }
+        }
     }
 
     public static void DeleteConsumable()
