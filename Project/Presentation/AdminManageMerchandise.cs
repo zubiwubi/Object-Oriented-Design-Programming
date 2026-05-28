@@ -7,10 +7,8 @@ public class AdminManageMerchandise : IPage
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> ManageOptions {get; set;} = new() {"Add merchandise","Update merchandise","go back"};
+    public static List<string> ManageOptions {get; set;} = new() {"Add merchandise","Update merchandise", "Delete merchandise", "view current merchandise","go back"};
     public static List<string> Menu {get; set;} = new() {"Yes", "No"};
-    public static List<MerchandiseModel> AllMerchandise = merchandiseLogic.GetAllMerchandise(); 
-    //public static List<MerchandiseModel> OrderedMerchandise = AllMerchandise.GroupBy(x => x.Type).OrderBy(x => x.Count()).ToList(); 
 
     public static void StartPage()
     {
@@ -109,7 +107,15 @@ public class AdminManageMerchandise : IPage
                 Tools.ProgressBar();
                 UpdateMerchandise();
                 break;
-            case 2:
+            case 2: 
+                Tools.ProgressBar(); 
+                DeleteMerchandise(); 
+                break; 
+            case 3: 
+                Tools.ProgressBar(); 
+                ViewMerchandise.SelectHeader(); 
+                break;
+            case 4:
                 Tools.ProgressBar();
                 AdminHomePage.CreateAdminMenu(); 
                 break;
@@ -154,21 +160,22 @@ public class AdminManageMerchandise : IPage
     } 
     public static void UpdateMerchandise()
     {
+        List<MerchandiseModel> CurrentMerchandise = merchandiseLogic.GetAllMerchandise(); 
         IsOptionSelected = false; 
         while (!IsOptionSelected)
         {
             Display.ClearScreen(); 
 
-            for (int i = 0; i < AllMerchandise.Count; i++)
+            for (int i = 0; i < CurrentMerchandise.Count; i++)
             {
                 if (i == Arrow)
                 {
                     Console.Write("➥ ");
-                    Tools.ColorMagentaMessage($" [{i + 1}] {AllMerchandise[i].Name} | €{AllMerchandise[i].Price} | {AllMerchandise[i].Type} | {AllMerchandise[i].Size} | {AllMerchandise[i].Description}");
+                    Tools.ColorMagentaMessage($" [{i + 1}] {CurrentMerchandise[i].Name} | €{CurrentMerchandise[i].Price} | {CurrentMerchandise[i].Type} | {CurrentMerchandise[i].Size} | {CurrentMerchandise[i].Description}");
                 }
                 else
                 {
-                    Console.WriteLine($" [{i + 1}] {AllMerchandise[i].Name} | €{AllMerchandise[i].Price} | {AllMerchandise[i].Type} | {AllMerchandise[i].Size} | {AllMerchandise[i].Description} ");
+                    Console.WriteLine($" [{i + 1}] {CurrentMerchandise[i].Name} | €{CurrentMerchandise[i].Price} | {CurrentMerchandise[i].Type} | {CurrentMerchandise[i].Size} | {CurrentMerchandise[i].Description} ");
 
                 }
             }
@@ -180,14 +187,14 @@ public class AdminManageMerchandise : IPage
 
                 if (Arrow < 0)
                 {
-                    Arrow = AllMerchandise.Count - 1;
+                    Arrow = CurrentMerchandise.Count - 1;
                 }
             }
             else if (Key.Key == ConsoleKey.DownArrow)
             {
                 Arrow++;
 
-                if (Arrow >= AllMerchandise.Count)
+                if (Arrow >= CurrentMerchandise.Count)
                 {
                     Arrow = 0;
                 }
@@ -204,7 +211,7 @@ public class AdminManageMerchandise : IPage
 
                 Display.ClearScreen(); 
 
-                Console.WriteLine($"Currently selected item: {AllMerchandise[MenuChoice].Name}");
+                Console.WriteLine($"Currently selected item: {CurrentMerchandise[MenuChoice].Name}");
 
                 string Name = AskMerchName(); 
                 string Description = AskMerchDescription(); 
@@ -228,9 +235,9 @@ public class AdminManageMerchandise : IPage
                 }
                 else
                 {
-                    merchandise.Id = AllMerchandise[MenuChoice].Id; 
+                    merchandise.Id = CurrentMerchandise[MenuChoice].Id; 
                     merchandiseLogic.Update(merchandise); 
-                    Tools.ApproveMessage($"'{AllMerchandise[MenuChoice].Name}' succesfully updated to:'{merchandise.Name}'!! ✅✅✅"); 
+                    Tools.ApproveMessage($"'{CurrentMerchandise[MenuChoice].Name}' succesfully updated to:'{merchandise.Name}'!! ✅✅✅"); 
                     Tools.ColorYellowMessage("DISCLAIMER: press 'ENTER' to go back to the menu");
                     Key = Console.ReadKey()!;
 
@@ -245,21 +252,22 @@ public class AdminManageMerchandise : IPage
     }
     public static void DeleteMerchandise()
     {
+        List<MerchandiseModel> CurrentMerchandise = merchandiseLogic.GetAllMerchandise(); 
         IsOptionSelected = false; 
         while (!IsOptionSelected)
         {
             Display.ClearScreen(); 
 
-            for (int i = 0; i < AllMerchandise.Count; i++)
+            for (int i = 0; i < CurrentMerchandise.Count; i++)
             {
                 if (i == Arrow)
                 {
                     Console.Write("➥ ");
-                    Tools.ColorMagentaMessage($" [{i + 1}] {AllMerchandise[i].Name} | €{AllMerchandise[i].Price} | {AllMerchandise[i].Type} | {AllMerchandise[i].Size} | {AllMerchandise[i].Description}");
+                    Tools.ColorMagentaMessage($" [{i + 1}] {CurrentMerchandise[i].Name} | €{CurrentMerchandise[i].Price} | {CurrentMerchandise[i].Type} | {CurrentMerchandise[i].Size} | {CurrentMerchandise[i].Description}");
                 }
                 else
                 {
-                    Console.WriteLine($" [{i + 1}] {AllMerchandise[i].Name} | €{AllMerchandise[i].Price} | {AllMerchandise[i].Type} | {AllMerchandise[i].Size} | {AllMerchandise[i].Description} ");
+                    Console.WriteLine($" [{i + 1}] {CurrentMerchandise[i].Name} | €{CurrentMerchandise[i].Price} | {CurrentMerchandise[i].Type} | {CurrentMerchandise[i].Size} | {CurrentMerchandise[i].Description} ");
 
                 }
             }
@@ -271,14 +279,14 @@ public class AdminManageMerchandise : IPage
 
                 if (Arrow < 0)
                 {
-                    Arrow = AllMerchandise.Count - 1;
+                    Arrow = CurrentMerchandise.Count - 1;
                 }
             }
             else if (Key.Key == ConsoleKey.DownArrow)
             {
                 Arrow++;
 
-                if (Arrow >= AllMerchandise.Count)
+                if (Arrow >= CurrentMerchandise.Count)
                 {
                     Arrow = 0;
                 }
@@ -293,8 +301,88 @@ public class AdminManageMerchandise : IPage
                 MenuChoice = Arrow;
                 IsOptionSelected = true;
 
-                Display.ClearScreen(); 
+
+                int subArrow = 0;
+                int subMenuChoice = 0;
+                bool IsSelected = false;
+                ConsoleKeyInfo subKey;
+
+                while (!IsSelected)
+                {
+                    Display.ClearScreen(); 
+                    Console.WriteLine($"Currently selected item: {CurrentMerchandise[MenuChoice].Name}");
+                    Tools.ErrorMessage("[WARNING] THIS ACTION CAN'T BE UNDONE [WARNING]");
+                    Tools.ColorYellowMessage("Are you sure you want to delete this item?");
+                    for (int i = 0; i < Menu.Count; i++)
+                    {
+                        if (i == subArrow)
+                        {
+                            Console.Write("➥ ");
+                            Tools.ColorMagentaMessage($"[{i + 1}] {Menu[i]}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[{i + 1}] {Menu[i]}"); 
+                        }
+
+                    }
+
+                    subKey = Console.ReadKey();
+                    if (subKey.Key == ConsoleKey.UpArrow)
+                    {
+                        subArrow--;
+
+                        if (subArrow < 0)
+                        {
+                            subArrow = Menu.Count - 1;
+                        }
+                    }
+                    else if (subKey.Key == ConsoleKey.DownArrow)
+                    {
+                        subArrow++;
+
+                        if (subArrow >= Menu.Count)
+                        {
+                            subArrow = 0;
+                        }
+                    }
+
+                    else if (subKey.Key == ConsoleKey.Enter)
+                    {
+                        subMenuChoice = subArrow;
+                        IsSelected = true;
+                    }
+
+                }
+
+                switch (subMenuChoice)
+                {
+                    case 0: 
+                        Display.ClearScreen();
+                        merchandiseLogic.UpdateBool(CurrentMerchandise[MenuChoice]); 
+                        Tools.ApproveMessage($"'{CurrentMerchandise[MenuChoice].Name}' has been successfully deleted!");
+                        Tools.ColorYellowMessage("press 'ENTER' to go back");
+                        Key = Console.ReadKey(); 
+                        if (Key.Key == ConsoleKey.Enter)
+                        {
+                            Tools.ProgressBar(); 
+                            CreateManageMenu(); 
+                        }
+                        break;
+                    case 1: 
+                        Tools.ErrorMessage("deleting cancelled.");
+                        Tools.ColorYellowMessage("press 'ENTER' to go back");
+                        Key = Console.ReadKey(); 
+                        if (Key.Key == ConsoleKey.Enter)
+                        {
+                            Tools.ProgressBar(); 
+                            CreateManageMenu();                
+                        }
+                        break; 
+                }
+
             }
+            
         }
     }
 

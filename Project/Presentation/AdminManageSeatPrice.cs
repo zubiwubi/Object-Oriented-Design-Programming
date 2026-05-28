@@ -7,7 +7,7 @@ public class AdminManageSeatPrice
     {
         while (true)
         {
-            Console.WriteLine("Please enter a number (1, 2, 3):");
+            Console.WriteLine("Please enter the auditorium number where you want to change the prices (1, 2, 3):");
 
             if (int.TryParse(Console.ReadLine(), out AudNum) &&
                 (AudNum == 1 || AudNum == 2 || AudNum == 3))
@@ -26,7 +26,7 @@ public class AdminManageSeatPrice
         if (chosenSeats == null || chosenSeats.Count == 0)
             return;
 
-        int tierSeat;
+        int typeSeat;
 
         Console.WriteLine("Chosen seats:");
         foreach (var seat in chosenSeats)
@@ -38,20 +38,20 @@ public class AdminManageSeatPrice
 
         while (true)
         {
-            Console.WriteLine("Which tier? 1 = Basic, 2 = Standard, 3 = Premium");
+            Console.WriteLine("To which type do you want to change the selected seats?\n1 = Basic, 2 = Standard, 3 = Premium");
 
-            if (int.TryParse(Console.ReadLine(), out tierSeat) &&
-                (tierSeat >= 1 && tierSeat <= 3))
+            if (int.TryParse(Console.ReadLine(), out typeSeat) &&
+                (typeSeat >= 1 && typeSeat <= 3))
             {
                 break;
             }
 
-            Console.WriteLine("Invalid input. Try again.");
+            Console.WriteLine("Invalid type. Try again.");
         }
 
         var seatAccess = new SeatAccess();
 
-        string type = tierSeat switch
+        string type = typeSeat switch
         {
             1 => "basic",
             2 => "standard",

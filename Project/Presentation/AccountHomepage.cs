@@ -44,9 +44,12 @@ public class AccountHomePage : Account, IPage
                 if (i == Arrow)
                 {
                     Console.Write("➥ ");
+                    Tools.ColorMagentaMessage($"[{i + 1}] {Menu[i]}");
                 }
-
-                Console.WriteLine($"[{i + 1}] {Menu[i]}");
+                else
+                {
+                    Console.WriteLine($"[{i + 1}] {Menu[i]}");
+                }
             }
 
 
@@ -90,11 +93,9 @@ public class AccountHomePage : Account, IPage
                 ManageAccount.Start();
                 break;
             case 2:
-                Tools.ErrorMessage("this function does not exist yet.");
-                Tools.ColorYellowMessage("Press 'ENTER' to go back");
-                Console.ReadKey();
+                Console.WriteLine("You chose to view your previous orders.");
                 Tools.ProgressBar();
-                HomePage();
+                PreviousOrders.ViewPreviousOrders();
                 break;
             case 3:
                 Console.WriteLine("Loggin off.....");
@@ -102,11 +103,11 @@ public class AccountHomePage : Account, IPage
                 LogOut();
                 Program.Main();
                 break;
-            case 4: 
-            Console.WriteLine("your being redirected....");
+            case 4:
+                Console.WriteLine("your being redirected....");
                 Tools.ProgressBar();
-                DeleteAccount(); 
-                break; 
+                DeleteAccount();
+                break;
         }
     }
 }
