@@ -6,7 +6,7 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
     public static List<FoodModel> allFood { get; set; } = FoodLogic.GetAllFoods().ToList();
     public static List<DrinkModel> allDrinks { get; set; } = DrinkLogic.GetAllDrinks().ToList();
 
-    public static FoodModel RenderFoodMenu()
+    public static FoodModel RenderFoodMenu() // return the selected food
     {
         ViewFoodMenu.AddVeganDescription(allFood);
 

@@ -97,6 +97,7 @@ public class AdminHomePage : IPage
         {
             case 0: // --------- FOOD MENU ADMIN ------------
                 AdminManageFoodMenu.MenuCreator();
+                Homepage();
                 break;
             case 1:
                 Console.WriteLine("You selected to change the seat prices");

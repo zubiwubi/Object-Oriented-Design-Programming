@@ -14,4 +14,9 @@ public class FoodLogic
     {
         _foodAccess.Add(food);
     }
+
+    public void Update(FoodModel food)
+    {
+        _foodAccess.Update(food);
+    }
 }
