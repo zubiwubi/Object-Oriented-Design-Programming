@@ -28,7 +28,7 @@ public class FoodAccess
 
     public void Update(FoodModel food)
     {
-        string sql = $"UPDATE {Table} SET name = @Name, description = @Description, price = @Price, type = @Type, isLounge = @isLounge WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET name = @Name, description = @Description, price = @Price, type = @Type, isLounge = @IsLounge WHERE id = @Id";
         _connection.Execute(sql, food);
     }
 

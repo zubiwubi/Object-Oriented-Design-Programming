@@ -61,6 +61,7 @@ public class InputValidator
     }
 
     public static string AskType()
+    
     {
         string type = GetInput("Enter the dietary notes (ex.: a. \"*Contains: Gluten & Meat\", b. \"Vegan & Dairy-Free\" ) [REQUIRED FIELD]: ", t => t.Trim(), typeCheck =>
         {

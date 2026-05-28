@@ -56,7 +56,7 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
     {
        Console.Clear();
 
-        string question = "Is the following item food or drink?";
+        string question = "Is the item you wish to update a food item or a drink item?";
 
         while (true)
         {
@@ -65,7 +65,9 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
             switch (selectedOption)
             {
                 case 0: // ------------ Food ----------
-                    long foodid = RenderConsumableMenu.RenderFoodMenu();
+                    FoodModel CurrentFood = RenderConsumableMenu.RenderFoodMenu();
+                    Console.WriteLine($"Currently selected item: {CurrentFood.Name}");
+                    Console.ReadKey();
                     break;
                 case 1: // ------------ Drink -------------
                     long drinkid = RenderConsumableMenu.RenderDrinkMenu();
@@ -87,7 +89,7 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
             switch (selectedOption)
             {
                 case 0: // ------------ Food ----------
-                    long foodid = RenderConsumableMenu.RenderFoodMenu();
+                    RenderConsumableMenu.RenderFoodMenu();
                     break;
                 case 1: // ------------ Drink -------------
                     long drinkid = RenderConsumableMenu.RenderDrinkMenu();

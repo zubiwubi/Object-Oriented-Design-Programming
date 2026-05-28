@@ -6,10 +6,11 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
     public static List<FoodModel> allFood { get; set; } = FoodLogic.GetAllFoods().ToList();
     public static List<DrinkModel> allDrinks { get; set; } = DrinkLogic.GetAllDrinks().ToList();
 
-    public static long RenderFoodMenu()
+    public static FoodModel RenderFoodMenu()
     {
         ViewFoodMenu.AddVeganDescription(allFood);
 
+        FoodModel CurrentFood = new(default, default, default, default, default);
         long snackId = 0;
         int selectedOption = 0;
 
@@ -37,6 +38,11 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
                 var rowContentSelected = new[] { $"{food.Id}", $"[white on gray23]   ● {food.Name}  [/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" };
 
                 table.AddRow(isSelected ? rowContentSelected : rowContent);
+
+                if (isSelected)
+                {
+                    CurrentFood = food;
+                }
             }
             AnsiConsole.Write(table); // --------------- END OF FOOD TABLE DRAWING ------------------
 
@@ -62,7 +68,7 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
                 break;
             }
         }
-        return snackId;
+        return CurrentFood;
     }
 
     public static long RenderDrinkMenu()
