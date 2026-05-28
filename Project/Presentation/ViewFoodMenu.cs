@@ -2,7 +2,7 @@ using Spectre.Console;
 
 public static class ViewFoodMenu
 {
-    public static List<FoodModel> allFoods = FoodLogic.GetAllFoods();
+    public static List<FoodModel> allFood = FoodLogic.GetAllFoods();
     public static List<DrinkModel> allDrinks = DrinkLogic.GetAllDrinks();
 
     public static void AddVeganDescription<T>(List<T> Consumables) where T : ConsumableModel
@@ -18,54 +18,48 @@ public static class ViewFoodMenu
 
     public static void RenderFoodMenu()
     {
-        AddVeganDescription(allFoods);
+        AddVeganDescription(allFood);
 
         int selectedOption = 0;
-
         while (true)
-        {
+        {   
             Display.ClearScreen();
-            AnsiConsole.MarkupLine("[black on gray] FOOD & DRINKS MENU [/]\n\n");
+            AnsiConsole.MarkupLine("[black on gray] FOOD MENU [/]\n\n");
             AnsiConsole.MarkupLine(" BACKSPACE: :house: HOMEPAGE\n ENTER: :tropical_drink: DRINKS MENU\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
 
-            // Draw Food Table Columns
             var table = new Table();
             table.Border(TableBorder.HeavyHead);
-            table.AddColumn("#").Width(110); // .Width prevents deformation in the table
+            // ------------------------------- TABLE COLUMNS ------------------
+            table.AddColumn("#").Width(110); // .Width() prevents deformation in the table
             table.AddColumn("FOOD").Width(110);
             table.AddColumn("PRICE").Width(110);
             table.AddColumn("DIETARY").Width(110);
-            // -------------------------------
-            foreach (var food in allFoods)
-            {
-                bool isSelected = food.Id == (selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
+            for(int i = 0; i < allFood.Count(); i++)
+            {   
+                FoodModel food = allFood[i];
 
-                var rowContent = new[] { $"{food.Id}", $"{food.Name}", $"€ {food.Price.ToString("0.00")}", $"{food.Type}" };
-                var rowContentSelected = new[] { $"{food.Id}", $"[white on gray23]   ● {food.Name}  [/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" };
+                int displayId = (i + 1);
 
-                if (isSelected)
-                {
-                    table.AddRow(rowContentSelected);
-                }
+                bool isSelected = displayId == selectedOption + 1; // +1 because it starts at 0, so this is to make it match the ids
+                
+                var rowContent = new[] { $"{displayId}", $"{food.Name}", $"€ {food.Price.ToString("0.00")}", $"{food.Type}" };
+                var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {food.Name}  [/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" };
 
-                else
-                {
-                    table.AddRow(rowContent);
-                }
+                table.AddRow(isSelected ? rowContentSelected : rowContent);
             }
-
-            AnsiConsole.Write(table); // ---------------end of table------------------
+            
+            AnsiConsole.Write(table); // --------------- END OF FOOD TABLE DRAWING ------------------
 
             var input = Console.ReadKey();
 
             if (input.Key == ConsoleKey.DownArrow)
             {
-                selectedOption = (selectedOption + 1) % allFoods.Count();
+                selectedOption = (selectedOption + 1) % allFood.Count();
             }
 
             if (input.Key == ConsoleKey.UpArrow)
             {
-                selectedOption = (allFoods.Count() + selectedOption - 1) % allFoods.Count();
+                selectedOption = (allFood.Count() + selectedOption - 1) % allFood.Count();
             }
 
             if (input.Key == ConsoleKey.Enter)
@@ -125,7 +119,7 @@ public static class ViewFoodMenu
 
             if (input.Key == ConsoleKey.DownArrow)
             {
-                selectedOption = (selectedOption + 1) % allFoods.Count();
+                selectedOption = (selectedOption + 1) % allDrinks.Count();
             }
 
             if (input.Key == ConsoleKey.UpArrow)

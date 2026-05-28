@@ -11,15 +11,11 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
         ViewFoodMenu.AddVeganDescription(allFood);
 
         FoodModel CurrentFood = new(default, default, default, default, default);
-        long snackId = 0;
+        
         int selectedOption = 0;
-
         while (true)
-        {
-            snackId = selectedOption + 1;
-            
+        {   
             Display.ClearScreen();
-
             AnsiConsole.MarkupLine("[black on gray] FOOD MENU [/]\n\n");
             AnsiConsole.MarkupLine(" BACKSPACE: RETURN  \n\n Use the arrow keys to navigate. Highlighted items will expand and show the description. Please select with ENTER.");
 
@@ -30,12 +26,16 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
             table.AddColumn("FOOD").Width(110);
             table.AddColumn("PRICE").Width(110);
             table.AddColumn("DIETARY").Width(110);
-            foreach (var food in allFood) // ----- TABLE ROWS ------------------
-            {
-                bool isSelected = food.Id == (selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
+            for(int i = 0; i < allFood.Count(); i++)
+            {   
+                FoodModel food = allFood[i];
 
-                var rowContent = new[] { $"{food.Id}", $"{food.Name}", $"€ {food.Price.ToString("0.00")}", $"{food.Type}" };
-                var rowContentSelected = new[] { $"{food.Id}", $"[white on gray23]   ● {food.Name}  [/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" };
+                int displayId = (i + 1);
+
+                bool isSelected = displayId == selectedOption + 1; // +1 because it starts at 0, so this is to make it match the ids
+                
+                var rowContent = new[] { $"{displayId}", $"{food.Name}", $"€ {food.Price.ToString("0.00")}", $"{food.Type}" };
+                var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {food.Name}  [/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" };
 
                 table.AddRow(isSelected ? rowContentSelected : rowContent);
 
@@ -44,6 +44,7 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
                     CurrentFood = food;
                 }
             }
+            
             AnsiConsole.Write(table); // --------------- END OF FOOD TABLE DRAWING ------------------
 
             var input = Console.ReadKey();

@@ -5,7 +5,7 @@ class Homepage : MenuOptionSelect
     protected override List<string> Options { get; set; } = new List<string>() { "Login", "Create Account", "Continue as Guest", "Search Movies", "View Food & Drinks Menu", "View Merchandise", "Auditorium Maps", "FAQ", "Exit" };
     public void Render()
     {
-        Console.Clear();
+        //Console.Clear();
 
         while (true)
         {

@@ -14,7 +14,7 @@ public class DrinkAccess
         return _connection.Query<DrinkModel>(sql).ToList();
     }
 
-    public void Write(DrinkModel drink)
+    public void Add(DrinkModel drink)
     {
         string sql = $"INSERT INTO {Table} (name, description, size, price, type, islounge) VALUES (@Name, @Description,@Size, @Price, @Type, @isLounge)";
         _connection.Execute(sql, drink);

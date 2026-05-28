@@ -19,4 +19,9 @@ public class FoodLogic
     {
         _foodAccess.Update(food);
     }
+
+    public void Delete(FoodModel food)
+    {
+        _foodAccess.Delete(food); 
+    }
 }

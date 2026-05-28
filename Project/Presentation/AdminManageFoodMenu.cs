@@ -36,30 +36,42 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
 
     public static void AddConsumable()
     {
-        string name = InputValidator.AskName();
-        string description = InputValidator.AskDescription();
-        double price = InputValidator.AskPrice();
-        string type = InputValidator.AskType();
-        long islounge = InputValidator.AskIsLounge();
+        Console.Clear();
 
-        FoodModel newFood = new FoodModel(name, description, price, type, islounge);
-        
-        foodLogic.Add(newFood);
-        Tools.ApproveMessage($"'{newFood.Name}' successfully added! ✅"); 
-        Tools.ColorYellowMessage("DISCLAIMER: press 'ENTER' to go back to the menu");
-        var input = Console.ReadKey();
+        string question = "Do you want to ADD a FOOD or DRINK?";
 
-        if (input.Key == ConsoleKey.Enter) // Continue
+        while (true)
         {
-            Tools.ProgressBar(); 
-        } 
+            int selectedOption = MenuRenderer(FoodOrDrinkOptions, question);
+
+            switch (selectedOption)
+            {
+                case 0: // ------------ Food ----------
+                    string name = InputValidator.AskName();
+                    string description = InputValidator.AskDescription();
+                    double price = InputValidator.AskPrice();
+                    string type = InputValidator.AskType();
+                    long islounge = InputValidator.AskIsLounge();
+
+                    FoodModel newFood = new FoodModel(name, description, price, type, islounge);
+                    
+                    foodLogic.Add(newFood);
+                    Tools.ApproveMessage($"'{newFood.Name}' successfully added! ✅"); 
+                    Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
+                    Console.ReadKey();
+                    MenuCreator();
+                    break;
+                case 1: // ------------ Drink -------------
+                    break;
+            }
+        }
     }
 
     public static void UpdateConsumable()
     {
        Console.Clear();
 
-        string question = "Is the item you wish to update a food item or a drink item?";
+        string question = "Do you want to UPDATE a FOOD or DRINK?";
 
         while (true)
         {
@@ -109,7 +121,7 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
     {
         Console.Clear();
 
-        string question = "Is the following item food or drink?";
+        string question = "Do you want to DELETE a FOOD or DRINK?";
 
         while (true)
         {
@@ -118,7 +130,40 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
             switch (selectedOption)
             {
                 case 0: // ------------ Food ----------
-                    RenderConsumableMenu.RenderFoodMenu();
+                    FoodModel CurrentFood = RenderConsumableMenu.RenderFoodMenu();
+                    Console.WriteLine($"Currently selected item: ID #{CurrentFood.Id}: {CurrentFood.Name}. Press ENTER to confirm, BACKSPACE to return");
+                    
+                    var userinput = Console.ReadKey();
+                    if (userinput.Key == ConsoleKey.Enter)
+                    {
+                        Tools.ErrorMessage("[WARNING] THIS ACTION CAN'T BE UNDONE [WARNING]");
+                        Tools.ColorYellowMessage($"Are you sure you want to delete ID #{CurrentFood.Id}: {CurrentFood.Name}? Press ENTER to permanently delete, BACKSPACE to return");
+
+                        userinput = Console.ReadKey();
+                        if (userinput.Key == ConsoleKey.Enter) // CONFIRM TO DELETE
+                        {
+                            FoodModel FoodToDelete = CurrentFood;
+                            foodLogic.Delete(FoodToDelete);
+                            Tools.ApproveMessage($"'{CurrentFood.Name}' successfully deleted! ✅");
+                            Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
+                            Console.ReadKey();
+                            MenuCreator();
+                        }
+
+                        else
+                        {
+                            Tools.ErrorMessage("[WARNING] Deletion cancelled. [WARNING]");
+                            Tools.ColorYellowMessage("DISCLAIMER: press anything to go back to the menu");
+                            Console.ReadKey();
+                            MenuCreator();
+                        }
+                    }
+
+                    if (userinput.Key == ConsoleKey.Backspace) // just call the method again to restart
+                    {
+                        MenuCreator();
+                    }
+                    
                     break;
                 case 1: // ------------ Drink -------------
                     long drinkid = RenderConsumableMenu.RenderDrinkMenu();
