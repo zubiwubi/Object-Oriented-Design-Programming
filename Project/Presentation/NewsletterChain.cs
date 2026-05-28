@@ -64,9 +64,37 @@ public class NewsletterChain
 
 
 
+        AccountLogic accountLogic = new AccountLogic.GetAllAccounts();
+        list<AccountModel> costumerList = new< AccountModel > ();
+        foreach (AccountModel account in allAccounts)
+        {
+            if (account.Type == "costumer")
+                costumerList.add(account);
+        }
+
+
+
         AccountLogic accountLogic = new AccountLogic();
-        list<AccountModel> allAccounts = accountLogic.GetAllAccounts();
-        foreach
+        List<AccountModel> allAccounts = accountLogic.GetAllAccounts();
+        List<AccountModel> customerList = new List<AccountModel>();
+        foreach (AccountModel account in allAccounts)
+        {
+            if (account.Type == "customer")
+            {
+                customerList.Add(account);
+            }
+        }
+
+
+
+
+
+
+        //         accountLogic - AccountLogic
+        // allAccounts - List < AccountModel >
+        // customerList - List < AccountModel >
+        // confirmation - string
+        // customer - AccountModel(in the foreach loop)
 
 
         // create the tool to access accounts
