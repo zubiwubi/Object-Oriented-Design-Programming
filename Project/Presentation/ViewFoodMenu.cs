@@ -2,9 +2,6 @@ using Spectre.Console;
 
 public static class ViewFoodMenu
 {
-    public static List<FoodModel> allFood = FoodLogic.GetAllFoods();
-    public static List<DrinkModel> allDrinks = DrinkLogic.GetAllDrinks();
-
     public static void AddVeganDescription<T>(List<T> Consumables) where T : ConsumableModel
     {
         foreach (var item in Consumables)
@@ -18,6 +15,8 @@ public static class ViewFoodMenu
 
     public static void RenderFoodMenu()
     {
+        List<FoodModel> allFood = FoodLogic.GetAllFoods();
+        
         AddVeganDescription(allFood);
 
         int selectedOption = 0;
@@ -76,6 +75,8 @@ public static class ViewFoodMenu
 
     public static void RenderDrinkMenu()
     {
+        List<DrinkModel> allDrinks = DrinkLogic.GetAllDrinks();
+
         AddVeganDescription(allDrinks);
 
         int selectedOption = 0;
