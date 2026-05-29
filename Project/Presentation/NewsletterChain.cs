@@ -35,7 +35,7 @@ public class NewsletterChain
 
         string email = $@"
         
-        Dear costumer,
+        Dear customer,
         
         Welcome to our {frequency} newsletter from the Rotterdam Cinema!
         
@@ -54,25 +54,6 @@ public class NewsletterChain
         The Rotterdam Cinema Team
 
         ";
-        // 1. input
-
-        // 2. build email body
-
-        // 3. get customers
-
-        // 4. send
-
-
-
-        AccountLogic accountLogic = new AccountLogic.GetAllAccounts();
-        list<AccountModel> costumerList = new< AccountModel > ();
-        foreach (AccountModel account in allAccounts)
-        {
-            if (account.Type == "costumer")
-                costumerList.add(account);
-        }
-
-
 
         AccountLogic accountLogic = new AccountLogic();
         List<AccountModel> allAccounts = accountLogic.GetAllAccounts();
@@ -86,25 +67,9 @@ public class NewsletterChain
         }
 
 
-
-
-
-
-        //         accountLogic - AccountLogic
-        // allAccounts - List < AccountModel >
-        // customerList - List < AccountModel >
-        // confirmation - string
-        // customer - AccountModel(in the foreach loop)
-
-
-        // create the tool to access accounts
-        // get all accounts from the database
-        // create an empty list for customers only
-        // loop through all accounts, if the account is a customer add it to the customer list
-        // if there are no customers, show error and go back
-        // ask admin to confirm sending
-        // if admin says no, cancel and go back
-        // loop through customer list and send the email to each one
-        // show done message
+        foreach (AccountModel customer in customerList)
+        {
+            Mail.SendNewsletterMail(customer.EmailAddress, subject, email);
+        }
     }
 }

@@ -46,4 +46,37 @@ public class Mail
             Console.WriteLine("Error: " + ex.Message);
         }
     }
+
+    public static void SendNewsletterMail(string email, string subject, string body)
+    {
+        try
+        {
+            var fromAddress = new MailAddress("inftestmail0@gmail.com", "The Rocket Cinema");
+            var toAddress = new MailAddress(email, "Customer");
+            const string fromPassword = "qhjy ylfw ldas ewea";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword),
+                Timeout = 20000
+            };
+
+            var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            };
+
+            smtp.Send(message);
+            Console.WriteLine($"Email sent to {email}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    }
 }
