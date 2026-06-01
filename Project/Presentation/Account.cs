@@ -100,7 +100,6 @@ public class Account : IPage
                                 {
                                     Console.WriteLine(); 
                                     Tools.ApproveMessage("Times up!! you can log in again.");
-                                    Tools.ProgressBar(); 
                                     Thread.Sleep(3000);
                                     LogIn(); 
                                 }            

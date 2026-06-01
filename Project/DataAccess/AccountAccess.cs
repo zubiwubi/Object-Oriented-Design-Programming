@@ -23,11 +23,6 @@ public class AccountAccess
         return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Password = password });
     }
 
-    public void Update(AccountModel account)
-    {
-        string sql = $"UPDATE {Table} SET email = @EmailAddress, password = @Password, fullname = @FullName WHERE id = @Id";
-        _connection.Execute(sql, account);
-    }
     public void ChangePassword(long id, string password)
     {
         string sql = $"UPDATE {Table} SET Password = @Password WHERE id = @Id";
