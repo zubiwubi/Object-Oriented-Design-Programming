@@ -39,7 +39,7 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
         {
             Display.ClearScreen();
 
-            AnsiConsole.MarkupLine("[black on gray] LOUNGE PREMIUM FOOD MENU [/]\n");
+            AnsiConsole.MarkupLine("[black on gray] :sushi: PREMIUM FOOD MENU [/]\n");
             AnsiConsole.MarkupLine($"[italic] Ordering for {partySize} people\n [/]");
             DisplayOrder();
             AnsiConsole.MarkupLine(" ENTER: SELECT\n SPACEBAR: CONTINUE TO THE DRINK MENU ");
@@ -90,17 +90,12 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
                 return;
             }
 
-            else if (input.Key == ConsoleKey.Spacebar) // ---- IF NO SNACK, CONTINUE TO DRINKS
+            else if (input.Key == ConsoleKey.Spacebar) // ---- CONTINUE TO DRINKS ----
             {
-                Console.WriteLine("DrinkMenu will be called here...");
-                Console.ReadKey();
-                // null, foodid, foodamount, drinkid, drinkamount, null, null
-                //OrderedExtrasModel order = new(null, selectedFood.Id, foodAmount, null, null, null, null);
-
-                //RenderDrinkMenu(movieId, seatNum, callerType, selectedSnack);
+                DrinkMenu(partySize);
             }
 
-            else if (input.Key == ConsoleKey.Enter)
+            else if (input.Key == ConsoleKey.Enter) // ---- SELECT AMOUNT ----
             {               
                 int foodAmount = InputValidator.AskAmount();
 
@@ -138,123 +133,112 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
         }
     }
 
-    // public static void RenderDrinkMenu(int movieId, int seatNum, string callerType, FoodModel? snack)
-    // {
-    //     ViewFoodMenu.AddVeganDescription(allMovieDrinks);
+    public static void DrinkMenu(int partySize)
+    {
+        ViewFoodMenu.AddVeganDescription(allLoungeDrinks);
 
-    //     bool hasSnack = false;
+        DrinkModel selectedDrink = new(default, default, default, default, default, default);
 
-    //     if (snack != null) { hasSnack = true; }
+        int selectedOption = 0;
 
-    //     int selectedOption = 0;
+        while (true)
+        {
+            Display.ClearScreen();
 
-    //     while (true)
-    //     {
-    //         Display.ClearScreen();
-    //         AnsiConsole.MarkupLine("[black on gray] DRINKS MENU [/]\n\n");
-    //         AnsiConsole.MarkupLine(" SPACEBAR: CONTINUE TO PAYMENT WITHOUT A DRINK ");
-    //         AnsiConsole.MarkupLine(" BACKSPACE: :fork_and_knife: RETURN TO FOOD MENU\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
-    //         string message = (hasSnack) ? $"[black on white] CURRENT ORDER:\n €{snack.Price.ToString("0.00")} {snack.Name} [/]" : "";
-    //         AnsiConsole.MarkupLine(message);
-    //         AnsiConsole.MarkupLine($"\n Please select your drink.");
-
-
-    //         var drinkTable = new Table();
-    //         drinkTable.Border(TableBorder.HeavyHead);
-    //         // ------------------------------- TABLE COLUMNS ------------------
-    //         drinkTable.AddColumn("#").Width(100);
-    //         drinkTable.AddColumn("DRINK").Width(100);
-    //         drinkTable.AddColumn("PRICE").Width(100);
-    //         drinkTable.AddColumn("SIZE").Width(100);
-    //         drinkTable.AddColumn("DIETARY").Width(100);
-    //         foreach (var drink in allMovieDrinks) // ----- TABLE ROWS ------------------
-    //         {
-    //             bool isSelected = drink.Id == (selectedOption + 1); // +1 to match with IDs
-
-    //             var rowContent = new[] { $"{drink.Id}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Size}", $"{drink.Type}" };
-    //             var rowContentSelected = new[] { $"[bold]{drink.Id}[/]", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"{drink.Size}", $"[bold]{drink.Type}[/]" };
-
-    //             drinkTable.AddRow(isSelected ? rowContentSelected : rowContent);
-    //         }
-
-    //         AnsiConsole.Write(drinkTable); // --------------- END OF DRINK TABLE DRAWING ------------------
-
-    //         var input = Console.ReadKey();
-
-    //         if (input.Key == ConsoleKey.DownArrow)
-    //         {
-    //             selectedOption = (selectedOption + 1) % allMovieDrinks.Count();
-    //         }
-
-    //         if (input.Key == ConsoleKey.UpArrow)
-    //         {
-    //             selectedOption = (allMovieDrinks.Count() + selectedOption - 1) % allMovieDrinks.Count();
-    //         }
-
-    //         if (input.Key == ConsoleKey.Backspace)
-    //         {
-    //             return;
-    //         }
-
-    //         else if (input.Key == ConsoleKey.Spacebar)
-    //         {
-    //             if (snack != null) // Order without Drink
-    //             {
-    //                 double total = Convert.ToDouble(snack.Price);
-    //                 AnsiConsole.MarkupLine("[black on gray] SELECTED FOOD ITEMS  \n[/]" +
-    //                     $"[black on white]\n ------------------------------- \n  ● {snack.Name} | € {snack.Price:F2}  [/]\n" +
-    //                     $"[black on white]\n ============================== \n[bold] TOTAL: € {total:F2}  [/][/]\n\n");
-
-    //                 Console.WriteLine(" Please press anything to confirm (this will add the selected items to the current order and send you to the payment screen).\n Press BACKSPACE to re-select your items.\n");
-    //                 var confirmKey = Console.ReadKey();
-
-    //                 if (confirmKey.Key == ConsoleKey.Backspace)
-    //                 {
-    //                     return;
-    //                 }
-    //                 else
-    //                 {
-    //                     ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, snack.Id, null);
-    //                 }
-    //             }
-    //             else
-    //             {
-    //                 AnsiConsole.MarkupLine("[rapidblink] CAUTION: PLEASE SELECT EITHER FOOD OR DRINK. PRESS ANYTHING TO RETRY.\n[/]");
-    //                 Console.ReadKey();
-    //             }
-    //         }
+            AnsiConsole.MarkupLine("[black on gray] :cocktail_glass: PREMIUM DRINK MENU [/]\n");
+            AnsiConsole.MarkupLine($"[italic] Ordering for {partySize} people\n [/]");
+            DisplayOrder();
+            AnsiConsole.MarkupLine(" ENTER: SELECT\n SPACEBAR: CONTINUE TO PAYMENT :credit_card: ");
+            AnsiConsole.MarkupLine(" BACKSPACE: RETURN  \n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
+            AnsiConsole.MarkupLine($"\n Please select your drink.");
 
 
-    //         else if (input.Key == ConsoleKey.Enter) // Full order 
-    //         {
-    //             long drinkId = selectedOption + 1;
-    //             Display.ClearScreen();
+            var drinkTable = new Table();
+            drinkTable.Border(TableBorder.HeavyHead);
+            // ------------------------------- TABLE COLUMNS ------------------
+            drinkTable.AddColumn("#").Width(100);
+            drinkTable.AddColumn("DRINK").Width(100);
+            drinkTable.AddColumn("PRICE").Width(100);
+            drinkTable.AddColumn("SIZE").Width(100);
+            drinkTable.AddColumn("DIETARY").Width(100);
+            // --------------------------------------
+            for(int i = 0; i < allLoungeDrinks.Count(); i++)
+            {   
+                DrinkModel drink = allLoungeDrinks[i];
 
-    //             foreach (var drink in allMovieDrinks)
-    //             {
-    //                 if (drinkId == drink.Id)
-    //                 {
-    //                     string snackBill = hasSnack ? $"[black on white]\n  ● {snack?.Name} | € {snack?.Price:F2}  [/]" : "[black on white][/]";
-    //                     double total = Convert.ToDouble(snack?.Price) + drink.Price;
-    //                     AnsiConsole.MarkupLine("[black on gray] SELECTED FOOD ITEMS  \n[/]" +
-    //                         $"[black on white]\n ------------------------------- [/]" + snackBill +
-    //                         $"[black on white]\n  ● {drink.Name} ({drink.Size}) | € {drink.Price:F2}  [/]" +
-    //                         $"[black on white]\n ============================== \n[bold] TOTAL: € {total:F2}  [/][/]\n\n");
-    //                 }
-    //             }
+                int displayId = (i + 1);
 
-    //             Console.WriteLine(" Please press anything to confirm (this will add the selected items to the current order and send you to the payment screen).\n Press BACKSPACE to re-select your items.\n");
-    //             var confirmKey = Console.ReadKey();
+                bool isSelected = (displayId == selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
+                
+                var rowContent = new[] { $"{displayId}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Size}", $"{drink.Type}" };
+                var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"{drink.Size}", $"[bold]{drink.Type}[/]" };
 
-    //             if (confirmKey.Key == ConsoleKey.Backspace)
-    //             {
-    //                 return;
-    //             }
-    //             else
-    //             {
-    //                 ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, snack?.Id, drinkId);
-    //             }
-    //         }
-    //     }
-    // }
+                drinkTable.AddRow(isSelected ? rowContentSelected : rowContent);
+
+                if (isSelected)
+                {
+                    selectedDrink = drink;
+                }
+            }
+            
+            AnsiConsole.Write(drinkTable); // --------------- END OF DRINK TABLE DRAWING ------------------
+
+            var input = Console.ReadKey();
+
+            if (input.Key == ConsoleKey.DownArrow)
+            {
+                selectedOption = (selectedOption + 1) % allLoungeDrinks.Count();
+            }
+
+            if (input.Key == ConsoleKey.UpArrow)
+            {
+                selectedOption = (allLoungeDrinks.Count() + selectedOption - 1) % allLoungeDrinks.Count();
+            }
+
+            if (input.Key == ConsoleKey.Backspace)
+            {
+                return;
+            }
+
+            else if (input.Key == ConsoleKey.Spacebar) // ---- PAYMENT ----
+            {
+                if (OrderedItems != null)
+                {
+                    double total = 0;
+                    Console.WriteLine("Got everything? Press anything to confirm your items.\n Press BACKSPACE to re-select your items.\n");
+                    var confirmKey = Console.ReadKey();
+                    if (confirmKey.Key == ConsoleKey.Backspace)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        Tools.ErrorMessage("Redirection to payment is a work in progress... Press anything");
+                        Console.ReadKey();
+                        // create a string list of foods, make an orderExtra for each
+
+                        //OrderedExtrasModel order = (null, )
+
+                        //Payment.Order(null, null, null, null, partySize);
+                    }
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[rapidblink] CAUTION: PLEASE SELECT EITHER FOOD OR DRINK. PRESS ANYTHING TO RETRY.\n[/]");
+                    Console.ReadKey();
+                }
+            }
+
+
+            else if (input.Key == ConsoleKey.Enter) // ---- SELECT AMOUNT ----
+            {
+                int drinkAmount = InputValidator.AskAmount();
+
+                AddToOrder(selectedDrink, drinkAmount);
+                AnsiConsole.MarkupLine($"✅ Added [italic] {drinkAmount}x {selectedDrink.Name}: € {(selectedDrink.Price * drinkAmount):F2}[/] to the order. Press anything to continue ordering."); 
+                Console.ReadKey();
+                continue;
+            }
+        }
+    }
 }
