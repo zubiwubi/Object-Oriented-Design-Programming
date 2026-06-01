@@ -107,14 +107,23 @@ public class InputValidator
 
     public static int AskPartySize()
     {
-        {
-        int partySize = GetInput("How many people are you reserving a table for? (max. 15)", ps => int.Parse(ps.Trim()), partyCheck =>
+        int partySize = GetInput(" How many people are you reserving a table for? (max. 15)", ps => int.Parse(ps.Trim()), partyCheck =>
         {
            if (partyCheck <= 0) return "Reserve for at least one person.";
            if (partyCheck > LoungeHomepage.MAX_PEOPLE_AMOUNT) return $"You may only reserve up to a max of {LoungeHomepage.MAX_PEOPLE_AMOUNT} people.";
            return null; 
         });
         return partySize;
-        }
+    }
+
+    public static int AskAmount()
+    {
+        int amount = GetInput(" How many would you like?", a => int.Parse(a.Trim()), amountCheck =>
+        {
+           if (amountCheck <= 0) return "Select at least one.";
+           if (amountCheck > 50) return $"You may not exceed above 50 per order.";
+           return null; 
+        });
+        return amount;
     }
 }

@@ -1,11 +1,14 @@
 using Spectre.Console;
 
-public class RenderLoungeFoodMenu : CustomMessageWithMenuOS
+public class RenderLoungeMenu : CustomMessageWithMenuOS
 {
+    protected static OrderedExtrasLogic orderedExtrasLogic = new();
     protected static List<string> Options { get; set; } = new List<string>() { "RESERVE A TABLE (continue)", "GO BACK (return to the homepage)" };
     protected static string Message { get; set; } = "Would you like to reserve a table at our lounge?";
-    public static List<FoodModel> allLoungeFood { get; set; } = FoodLogic.GetAllFoods().Where(f => f.IsLounge == 1).ToList();
-    public static List<DrinkModel> allLoungeDrinks { get; set; } = DrinkLogic.GetAllDrinks().Where(d => d.IsLounge == 1).ToList();
+    protected static List<FoodModel> allLoungeFood { get; set; } = FoodLogic.GetAllFoods().Where(f => f.IsLounge == 1).ToList();
+    protected static List<DrinkModel> allLoungeDrinks { get; set; } = DrinkLogic.GetAllDrinks().Where(d => d.IsLounge == 1).ToList();
+    protected static Dictionary<ConsumableModel, int> OrderedItems = new();
+    
 
     public static bool WantsLounge()
     {
@@ -18,85 +21,122 @@ public class RenderLoungeFoodMenu : CustomMessageWithMenuOS
             {
                 case 0: // ------------ VIEW LOUNGE MENU -------------
                     return true;
-                case 1: // ------------ CONTINUE WITHOUT SNACKS -------------
+                case 1: // ------------ GO BACK -------------
                     return false;
             }
         }
     }
 
-    // public static void RenderFoodMenu()
-    // {
-    //     ViewFoodMenu.AddVeganDescription(allSnacks);
+    public static void RenderFood(int partySize)
+    {
+        ViewFoodMenu.AddVeganDescription(allLoungeFood);
 
-    //     int selectedOption = 0;
+        int selectedOption = 0;
 
-    //     FoodModel selectedSnack = new(default, default, default, default, default);
+        FoodModel selectedFood = new(default, default, default, default, default);
 
-    //     while (true)
-    //     {
-    //         Display.ClearScreen();
+        while (true)
+        {
+            Display.ClearScreen();
 
-    //         AnsiConsole.MarkupLine("[black on gray] SNACKS MENU [/]\n\n");
-    //         AnsiConsole.MarkupLine(" SPACEBAR: CONTINUE WITHOUT ANY SNACKS");
-    //         AnsiConsole.MarkupLine(" BACKSPACE: :credit_card: RETURN WITHOUT ORDERING FOOD  \n\n Use the arrow keys to navigate. Highlighted items will expand and show the description. Please choose one item.");
+            AnsiConsole.MarkupLine("[black on gray] LOUNGE PREMIUM FOOD MENU [/]\n");
+            AnsiConsole.MarkupLine($"[italic] Ordering for {partySize} people\n [/]");
+            DisplayOrder();
+            AnsiConsole.MarkupLine(" ENTER: SELECT\n SPACEBAR: CONTINUE TO THE DRINK MENU ");
+            AnsiConsole.MarkupLine(" BACKSPACE: RETURN TO THE HOMEPAGE  \n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
 
-    //         var table = new Table();
-    //         table.Border(TableBorder.HeavyHead);
-    //         // ------------------------------- TABLE COLUMNS ------------------
-    //         table.AddColumn("#").Width(110); // .Width() prevents deformation in the table
-    //         table.AddColumn("FOOD").Width(110);
-    //         table.AddColumn("PRICE").Width(110);
-    //         table.AddColumn("DIETARY").Width(110);
-    //         for(int i = 0; i < allSnacks.Count(); i++)
-    //         {   
-    //             FoodModel snack = allSnacks[i];
+            var table = new Table();
+            table.Border(TableBorder.HeavyHead);
+            // ------------------------------- TABLE COLUMNS ------------------
+            table.AddColumn("#").Width(110); // .Width() prevents deformation in the table
+            table.AddColumn("FOOD").Width(110);
+            table.AddColumn("PRICE").Width(110);
+            table.AddColumn("DIETARY").Width(110);
+            for(int i = 0; i < allLoungeFood.Count(); i++)
+            {   
+                FoodModel food = allLoungeFood[i];
 
-    //             int displayId = (i + 1);
+                int displayId = (i + 1);
 
-    //             bool isSelected = displayId == selectedOption + 1; // +1 because it starts at 0, so this is to make it match the ids
+                bool isSelected = displayId == selectedOption + 1; // +1 because it starts at 0, so this is to make it match the ids
                 
-    //             var rowContent = new[] { $"{displayId}", $"{snack.Name}", $"€ {snack.Price.ToString("0.00")}", $"{snack.Type}" };
-    //             var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {snack.Name}  [/]\n[italic][dim]{snack.Description}[/][/]", $"[bold]€ {snack.Price.ToString("0.00")}[/]", $"[bold]{snack.Type}[/]" };
+                var rowContent = new[] { $"{displayId}", $"{food.Name}", $"€ {food.Price.ToString("0.00")}", $"{food.Type}" };
+                var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {food.Name}  [/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" };
 
-    //             table.AddRow(isSelected ? rowContentSelected : rowContent);
+                table.AddRow(isSelected ? rowContentSelected : rowContent);
 
-    //             if (isSelected)
-    //             {
-    //                 selectedSnack = snack;
-    //             }
-    //         }
+                if (isSelected)
+                {
+                    selectedFood = food;
+                }
+            }
             
-    //         AnsiConsole.Write(table); // --------------- END OF FOOD TABLE DRAWING ------------------
+            AnsiConsole.Write(table); // --------------- END OF FOOD TABLE DRAWING ------------------
 
-    //         var input = Console.ReadKey();
+            var input = Console.ReadKey();
 
-    //         if (input.Key == ConsoleKey.DownArrow)
-    //         {
-    //             selectedOption = (selectedOption + 1) % allSnacks.Count();
-    //         }
+            if (input.Key == ConsoleKey.DownArrow)
+            {
+                selectedOption = (selectedOption + 1) % allLoungeFood.Count();
+            }
 
-    //         if (input.Key == ConsoleKey.UpArrow)
-    //         {
-    //             selectedOption = (allSnacks.Count() + selectedOption - 1) % allSnacks.Count();
-    //         }
+            if (input.Key == ConsoleKey.UpArrow)
+            {
+                selectedOption = (allLoungeFood.Count() + selectedOption - 1) % allLoungeFood.Count();
+            }
 
-    //         if (input.Key == ConsoleKey.Backspace)
-    //         {
-    //             return;
-    //         }
+            if (input.Key == ConsoleKey.Backspace)
+            {
+                return;
+            }
 
-    //         else if (input.Key == ConsoleKey.Spacebar) // ---- IF NO SNACK, CONTINUE TO DRINKS
-    //         {
-    //             RenderDrinkMenu(movieId, seatNum, callerType, null);
-    //         }
+            else if (input.Key == ConsoleKey.Spacebar) // ---- IF NO SNACK, CONTINUE TO DRINKS
+            {
+                Console.WriteLine("DrinkMenu will be called here...");
+                Console.ReadKey();
+                // null, foodid, foodamount, drinkid, drinkamount, null, null
+                //OrderedExtrasModel order = new(null, selectedFood.Id, foodAmount, null, null, null, null);
 
-    //         else if (input.Key == ConsoleKey.Enter)
-    //         {
-    //             AnsiConsole.MarkupLine($"[black on white] CURRENT ORDER:\n €{selectedSnack.Price.ToString("0.00")} {selectedSnack.Name} [/]\n");
-    //             RenderDrinkMenu(movieId, seatNum, callerType, selectedSnack);
-    //         }
-    //     }
-    // }
+                //RenderDrinkMenu(movieId, seatNum, callerType, selectedSnack);
+            }
+
+            else if (input.Key == ConsoleKey.Enter)
+            {               
+                int foodAmount = InputValidator.AskAmount();
+
+                AddToOrder(selectedFood, foodAmount);
+                AnsiConsole.MarkupLine($"✅ Added [italic] {foodAmount}x {selectedFood.Name}: € {(selectedFood.Price * foodAmount):F2}[/] to the order. Press anything to continue ordering."); 
+                Console.ReadKey();
+                continue;
+            }
+        }
+    }
+
+    public static void DisplayOrder()
+    {
+        double total = 0;
+
+        AnsiConsole.MarkupLine("[bold] CART: [/]");
+        foreach (var item in OrderedItems)
+        {
+            total += (item.Key.Price * item.Value);
+            AnsiConsole.MarkupLine($"●[italic] {item.Value}x {item.Key.Name, -10}: € {(item.Key.Price * item.Value):F2}[/]");    
+            // "{Quantity}x {Name}: {Total}"
+        }
+        AnsiConsole.MarkupLine($"============================== \n[bold] TOTAL: € {total:F2}  [/]\n");
+    }
+
+    public static void AddToOrder(ConsumableModel item, int amount)
+    {
+        if (OrderedItems.ContainsKey(item))
+        {
+            OrderedItems[item] += amount;
+        }
+        else
+        {
+            OrderedItems[item] = amount;
+        }
+    }
 
     // public static void RenderDrinkMenu(int movieId, int seatNum, string callerType, FoodModel? snack)
     // {
