@@ -11,21 +11,34 @@ public class InputValidator
             Console.WriteLine(prompt);
             string input = Console.ReadLine();
 
+
             if (string.IsNullOrEmpty(input))
             {
+                Display.ClearScreen();
                 Console.WriteLine("❌ Input may not be empty. Please try again.");
                 continue;
             }
 
-            T value = typeConvert(input);
-            string? error = validator(value);
-
-            if (error is null) {return value;}
-                
-            else
+            try
             {
-                Console.WriteLine($"❌ {error} Please try again.");
+                T value = typeConvert(input);
+                string? error = validator(value);
+
+                if (error is null) {return value;}
+                
+                else 
+                {
+                    Display.ClearScreen(); 
+                    Console.WriteLine($"❌ {error} Please try again.");
+                }
             }
+
+            catch (FormatException ex)
+            {
+                Display.ClearScreen();
+                Console.WriteLine($"❌ Invalid input type: {ex.Message}.");
+            }
+
         }
     }
 
@@ -86,9 +99,22 @@ public class InputValidator
         string size = GetInput("Enter the size of the drink (ex. 250ml) * Please include: \"ml\" [REQUIRED FIELD]: ", s => s.Trim(), sizeCheck =>
         {
            if (sizeCheck.Length < 2) return "Write at least 2 characters.";
-           if (!sizeCheck.ToLower().EndsWith("ml")) return "Please include the size in \"ml\"";
+           if (!sizeCheck.ToLower().EndsWith("ml")) return "Please include the size in \"ml\".";
            return null; 
         });
         return size;
+    }
+
+    public static int AskPartySize()
+    {
+        {
+        int partySize = GetInput("How many people are you reserving a table for? (max. 15)", ps => int.Parse(ps.Trim()), partyCheck =>
+        {
+           if (partyCheck <= 0) return "Reserve for at least one person.";
+           if (partyCheck > LoungeHomepage.MAX_PEOPLE_AMOUNT) return $"You may only reserve up to a max of {LoungeHomepage.MAX_PEOPLE_AMOUNT} people.";
+           return null; 
+        });
+        return partySize;
+        }
     }
 }
