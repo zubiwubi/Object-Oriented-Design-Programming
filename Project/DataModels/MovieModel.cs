@@ -10,11 +10,25 @@ public class MovieModel
     public string EndTime { get; set; }
     public string Duration { get; set; }
     public int BBFC { get; set; }
+    public bool IsVisible {get; set;} = true; 
 
     public MovieModel() { }
     public MovieModel(long id, int locationId, string title, string genre, string description, string date, string startTime, string endTime, string duration, int bBFC)
     {
         Id = id;
+        LocationId = locationId;
+        Title = title;
+        Genre = genre;
+        Description = description;
+        Date = date;
+        StartTime = startTime;
+        EndTime = endTime;
+        Duration = duration;
+        BBFC = bBFC;
+    }
+
+    public MovieModel(int locationId, string title, string genre, string description, string date, string startTime, string endTime, string duration, int bBFC)
+    {
         LocationId = locationId;
         Title = title;
         Genre = genre;
