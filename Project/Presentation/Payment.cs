@@ -4,9 +4,19 @@ public class Payment
     protected static AccountLogic accountLogic = new();
     protected static PaymentLogic paymentLogic = new();
     protected static OrderedExtrasLogic orderedExtrasLogic = new();
+    protected static StudentAccountLogic studentAccountLogic = new();
     public static void Order(int movieId, int seat, string caller, int? orderedExtrasId = null, int? firstOrderedExtrasId = null)
-    // null instead of 0;
     {
+        if (caller != "Guest")
+        {
+            bool isStudentEmail = studentAccountLogic.IsSchoolEmail(AccountLogic.CurrentAccount.EmailAddress);
+            if (isStudentEmail)
+            {
+                Console.WriteLine();
+                Console.WriteLine("You are a student, you received a 20% discount on your order! ");
+                Console.WriteLine();
+            }
+        }
         Console.WriteLine("Choose a payment system?");
         Console.WriteLine("[1] IDeal/WERO");
         Console.WriteLine("[2] PayPal");

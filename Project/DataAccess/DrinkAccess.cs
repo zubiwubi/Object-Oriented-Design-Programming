@@ -14,13 +14,13 @@ public class DrinkAccess
         return _connection.Query<DrinkModel>(sql).ToList();
     }
 
-    public void Write(DrinkModel drink)
+    public void Add(DrinkModel drink)
     {
-        string sql = $"INSERT INTO {Table} (name, description, size, price, type, islounge) VALUES (@Name, @Description,@Size, @Price, @Type, @isLounge)";
+        string sql = $"INSERT INTO {Table} (name, description, size, price, type, islounge) VALUES (@Name, @Description,@Size, @Price, @Type, @IsLounge)";
         _connection.Execute(sql, drink);
     }
 
-    public DrinkModel? GetById(int id)
+    public DrinkModel? GetById(long? id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<DrinkModel>(sql, new { Id = id });
@@ -28,7 +28,7 @@ public class DrinkAccess
 
     public void Update(DrinkModel drink)
     {
-        string sql = $"UPDATE {Table} SET name = @Name, description = @Description, size  = @Size, price = @Price, type = @Type, islounge = @isLounge WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET name = @Name, description = @Description, size  = @Size, price = @Price, type = @Type, islounge = @IsLounge WHERE id = @Id";
         _connection.Execute(sql, drink);
     }
 

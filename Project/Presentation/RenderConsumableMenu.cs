@@ -1,31 +1,22 @@
-using Spectre.Console;
+using Spectre.Console; 
 
-public static class ViewFoodMenu
+public class RenderConsumableMenu : CustomMessageWithMenuOS
 {
-    public static List<FoodModel> allFood = FoodLogic.GetAllFoods();
-    public static List<DrinkModel> allDrinks = DrinkLogic.GetAllDrinks();
+    public static List<FoodModel> allFood { get; set; } = FoodLogic.GetAllFoods().ToList();
+    public static List<DrinkModel> allDrinks { get; set; } = DrinkLogic.GetAllDrinks().ToList();
 
-    public static void AddVeganDescription<T>(List<T> Consumables) where T : ConsumableModel
+    public static FoodModel RenderFoodMenu() // return the selected food
     {
-        foreach (var item in Consumables)
-        {
-            if (item.Type.Contains("Vegan") && !item.Type.Contains(":herb:"))
-            {
-                item.Type = $":herb: {item.Type}";
-            }
-        }
-    }
+        ViewFoodMenu.AddVeganDescription(allFood);
 
-    public static void RenderFoodMenu()
-    {
-        AddVeganDescription(allFood);
-
+        FoodModel currentFood = new(default, default, default, default, default);
+        
         int selectedOption = 0;
         while (true)
         {   
             Display.ClearScreen();
             AnsiConsole.MarkupLine("[black on gray] FOOD MENU [/]\n\n");
-            AnsiConsole.MarkupLine(" BACKSPACE: :house: HOMEPAGE\n ENTER: :tropical_drink: DRINKS MENU\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
+            AnsiConsole.MarkupLine(" BACKSPACE: RETURN  \n\n Use the arrow keys to navigate. Highlighted items will expand and show the description. Please select with ENTER.");
 
             var table = new Table();
             table.Border(TableBorder.HeavyHead);
@@ -40,12 +31,17 @@ public static class ViewFoodMenu
 
                 int displayId = (i + 1);
 
-                bool isSelected = displayId == selectedOption + 1; // +1 because it starts at 0, so this is to make it match the ids
+                bool isSelected = (displayId == selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
                 
                 var rowContent = new[] { $"{displayId}", $"{food.Name}", $"€ {food.Price.ToString("0.00")}", $"{food.Type}" };
                 var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {food.Name}  [/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" };
 
                 table.AddRow(isSelected ? rowContentSelected : rowContent);
+
+                if (isSelected)
+                {
+                    currentFood = food;
+                }
             }
             
             AnsiConsole.Write(table); // --------------- END OF FOOD TABLE DRAWING ------------------
@@ -62,39 +58,41 @@ public static class ViewFoodMenu
                 selectedOption = (allFood.Count() + selectedOption - 1) % allFood.Count();
             }
 
-            if (input.Key == ConsoleKey.Enter)
+            if (input.Key == ConsoleKey.Backspace) // Go back
             {
-                RenderDrinkMenu();
+                AdminManageFoodMenu.MenuCreator();
             }
 
-            if (input.Key == ConsoleKey.Backspace)
+            else if (input.Key == ConsoleKey.Enter)
             {
-                return;
+                break;
             }
         }
+        return currentFood;
     }
 
-    public static void RenderDrinkMenu()
+    public static DrinkModel RenderDrinkMenu()
     {
-        AddVeganDescription(allDrinks);
-
+        ViewFoodMenu.AddVeganDescription(allDrinks);
+        
+        DrinkModel currentDrink = new(default, default, default, default, default, default);
+        
         int selectedOption = 0;
-
         while (true)
         {
             Display.ClearScreen();
             AnsiConsole.MarkupLine("[black on gray] DRINKS MENU [/]\n\n");
-            AnsiConsole.MarkupLine(" BACKSPACE: :fork_and_knife: FOOD MENU\n\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
+            AnsiConsole.MarkupLine(" BACKSPACE: RETURN\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
+            AnsiConsole.MarkupLine($"\n Please select the drink with ENTER.");
 
-            // Drink Menu Columns
             var drinkTable = new Table();
             drinkTable.Border(TableBorder.HeavyHead);
+            // ------------------------------- TABLE COLUMNS ------------------
             drinkTable.AddColumn("#").Width(100);
             drinkTable.AddColumn("DRINK").Width(100);
             drinkTable.AddColumn("PRICE").Width(100);
             drinkTable.AddColumn("SIZE").Width(100);
             drinkTable.AddColumn("DIETARY").Width(100);
-            // --------------------------------------
             for(int i = 0; i < allDrinks.Count(); i++)
             {   
                 DrinkModel drink = allDrinks[i];
@@ -107,6 +105,11 @@ public static class ViewFoodMenu
                 var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"[bold]{drink.Type}[/]" };
 
                 drinkTable.AddRow(isSelected ? rowContentSelected : rowContent);
+
+                if (isSelected)
+                {
+                    currentDrink = drink;
+                }
             }
             
             AnsiConsole.Write(drinkTable); // --------------- END OF DRINK TABLE DRAWING ------------------
@@ -125,8 +128,14 @@ public static class ViewFoodMenu
 
             if (input.Key == ConsoleKey.Backspace)
             {
-                return;
+                AdminManageFoodMenu.MenuCreator();
+            }
+
+            else if (input.Key == ConsoleKey.Enter) 
+            {
+                break;
             }
         }
+        return currentDrink;
     }
 }

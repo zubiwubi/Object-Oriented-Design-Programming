@@ -38,7 +38,7 @@ public class CustomMessageWithMenuOS
 
             if (input.Key == ConsoleKey.UpArrow)
             {
-                selectedOption = (options.Count + selectedOption - 1 ) % options.Count;
+                selectedOption = (options.Count + selectedOption - 1) % options.Count;
             }
 
             else if (input.Key == ConsoleKey.Enter)

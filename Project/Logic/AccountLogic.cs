@@ -145,22 +145,22 @@ public class AccountLogic
     {
         if (!PhoneNumber.StartsWith("06"))
         {
-            return false; 
+            return false;
         }
 
         if (PhoneNumber.Length < 8 || PhoneNumber.Length > 10)
         {
-            return false; 
+            return false;
         }
 
         foreach (char x in PhoneNumber)
         {
             if (char.IsLetter(x) || char.IsSymbol(x))
             {
-                return false; 
+                return false;
             }
         }
-        return true; 
+        return true;
     }
 
     public void DeleteAccount(AccountModel account)
@@ -173,4 +173,8 @@ public class AccountLogic
         CurrentAccount = null;
     }
 
+    public List<AccountModel> GetAllAccounts()
+    {
+        return _access.GetAll();
+    }
 }

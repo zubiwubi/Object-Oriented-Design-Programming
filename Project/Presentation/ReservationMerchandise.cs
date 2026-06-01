@@ -1,14 +1,9 @@
+using System.Data.Common;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 public class ReservationMerchandise : MakeAccount
 {
     public static MerchandiseLogic merchandiseLogic = new();
-    public static List<MerchandiseModel> Hoodies = merchandiseLogic.GetHoodies();
-    public static List<MerchandiseModel> TShirts = merchandiseLogic.GetTshirts();
-    public static List<MerchandiseModel> Accessories = merchandiseLogic.GetAcccesories();
-    public static List<MerchandiseModel> Mugs = merchandiseLogic.GetMugs();
-    public static List<MerchandiseModel> Stickers = merchandiseLogic.GetStickers();
-    public static List<MerchandiseModel> Posters = merchandiseLogic.GetPosters();
     protected static OrderedExtrasLogic orderedExtrasLogic = new();
     public static Dictionary<string, int> OrderedMerch = new();
     public static Dictionary<long, int> OrderedMerchById = new();
@@ -81,20 +76,20 @@ public class ReservationMerchandise : MakeAccount
             case 1:
                 Tools.ColorMagentaMessage("You'll be redirected to the payment page :) ");
                 Tools.ProgressBar();
-                if (foodId == 0 && drinkId == 0)
+                if (foodId == null && drinkId == null)
                 {
                     Payment.Order(movieId, seat, caller);
                 }
-                // else if (foodId == 0)
-                // {
-                //     int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, drinkId, 1, null, null);
-                //     Payment.Order(movieId, seat, caller, orderedExtrasId);
-                // }
-                // else if (drinkId == 0)
-                // {
-                //     int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, null, null, null, null);
-                //     Payment.Order(movieId, seat, caller, orderedExtrasId);
-                // }
+                else if (foodId == null)
+                {
+                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, drinkId, 1, null, null);
+                    Payment.Order(movieId, seat, caller, orderedExtrasId);
+                }
+                else if (drinkId == null)
+                {
+                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, null, null, null, null);
+                    Payment.Order(movieId, seat, caller, orderedExtrasId);
+                }
                 else
                 {
                     int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, drinkId, 1, null, null);
@@ -194,6 +189,7 @@ public class ReservationMerchandise : MakeAccount
 
     public static void OrderHoodies(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
+        List<MerchandiseModel> Hoodies = merchandiseLogic.GetHoodies();
         IsOptionSelected = false;
         while (!IsOptionSelected)
         {
@@ -228,6 +224,7 @@ public class ReservationMerchandise : MakeAccount
 
     public static void OrderTshirts(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
+        List<MerchandiseModel> TShirts = merchandiseLogic.GetTshirts();
         IsOptionSelected = false;
         while (!IsOptionSelected)
         {
@@ -262,6 +259,7 @@ public class ReservationMerchandise : MakeAccount
     }
     public static void OrderAccessories(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
+        List<MerchandiseModel> Accessories = merchandiseLogic.GetAcccesories();
         IsOptionSelected = false;
         while (!IsOptionSelected)
         {
@@ -294,7 +292,9 @@ public class ReservationMerchandise : MakeAccount
         }
     }
     public static void OrderStickers(int movieId, int seat, string caller, long? foodId, long? drinkId)
-    {
+    {     
+        List<MerchandiseModel> Stickers = merchandiseLogic.GetStickers();
+
         IsOptionSelected = false;
         while (!IsOptionSelected)
         {
@@ -328,6 +328,8 @@ public class ReservationMerchandise : MakeAccount
     }
     public static void OrderMugs(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
+        List<MerchandiseModel> Mugs = merchandiseLogic.GetMugs();
+
         IsOptionSelected = false;
         while (!IsOptionSelected)
         {
@@ -361,6 +363,7 @@ public class ReservationMerchandise : MakeAccount
     }
     public static void OrderPosters(int movieId, int seat, string caller, long? foodId, long? drinkId)
     {
+        List<MerchandiseModel> Posters = merchandiseLogic.GetPosters();
         IsOptionSelected = false;
         while (!IsOptionSelected)
         {
