@@ -32,8 +32,20 @@ public class FoodAccess
         _connection.Execute(sql, food);
     }
 
+    // public void Delete(FoodModel food)
+    // {
+    //     string sql = $"DELETE FROM {Table} WHERE id = @Id";
+    //     _connection.Execute(sql, new { Id = food.Id });
+    // }
     public void Delete(FoodModel food)
     {
+        //string deleteChildrenSql = "DELETE FROM Orders WHERE food_id = @Id";
+    
+        //int deletedCount = _connection.Execute(deleteChildrenSql, new { Id = food.Id });
+        
+        string deleteCache = $"DELETE FROM \"OrderedExtras\" WHERE foodId = @Id"; // delete all dependencies/FKs in others
+        _connection.Execute(deleteCache, new { Id = food.Id });
+        
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = food.Id });
     }
