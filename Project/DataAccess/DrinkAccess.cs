@@ -34,7 +34,7 @@ public class DrinkAccess
 
     public void Delete(DrinkModel drink)
     {
-        string deleteCache = $"DELETE FROM \"OrderedExtras\" WHERE foodId = @Id"; // delete all dependencies/FKs in other places
+        string deleteCache = $"DELETE FROM \"OrderedExtras\" WHERE drinkId = @Id"; // delete all dependencies/FKs in other places
         _connection.Execute(deleteCache, new { Id = drink.Id });
 
         string sql = $"DELETE FROM {Table} WHERE id = @Id";

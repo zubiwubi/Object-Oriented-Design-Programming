@@ -25,4 +25,11 @@ public class DrinkLogic
     {
         _drinkAccess.Delete(drink); 
     }
+
+    public static bool IsDrink<T>(T consumable) where T: ConsumableModel
+    {
+        if (consumable is DrinkModel && consumable is not FoodModel)
+            return true;
+        return false;
+    }
 }

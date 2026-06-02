@@ -207,19 +207,13 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
                     double total = 0;
                     Console.WriteLine("Got everything? Press anything to confirm your items.\n Press BACKSPACE to re-select your items.\n");
                     var confirmKey = Console.ReadKey();
-                    if (confirmKey.Key == ConsoleKey.Backspace)
+                    if (confirmKey.Key == ConsoleKey.Backspace) // Reselect
                     {
                         return;
                     }
                     else
                     {
-                        Tools.ErrorMessage("Redirection to payment is a work in progress... Press anything");
-                        Console.ReadKey();
-                        // create a string list of foods, make an orderExtra for each
-
-                        //OrderedExtrasModel order = (null, )
-
-                        //Payment.Order(null, null, null, null, partySize);
+                        PaymentProcess();
                     }
                 }
                 else
@@ -238,6 +232,61 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
                 AnsiConsole.MarkupLine($"✅ Added [italic] {drinkAmount}x {selectedDrink.Name}: € {(selectedDrink.Price * drinkAmount):F2}[/] to the order. Press anything to continue ordering."); 
                 Console.ReadKey();
                 continue;
+            }
+        }
+    }
+
+    public static void PaymentProcess()
+    {
+        int orderCount = OrderedItems.Count();
+
+        if (orderCount == 1) // If there's only one item
+        {
+            var item = OrderedItems.First().Key;
+            int orderedExtrasId = 0;
+            int consumableQuantity = OrderedItems.First().Value;
+
+            if (FoodLogic.IsFood(item)) {
+                orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, item.Id, consumableQuantity, null, null, null, null);
+            }
+            if (DrinkLogic.IsDrink(item)) {
+                orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, item.Id, consumableQuantity, null, null);
+            }
+
+            Payment.Order(null, null, null, orderedExtrasId); // <---- Payment < /* Add PartySize?*/
+        }
+        
+        if (orderCount > 1) // Bigger quanitites
+        {
+            // First ID
+            int? firstOrderedExtrasId = null;
+
+            var firstItem = OrderedItems.First().Key;
+            int consumableQuantity = OrderedItems.First().Value;
+
+            if (FoodLogic.IsFood(firstItem))
+                firstOrderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, firstItem.Id, consumableQuantity, null, null, null, null);
+
+            if (DrinkLogic.IsDrink(firstItem))
+                firstOrderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, firstItem.Id, consumableQuantity, null, null);
+
+            // Other IDs
+            int? orderedExtrasId = null;
+            var others = OrderedItems.Skip(1).ToDictionary(k => k.Key, v => v.Value); // Seperate the rest from the first
+
+            foreach (var otherItem in others)
+            {
+                ConsumableModel item = otherItem.Key;
+                int itemQuantity = otherItem.Value;
+
+                if (FoodLogic.IsFood(item)) {
+                    orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, item.Id, itemQuantity, null, null, null, null);
+                    Payment.Order(null, null, null, orderedExtrasId, firstOrderedExtrasId);
+                }
+                if (DrinkLogic.IsDrink(item)) {
+                    orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, item.Id, itemQuantity, null, null);
+                    Payment.Order(null, null, null, orderedExtrasId, firstOrderedExtrasId);
+                }
             }
         }
     }

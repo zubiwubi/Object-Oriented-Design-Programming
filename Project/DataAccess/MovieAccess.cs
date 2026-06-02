@@ -20,7 +20,7 @@ public class MovieAccess
         return _connection.Query<MovieModel>(sql).ToList();
     }
 
-    public MovieModel? GetById(int id)
+    public MovieModel? GetById(int? id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Id = id });

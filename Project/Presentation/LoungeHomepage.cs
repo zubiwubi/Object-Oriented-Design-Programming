@@ -13,9 +13,9 @@ public static class LoungeHomepage
         {
             RenderLoungeMenu.RenderFood(InputValidator.AskPartySize());
             
-            Console.WriteLine("Test. This should go into the menu. Press anything");
+            Console.WriteLine("Returning to homepage. The items in the cart will not be saved. Press ENTER to continue.");
             Console.ReadKey();
-            return; // Go back to HOMEPAGE
+            return; // Go back to lounge homepage
         }
         else {return;} // Go back to HOMEPAGE
     }

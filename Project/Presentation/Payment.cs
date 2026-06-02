@@ -5,9 +5,9 @@ public class Payment
     protected static PaymentLogic paymentLogic = new();
     protected static OrderedExtrasLogic orderedExtrasLogic = new();
     protected static StudentAccountLogic studentAccountLogic = new();
-    public static void Order(int movieId, int seat, string caller, int? orderedExtrasId = null, int? firstOrderedExtrasId = null)
+    public static void Order(int? movieId, int? seat, string caller = "", int? orderedExtrasId = null, int? firstOrderedExtrasId = null)
     {
-        if (caller != "Guest")
+        if (caller != "Guest" && !string.IsNullOrEmpty(caller))
         {
             bool isStudentEmail = studentAccountLogic.IsSchoolEmail(AccountLogic.CurrentAccount.EmailAddress);
             if (isStudentEmail)
@@ -76,7 +76,7 @@ public class Payment
                 Console.WriteLine("\nPurchase Confirmed.");
                 Console.WriteLine("The order has been added to the system");
 
-                if (caller == "Guest")
+                if (caller == "Guest" || string.IsNullOrEmpty(caller))
                 {
                     string? emailForTicket;
                     while (true)
@@ -138,13 +138,12 @@ public class Payment
                             orderUpdate.OrderId = orderId;
                             orderedExtrasLogic.Update(orderUpdate);
                         }
+                        QRCodeGen.QrCodeGeneration(AccountLogic.CurrentAccount.EmailAddress, orderId, movieId, seat);
+                        Console.WriteLine("\nPress any key to return to the main menu...");
+                        Console.ReadKey();
+                        Display.ClearScreen();
+                        AccountHomePage.HomePage();
                     }
-
-                    QRCodeGen.QrCodeGeneration(AccountLogic.CurrentAccount.EmailAddress, orderId, movieId, seat);
-                    Console.WriteLine("\nPress any key to return to the main menu...");
-                    Console.ReadKey();
-                    Display.ClearScreen();
-                    AccountHomePage.HomePage();
                     return;
                 }
             }
@@ -154,7 +153,7 @@ public class Payment
                 Console.WriteLine("\nPress any key to return to the main menu...");
                 Console.ReadKey();
 
-                if (caller != "Guest")
+                if (caller != "Guest" || caller != "")
                 {
                     Display.ClearScreen();
                     AccountHomePage.HomePage();
