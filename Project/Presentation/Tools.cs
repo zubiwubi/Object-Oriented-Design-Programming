@@ -1,7 +1,9 @@
 using Microsoft.VisualBasic;
 using Spectre.Console;
-public class Tools : Account
+public class Tools 
 {
+    public static MovieLogic movieLogic = new(); 
+    public static AccountLogic accountLogic = new(); 
     public static MerchandiseLogic merchandiseLogic = new(); 
     public static void ErrorMessage(string message)
     {
@@ -249,4 +251,145 @@ public class Tools : Account
             }
         }
     } 
+    /////////////MOVIE VALIDATION///////////
+
+    public static void InvalidLocationIdPrint(int Id)
+    {
+        if (string.IsNullOrEmpty(Id.ToString()))
+        {
+            ErrorMessage("Id can't be empty!!");
+            return;
+        }
+        
+        if (!movieLogic.AuditoriumIds.Contains(Id))
+        {
+            ErrorMessage("Id doesn't match, can only be 1,2, or 3!!");
+            return; 
+        } 
+    }
+    public static void InvalidTitlePrint(string title)
+    {
+        if (string.IsNullOrEmpty(title.Trim()))
+        {
+            ErrorMessage("Title can't be empty!!");
+            return;
+        }
+
+        if (title.Length < 2)
+        {
+            ErrorMessage("title can't be shorter then 2 characters!!");
+            return; 
+        }
+
+        if (title.Length > 30)
+        {
+            ErrorMessage("title can't be longer then 30 characters!!");
+            return;
+        }
+    }
+    public static void InvalidDescriptionPrint(string description)
+    {
+        if (string.IsNullOrEmpty(description.Trim()))
+        {
+            ErrorMessage("Description can't be empty!!");
+            return; 
+        }
+
+        if (description.Length < 5)
+        {
+            ErrorMessage("description can't be less then 5 characters!!");
+            return; 
+        }
+
+        if (description.Length > 200)
+        {
+            ErrorMessage("Description can't be more then 200 characters!!");
+            return;
+        }
+    }
+    public static void InvalidGenrePrint(string genre)
+    {
+        if (string.IsNullOrEmpty(genre.Trim()))
+        {
+            ErrorMessage("Genre can't be empty!!");
+            return; 
+        }
+
+        if (genre.Length < 2)
+        {
+            ErrorMessage("Genre can't be less then 2 characters!!");
+            return; 
+        }
+
+        if (genre.Length > 10)
+        {
+            ErrorMessage("Genre cant be longer then 10 characters!!");
+            return;
+        }
+
+        
+        if (!movieLogic.Genres.Contains(genre))
+        {
+            ErrorMessage("Invalid genre: can only be 'Fantasy', 'Drama', 'Comedy', 'Crime', 'Adventure', 'Western'");
+            return;    
+        }
+         
+    }
+    public static void InvalidDatePrint(string date)
+    {
+        if (string.IsNullOrEmpty(date))
+        {
+            ErrorMessage("date can't be empty!!");
+            return; 
+        }
+
+        if (!movieLogic.IsDateFormatValid)
+        {
+            ErrorMessage("invalid format: must be DD-MM-YYYY!!");
+            return; 
+        }
+    }
+    public static void InvalidTimePrint(string time)
+    {
+        if (string.IsNullOrEmpty(time))
+        {
+            ErrorMessage("time can't  be empty!!");
+            return;
+        }
+
+        if (!movieLogic.IsTimeFormatValid)
+        {
+            ErrorMessage("invalid format: must be 00:00");
+            return;
+        }
+    }
+    public static void InvalidDurationPrint(string duration)
+    {
+        if (string.IsNullOrEmpty(duration))
+        {
+            ErrorMessage("duration can't be empty!!");
+            return;
+        }
+
+        if (!movieLogic.IsDurationFormatValid)
+        {
+            ErrorMessage("invalid format: duration must be 0:00");
+            return;
+        }
+    }
+    public static void InvalidBBFCPrint(int bbfc)
+    {
+        if (string.IsNullOrEmpty(bbfc.ToString()))
+        {
+            ErrorMessage("BBFC can't be empty!!");
+            return;
+        }
+        
+        if (!movieLogic.BBFCs.Contains(bbfc))
+        {
+            ErrorMessage("BBFC doesn't match!!");
+            return; 
+        }
+        
+    }
 }
