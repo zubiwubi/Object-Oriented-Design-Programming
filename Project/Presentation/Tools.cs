@@ -260,12 +260,13 @@ public class Tools
             ErrorMessage("Id can't be empty!!");
             return;
         }
-        
-        if (!movieLogic.AuditoriumIds.Contains(Id))
+
+        if (Id != 1 &&  Id != 2 &&  Id != 3)
         {
-            ErrorMessage("Id doesn't match, can only be 1,2, or 3!!");
+            ErrorMessage("Auditorium number can only be 1, 2, or 3!!");
             return; 
-        } 
+        }
+    
     }
     public static void InvalidTitlePrint(string title)
     {
@@ -327,6 +328,29 @@ public class Tools
             return;
         }
 
+        if (!movieLogic.Genres.Contains(genre))
+        {
+            ErrorMessage("Genre can only be :\n'Fantasy', 'Drama', 'Crime'\n'Adventure' or 'Western'");
+            return;    
+        }
+
+        foreach (char i in movieLogic.characters)
+        {
+            if (genre.Contains(i))
+            {
+                ErrorMessage("genre can't contain symbols!!");
+                return; 
+            }
+        }
+        
+        foreach (char i in movieLogic.digits)
+        {
+            if (genre.Contains(i))
+            {
+                ErrorMessage("genre can't contain digits!!");
+                return; 
+            }
+        }
         
         if (!movieLogic.Genres.Contains(genre))
         {
@@ -348,6 +372,27 @@ public class Tools
             ErrorMessage("invalid format: must be DD-MM-YYYY!!");
             return; 
         }
+
+
+         foreach (char i in movieLogic.characters)
+        {
+            if (date.Contains(i))
+            {
+                ErrorMessage("date can't contain symbols!!");
+                return; 
+            }
+        }
+
+        foreach (char i in date)
+        {
+            if(char.IsLetter(i))
+            {
+                ErrorMessage("date can't contain letters!!");
+                return; 
+            }
+
+        }
+
     }
     public static void InvalidTimePrint(string time)
     {
@@ -361,6 +406,15 @@ public class Tools
         {
             ErrorMessage("invalid format: must be 00:00");
             return;
+        }
+
+        foreach (char i in movieLogic.characters)
+        {
+            if (time.Contains(i))
+            {
+                ErrorMessage("time can't contain symbols!!");
+                return; 
+            }
         }
     }
     public static void InvalidDurationPrint(string duration)
@@ -376,6 +430,15 @@ public class Tools
             ErrorMessage("invalid format: duration must be 0:00");
             return;
         }
+
+          foreach (char i in movieLogic.characters)
+        {
+            if (duration.Contains(i))
+            {
+                ErrorMessage("duration can't contain symbols!!");
+                return; 
+            }
+        }
     }
     public static void InvalidBBFCPrint(int bbfc)
     {
@@ -384,12 +447,14 @@ public class Tools
             ErrorMessage("BBFC can't be empty!!");
             return;
         }
-        
-        if (!movieLogic.BBFCs.Contains(bbfc))
+
+
+        if (bbfc != 3 && bbfc != 9 && bbfc != 12 && bbfc != 15 && bbfc != 18)
         {
-            ErrorMessage("BBFC doesn't match!!");
+            ErrorMessage("BBFC doesn't match!! can only be: 3, 9, 12, 15, or 18!!");
             return; 
         }
+        
         
     }
 }
