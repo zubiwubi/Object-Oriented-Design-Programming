@@ -6,9 +6,10 @@ public class MovieLogic
     public bool IsDateFormatValid; 
     public bool IsTimeFormatValid; 
     public bool IsDurationFormatValid;
-    public List<int> AuditoriumIds = [1, 2, 3];
     public  List<int> BBFCs = [3 ,9 ,12 ,15 , 18 ]; 
     public List<string> Genres = ["Fantasy","Drama", "Comedy", "Crime", "Adventure", "Western"];
+    public List<char> characters = new() { '!', '@', '#', '$', '%', '^', '&', '*', '.' };
+    public List<int> digits = new() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     public List<MovieModel> GetAllMovies()
     {
         return _Access.GetAllMovies();
@@ -33,21 +34,15 @@ public class MovieLogic
     }
     public bool IsLocationIdValid(int Id)
     {
-        if (string.IsNullOrEmpty(Id.ToString()))
+        if (string.IsNullOrEmpty(Id.ToString().Trim()))
         {
             return false; 
         }
 
-        foreach (int i in AuditoriumIds)
+
+        if (Id != 1 && Id != 2 && Id != 3)
         {
-            if (Id == i)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return false; 
         }
 
         return true;
@@ -68,6 +63,22 @@ public class MovieLogic
         return true;
     }
 
+    public bool IsDescriptionValid(string description)
+    {
+        if (string.IsNullOrEmpty(description.Trim()))
+        {
+            return false; 
+        }
+
+        if (description.Length < 5 || description.Length > 200)
+        {
+            return false; 
+        }
+
+        return true;
+    }
+
+    
     public bool IsGenreValid(string genre)
     {
         if (string.IsNullOrEmpty(genre.Trim()))
@@ -84,22 +95,22 @@ public class MovieLogic
         {
             return false;    
         }
-            
-        return true;
-    }
 
-    public bool IsDescriptionValid(string description)
-    {
-        if (string.IsNullOrEmpty(description.Trim()))
+        foreach (char i in characters)
         {
-            return false; 
+            if (genre.Contains(i))
+            {
+                return false; 
+            }
         }
 
-        if (description.Length < 5 || description.Length > 200)
+        foreach (char i in digits)
         {
-            return false; 
-        }
-
+            if (genre.Contains(i))
+            {
+                return false; 
+            }
+        }       
         return true;
     }
     public bool IsDateValid(string date)
@@ -116,20 +127,31 @@ public class MovieLogic
             return false; 
         }
 
-        // add symbol check
-        // cant be past date 
-        // day 
-        // month
+        foreach (char i in characters)
+        {
+            if (date.Contains(i))
+            {
+                return false; 
+            }
+        }
 
+        foreach (char i in date)
+        {
+            if(char.IsLetter(i))
+            {
+                return false; 
+            }
 
-        return true; 
+        }
+
+        return true;
     }
 
     public bool IsTimeValid(string time)
     {
         IsTimeFormatValid = Regex.IsMatch(time, @"^\d{2}:\d{2}$");
 
-        if (string.IsNullOrEmpty(time))
+        if (string.IsNullOrEmpty(time.Trim()))
         {
             return false; 
         }
@@ -139,17 +161,20 @@ public class MovieLogic
             return false; 
         }
 
-        // between 00 and 23 
-        // between 00 - 59
-
-        // add symbol check
+        foreach (char i in characters)
+        {
+            if (time.Contains(i))
+            {
+                return false; 
+            }
+        }
         return true;
     }
     public bool IsDurationValid(string duration)
     {
         IsDurationFormatValid = Regex.IsMatch(duration, @"^\d{1}:\d{2}$");
 
-        if (string.IsNullOrEmpty(duration))
+        if (string.IsNullOrEmpty(duration.Trim()))
         {
             return false; 
         }
@@ -159,23 +184,26 @@ public class MovieLogic
             return false; 
         }
 
-        // symbol check
+        foreach (char i in characters)
+        {
+            if (duration.Contains(i))
+            {
+                return false; 
+            }
+        }
         return true;
     }
     public bool IsBBFCValid(int bbfc)
     {
-        if (string.IsNullOrEmpty(bbfc.ToString()))
+        if (string.IsNullOrEmpty(bbfc.ToString().Trim()))
         {
             return false; 
         } 
 
-        foreach (int i in BBFCs)
+        if (bbfc != 3 && bbfc != 9 && bbfc != 12 && bbfc != 15 && bbfc != 18)
         {
-            if (bbfc == i)
-            {
-                return true;
-            }
-        }
+            return false; 
+        } 
         return true; 
     }
 }

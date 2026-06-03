@@ -173,16 +173,25 @@ public class AdminManageMovies : IPage
             {
                 if (i == Arrow)
                 {
-                    Console.Write("➥ ");
-                    Tools.ColorMagentaMessage($@" [{i + 1}] {CurrentMovies[i].LocationId} | {CurrentMovies[i].Title} | {CurrentMovies[i].Genre} 
-                    | {CurrentMovies[i].Description} 
-                    | {CurrentMovies[i].Date} | {CurrentMovies[i].StartTime} | {CurrentMovies[i].EndTime} | {CurrentMovies[i].Duration} | {CurrentMovies[i].BBFC}");
+                     Console.Write("➥ ");
+                    Tools.ColorMagentaMessage($"[{i + 1}] TITLE: {CurrentMovies[i].Title}");
+                    Console.WriteLine("❀° ┄─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮");
+                    Tools.ColorMagentaMessage($@"AUDITORIUM: {CurrentMovies[i].LocationId}  | GENRE: {CurrentMovies[i].Genre}  DATE: {CurrentMovies[i].Date}
+                    | {CurrentMovies[i].StartTime} | {CurrentMovies[i].EndTime} | {CurrentMovies[i].Duration} | {CurrentMovies[i].BBFC}");
+                    Console.WriteLine("╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┄ °❀");
+
+                    Console.WriteLine($"DESCRIPTION: {CurrentMovies[i].Description}");
                 }
                 else
                 {
-                    Console.WriteLine($@" [{i + 1}] {CurrentMovies[i].LocationId} | {CurrentMovies[i].Title} | {CurrentMovies[i].Genre}
-                  | {CurrentMovies[i].Description} 
-                  | {CurrentMovies[i].Date} | {CurrentMovies[i].StartTime} | {CurrentMovies[i].EndTime} | {CurrentMovies[i].Duration} | {CurrentMovies[i].BBFC}");
+                    Console.WriteLine($"[{i + 1}] TITLE: {CurrentMovies[i].Title}");
+                    Console.WriteLine("❀° ┄─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮");
+                    Console.WriteLine($@"AUDITORIUM: {CurrentMovies[i].LocationId} | GENRE: {CurrentMovies[i].Genre}  DATE: {CurrentMovies[i].Date}
+                    | {CurrentMovies[i].StartTime} | {CurrentMovies[i].EndTime} | {CurrentMovies[i].Duration} | {CurrentMovies[i].BBFC}");
+                    Console.WriteLine("╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┄ °❀");
+
+                    Console.WriteLine($"DESCRIPTION: {CurrentMovies[i].Description}");
+                    Console.WriteLine();
                 }
             }
 
@@ -208,7 +217,7 @@ public class AdminManageMovies : IPage
             else if (Key.Key == ConsoleKey.Backspace)
             {
                 Tools.ProgressBar();
-                AdminHomePage.CreateAdminMenu();
+                CreateManageMenu();
             }
             else if (Key.Key == ConsoleKey.Enter)
             {
@@ -268,21 +277,30 @@ public class AdminManageMovies : IPage
         {
             Display.ClearScreen(); 
 
-             for (int i = 0; i < CurrentMovies.Count; i++)
+            for (int i = 0; i < CurrentMovies.Count; i++)
             {
                 if (i == Arrow)
                 {
                     Console.Write("➥ ");
-                    Tools.ColorMagentaMessage($@" [{i + 1}] {CurrentMovies[i].LocationId} | {CurrentMovies[i].Title} | {CurrentMovies[i].Genre} 
-                    | {CurrentMovies[i].Description} 
-                    | {CurrentMovies[i].Date} | {CurrentMovies[i].StartTime} | {CurrentMovies[i].EndTime} | {CurrentMovies[i].Duration} | {CurrentMovies[i].BBFC}");
+                    Tools.ColorMagentaMessage($"[{i + 1}] TITLE: {CurrentMovies[i].Title}");
+                    Console.WriteLine("❀° ┄─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮");
+                    Tools.ColorMagentaMessage($@"AUDITORIUM: {CurrentMovies[i].LocationId}  | GENRE: {CurrentMovies[i].Genre}  DATE: {CurrentMovies[i].Date}
+                    | {CurrentMovies[i].StartTime} | {CurrentMovies[i].EndTime} | {CurrentMovies[i].Duration} | {CurrentMovies[i].BBFC}");
+                    Console.WriteLine("╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┄ °❀");
+
+                    Console.WriteLine($"DESCRIPTION: {CurrentMovies[i].Description}");
                 }
                 else
                 {
-                    Console.WriteLine($@" [{i + 1}] {CurrentMovies[i].LocationId} | {CurrentMovies[i].Title} | {CurrentMovies[i].Genre} 
-                    | {CurrentMovies[i].Description} 
-                    | {CurrentMovies[i].Date} | {CurrentMovies[i].StartTime} | {CurrentMovies[i].EndTime} | {CurrentMovies[i].Duration} | {CurrentMovies[i].BBFC}");
-                }
+                    Console.WriteLine($"[{i + 1}] TITLE: {CurrentMovies[i].Title}");
+                    Console.WriteLine("❀° ┄─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮");
+                    Console.WriteLine($@"AUDITORIUM: {CurrentMovies[i].LocationId} | GENRE: {CurrentMovies[i].Genre}  DATE: {CurrentMovies[i].Date}
+                    | {CurrentMovies[i].StartTime} | {CurrentMovies[i].EndTime} | {CurrentMovies[i].Duration} | {CurrentMovies[i].BBFC}");
+                    Console.WriteLine("╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┄ °❀");
+
+                    Console.WriteLine($"DESCRIPTION: {CurrentMovies[i].Description}");
+                    Console.WriteLine();
+                }  
             }
 
             Key = Console.ReadKey();
@@ -307,7 +325,7 @@ public class AdminManageMovies : IPage
             else if (Key.Key == ConsoleKey.Backspace)
             {
                 Tools.ProgressBar();
-                AdminHomePage.CreateAdminMenu();
+                CreateManageMenu();
             }
             else if (Key.Key == ConsoleKey.Enter)
             {
@@ -504,12 +522,12 @@ public class AdminManageMovies : IPage
                 Tools.InvalidDatePrint(date); 
             }
 
-        } while (!movieLogic.IsDateValid(date)); 
+        } while (!movieLogic.IsDateValid(date) || !SearchMoviesLogic.DateInPastValidation(date)); 
         return date; 
     }
     private static string AskStartTime()
     {
-          Display.ClearScreen(); 
+        Display.ClearScreen(); 
         Tools.ColorYellowMessage("DISCLAIMER: Start time can't be empty\nstart time must be in correct format: 00:00");
         string startTime;
         do

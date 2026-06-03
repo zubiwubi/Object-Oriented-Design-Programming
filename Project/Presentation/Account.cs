@@ -34,10 +34,10 @@ public class Account : IPage
         {
             Tools.ProgressBar();
             Program.Main();
-        }
-        else
+        }     
+        if (Key.Key == ConsoleKey.Enter)
         {
-            Display.ClearScreen(); 
+             Display.ClearScreen(); 
             string email;
             do
             {
@@ -120,8 +120,8 @@ public class Account : IPage
                 Tools.ErrorMessage($"E-mail '{email}' not found!");
                 Thread.Sleep(4000);
                 LogIn();
-            }   
-        }  
+            }    
+        }
     }
     protected static void DeleteAccount()
     {
