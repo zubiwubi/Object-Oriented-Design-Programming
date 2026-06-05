@@ -108,15 +108,12 @@ public class AdminHomePage : IPage
                 Tools.ProgressBar();
                 AdminManageMerchandise.StartPage();
                 break;
-            case 3: 
+            case 3:
                 Tools.ProgressBar();
                 AdminManageMovies.CreateManageMenu();
                 break;
             case 4: // data overview method call
-                Tools.ErrorMessage("this function does not exist yet.");
-                Tools.ColorYellowMessage("PRESS 'ENTER' to go back"); ;
-                Console.ReadKey();
-                Homepage();
+                AdminDataOverview.PrintData();
                 break;
             case 5:
                 Account.LogOut();

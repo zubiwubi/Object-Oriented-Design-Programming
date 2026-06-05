@@ -29,4 +29,11 @@ public class OrderedExtrasLogic
 
     }
 
+    public List<OrderedExtrasModel> GetAll()
+    {
+        return OEAccess.GetAll();
+
+    }
+
+
 }
