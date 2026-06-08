@@ -8,10 +8,11 @@ class QRCodeGen
     {
         return _movieAccess.GetById(id);
     }
-    public static void QrCodeGeneration(string? email, int orderId, int? movieId, int? seatId)
+    public static void QrCodeGeneration(string? email, int orderId, int? movieId, string? seatId)
     {
         string text = "";
-        if (movieId != null){
+        if (movieId != null)
+        {
             MovieModel QrMovie = GetByID(movieId);
 
             text = $"Movie Title: {QrMovie.Title}, MovieId:{movieId},Auditorium:{QrMovie.LocationId}, SEAT{seatId}, Date: {QrMovie.Date}, Start Time: {QrMovie.StartTime}";

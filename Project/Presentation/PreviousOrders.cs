@@ -74,10 +74,10 @@ public class PreviousOrders
     private static void PrintBasicOrderInfo(List<OrderModel> orders)
     {
         Console.WriteLine(
-            $"{"ID",-4} | {"MovieId",-7} | {"Movie Title",-25} | {"Start Time",-12} | {"Date Movie",-20} | {"Seat",-6} | {"Date Ordered",-20}| {"Ordered extras?",-5}"
+            $"{"ID",-4} | {"MovieId",-7} | {"Movie Title",-25} | {"Start Time",-12} | {"Date Movie",-20} | {"Seat",-20} | {"Date Ordered",-20}| {"Ordered extras?",-5}"
         );
 
-        Console.WriteLine(new string('-', 125));
+        Console.WriteLine(new string('-', 150));
 
         foreach (var order in orders)
         {
@@ -90,7 +90,7 @@ public class PreviousOrders
             }
 
             Console.WriteLine(
-                $"{order.Id,-4} | {order.MovieId,-7} | {orderMovie.Title,-25} | {orderMovie.StartTime,-12} | {orderMovie.Date,-20} | {order.SeatId,-6} | {order.Date,-20}| {extras,-5}"
+                $"{order.Id,-4} | {order.MovieId,-7} | {orderMovie.Title,-25} | {orderMovie.StartTime,-12} | {orderMovie.Date,-20} | {order.Seat,-20} | {order.Date,-20}| {extras,-5}"
             );
         }
     }

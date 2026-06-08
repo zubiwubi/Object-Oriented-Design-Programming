@@ -12,7 +12,7 @@ public class ReservationMerchandise : MakeAccount
     public static bool IsOptionSelected { get; set; }
     public static List<string> Merchandise { get; set; } = new() { "Hoodies", "Tshirts", "Accessories", "Stickers", "Mugs", "Posters" };
     public static List<string> Menu { get; set; } = new() { "Yes", "No" };
-    public static void CreateMenu(int movieId, int seat, string caller, long? foodId = null, long? drinkId = null)
+    public static void CreateMenu(int movieId, string? seat, string caller, long? foodId = null, long? drinkId = null)
     {
 
         IsOptionSelected = false;
@@ -98,7 +98,7 @@ public class ReservationMerchandise : MakeAccount
                 break;
         }
     }
-    public static void SelectHeaderOrder(int movieId, int seat, string caller, long? foodId, long? drinkId)
+    public static void SelectHeaderOrder(int movieId, string? seat, string caller, long? foodId, long? drinkId)
     {
         IsOptionSelected = false;
         while (!IsOptionSelected)
@@ -187,7 +187,7 @@ public class ReservationMerchandise : MakeAccount
         }
     }
 
-    public static void OrderHoodies(int movieId, int seat, string caller, long? foodId, long? drinkId)
+    public static void OrderHoodies(int movieId, string? seat, string caller, long? foodId, long? drinkId)
     {
         List<MerchandiseModel> Hoodies = merchandiseLogic.GetHoodies();
         IsOptionSelected = false;
@@ -222,7 +222,7 @@ public class ReservationMerchandise : MakeAccount
         }
     }
 
-    public static void OrderTshirts(int movieId, int seat, string caller, long? foodId, long? drinkId)
+    public static void OrderTshirts(int movieId, string? seat, string caller, long? foodId, long? drinkId)
     {
         List<MerchandiseModel> TShirts = merchandiseLogic.GetTshirts();
         IsOptionSelected = false;
@@ -257,7 +257,7 @@ public class ReservationMerchandise : MakeAccount
         }
 
     }
-    public static void OrderAccessories(int movieId, int seat, string caller, long? foodId, long? drinkId)
+    public static void OrderAccessories(int movieId, string? seat, string caller, long? foodId, long? drinkId)
     {
         List<MerchandiseModel> Accessories = merchandiseLogic.GetAcccesories();
         IsOptionSelected = false;
@@ -291,8 +291,8 @@ public class ReservationMerchandise : MakeAccount
             OrderControlKey(Accessories, movieId, seat, caller, foodId, drinkId);
         }
     }
-    public static void OrderStickers(int movieId, int seat, string caller, long? foodId, long? drinkId)
-    {     
+    public static void OrderStickers(int movieId, string? seat, string caller, long? foodId, long? drinkId)
+    {
         List<MerchandiseModel> Stickers = merchandiseLogic.GetStickers();
 
         IsOptionSelected = false;
@@ -326,7 +326,7 @@ public class ReservationMerchandise : MakeAccount
             OrderControlKey(Stickers, movieId, seat, caller, foodId, drinkId);
         }
     }
-    public static void OrderMugs(int movieId, int seat, string caller, long? foodId, long? drinkId)
+    public static void OrderMugs(int movieId, string? seat, string caller, long? foodId, long? drinkId)
     {
         List<MerchandiseModel> Mugs = merchandiseLogic.GetMugs();
 
@@ -361,7 +361,7 @@ public class ReservationMerchandise : MakeAccount
             OrderControlKey(Mugs, movieId, seat, caller, foodId, drinkId);
         }
     }
-    public static void OrderPosters(int movieId, int seat, string caller, long? foodId, long? drinkId)
+    public static void OrderPosters(int movieId, string? seat, string caller, long? foodId, long? drinkId)
     {
         List<MerchandiseModel> Posters = merchandiseLogic.GetPosters();
         IsOptionSelected = false;
@@ -395,7 +395,7 @@ public class ReservationMerchandise : MakeAccount
             OrderControlKey(Posters, movieId, seat, caller, foodId, drinkId);
         }
     }
-    public static void OrderedMerchSummary(int movieId, int seat, string caller, long? foodId, long? drinkId)
+    public static void OrderedMerchSummary(int movieId, string? seat, string caller, long? foodId, long? drinkId)
     {
         if (OrderedMerch.Count == 0)
         {
@@ -465,7 +465,7 @@ public class ReservationMerchandise : MakeAccount
         }
 
     }
-    private static void OrderControlKey(List<MerchandiseModel> example, int movieId, int seat, string caller, long? foodId, long? drinkId)
+    private static void OrderControlKey(List<MerchandiseModel> example, int movieId, string? seat, string caller, long? foodId, long? drinkId)
     {
         Key = Console.ReadKey();
 

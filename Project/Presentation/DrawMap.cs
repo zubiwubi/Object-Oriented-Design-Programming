@@ -92,7 +92,7 @@ public class DrawMap
             if (caller == "reserve")
             {
                 Console.WriteLine("\nUse arrows | Enter = confirm | ESC = back");
-                bool exit = SeatSelectionArrow(auditorium, locationId, callerType);
+                bool exit = SeatSelectionArrow(auditorium, locationId, callerType, "", "", caller);
                 if (exit) return;
             }
             else if (caller == "Admin")
@@ -137,10 +137,54 @@ public class DrawMap
 
             case ConsoleKey.Enter:
 
-                int seatNum = int.Parse($"{currentCol}{currentRow}");
+                string seatNum = $"{currentCol}{currentRow}";
 
                 Console.WriteLine($"Selected seat: Row {currentRow}, Col {currentCol}");
                 Console.ReadKey();
+
+                if (caller == "reserve")
+                {
+                    while (true)
+                    {
+                        Console.WriteLine(
+                            "Q = Quit\nX = Continue with order\nA = Add seats to your order\nR = Reselect last seat\nRA = reset all");
+
+                        string choice = Console.ReadLine();
+
+                        if (choice == "Q" || choice == "q")
+                        {
+                            ChosenSeats.Clear();
+                            AccountHomePage.HomePage();
+                        }
+                        else if (choice == "X" || choice == "x")
+                        {
+                            ChosenSeats.Add((currentRow, currentCol));
+
+                            string seatsString = string.Join(", ", ChosenSeats.Select(s => $"({s.Row},{s.Col})"));
+                            ChosenSeats.Clear();
+                            ReservationFoodMenu.FoodOrderChecker(ReservationMovie.ChosenMovieId, seatsString, callerType);
+
+                        }
+                        else if (choice == "A" || choice == "a")
+                        {
+                            ChosenSeats.Add((currentRow, currentCol));
+                            SeatSelection(caller, auditorium, "", info, screen, callerType, locationId);
+                        }
+                        else if (choice == "R" || choice == "r")
+                        {
+                            SeatSelection(caller, auditorium, "", info, screen, callerType, locationId);
+                        }
+                        else if (choice == "RA" || choice == "ra")
+                        {
+                            ChosenSeats.Clear();
+                            SeatSelection(caller, auditorium, "", info, screen, callerType, locationId);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong input");
+                        }
+                    }
+                }
 
                 if (callerType == "Admin")
                 {

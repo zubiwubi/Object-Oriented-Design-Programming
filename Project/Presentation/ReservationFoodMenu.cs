@@ -7,7 +7,7 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
     public static List<FoodModel> allSnacks { get; set; } = FoodLogic.GetAllFoods().Where(f => f.IsLounge == 0).ToList();
     public static List<DrinkModel> allMovieDrinks { get; set; } = DrinkLogic.GetAllDrinks().Where(d => d.IsLounge == 0).ToList();
 
-    public static void FoodOrderChecker(int movieId, int seatNum, string callerType)
+    public static void FoodOrderChecker(int movieId, string? seatNum, string callerType)
     {
         Console.Clear();
 
@@ -30,7 +30,7 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
         }
     }
 
-    public static void RenderFoodMenu(int movieId, int seatNum, string callerType)
+    public static void RenderFoodMenu(int movieId, string? seatNum, string callerType)
     {
         ViewFoodMenu.AddVeganDescription(allSnacks);
 
@@ -53,14 +53,14 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
             table.AddColumn("FOOD").Width(110);
             table.AddColumn("PRICE").Width(110);
             table.AddColumn("DIETARY").Width(110);
-            for(int i = 0; i < allSnacks.Count(); i++)
-            {   
+            for (int i = 0; i < allSnacks.Count(); i++)
+            {
                 FoodModel snack = allSnacks[i];
 
                 int displayId = (i + 1);
 
                 bool isSelected = displayId == selectedOption + 1; // +1 because it starts at 0, so this is to make it match the ids
-                
+
                 var rowContent = new[] { $"{displayId}", $"{snack.Name}", $"€ {snack.Price.ToString("0.00")}", $"{snack.Type}" };
                 var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {snack.Name}  [/]\n[italic][dim]{snack.Description}[/][/]", $"[bold]€ {snack.Price.ToString("0.00")}[/]", $"[bold]{snack.Type}[/]" };
 
@@ -71,7 +71,7 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                     selectedSnack = snack;
                 }
             }
-            
+
             AnsiConsole.Write(table); // --------------- END OF FOOD TABLE DRAWING ------------------
 
             var input = Console.ReadKey();
@@ -104,7 +104,7 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
         }
     }
 
-    public static void RenderDrinkMenu(int movieId, int seatNum, string callerType, FoodModel? snack)
+    public static void RenderDrinkMenu(int movieId, string? seatNum, string callerType, FoodModel? snack)
     {
         ViewFoodMenu.AddVeganDescription(allMovieDrinks);
 
@@ -135,14 +135,14 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
             drinkTable.AddColumn("PRICE").Width(100);
             drinkTable.AddColumn("SIZE").Width(100);
             drinkTable.AddColumn("DIETARY").Width(100);
-            for(int i = 0; i < allMovieDrinks.Count(); i++)
-            {   
+            for (int i = 0; i < allMovieDrinks.Count(); i++)
+            {
                 DrinkModel drink = allMovieDrinks[i];
 
                 int displayId = (i + 1);
 
                 bool isSelected = (displayId == selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
-                
+
                 var rowContent = new[] { $"{displayId}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Size}", $"{drink.Type}" };
                 var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"{drink.Size}", $"[bold]{drink.Type}[/]" };
 

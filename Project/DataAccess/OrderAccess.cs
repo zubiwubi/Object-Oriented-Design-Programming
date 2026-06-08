@@ -10,7 +10,7 @@ public class OrderAccess
 
     public int Write(OrderModel order)
     {
-        string sql = $"INSERT INTO {Table} (accountId, movieId, seatId, date , partySize) VALUES (@AccountId, @MovieId, @SeatId,@Date, @PartySize);SELECT last_insert_rowid();";
+        string sql = $"INSERT INTO {Table} (accountId, movieId, seat, date , partySize) VALUES (@AccountId, @MovieId, @Seat,@Date, @PartySize);SELECT last_insert_rowid();";
         return _connection.QuerySingle<int>(sql, order);
     }
 
