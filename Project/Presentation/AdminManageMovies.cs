@@ -2,16 +2,16 @@ using System.Data;
 using System.Reflection;
 public class AdminManageMovies : IPage
 {
-    private static MovieLogic movieLogic = new(); 
+    private static MovieLogic movieLogic = new();
     public static ConsoleKeyInfo Key { get; set; }
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> Menu {get; set;} = new() {"Yes","No"};
-    public static List<string> ManageOptions = new() {"Add movie", "Update movie", "Delete movie", "go back"};
+    public static List<string> Menu { get; set; } = new() { "Yes", "No" };
+    public static List<string> ManageOptions = new() { "Add movie", "Update movie", "Delete movie", "go back" };
     public static void StartPage()
     {
-        Display.ClearScreen(); 
+        Display.ClearScreen();
         Console.WriteLine(@$"
 
 
@@ -37,15 +37,15 @@ public class AdminManageMovies : IPage
         }
         else if (Key.Key == ConsoleKey.Enter)
         {
-            Tools.ProgressBar(); 
-            CreateManageMenu(); 
+            Tools.ProgressBar();
+            CreateManageMenu();
         }
     }
 
 
-    public  static void CreateManageMenu()
+    public static void CreateManageMenu()
     {
-        IsOptionSelected = false; 
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
             Display.ClearScreen();
@@ -95,7 +95,7 @@ public class AdminManageMovies : IPage
                 AdminHomePage.CreateAdminMenu();
             }
         }
-        
+
         switch (MenuChoice)
         {
             case 0:
@@ -106,74 +106,74 @@ public class AdminManageMovies : IPage
                 Tools.ProgressBar();
                 UpdateMovie();
                 break;
-            case 2: 
-                Tools.ProgressBar(); 
-                DeleteMovie(); 
-                break; 
+            case 2:
+                Tools.ProgressBar();
+                DeleteMovie();
+                break;
             case 3:
                 Tools.ProgressBar();
-                AdminHomePage.CreateAdminMenu(); 
+                AdminHomePage.CreateAdminMenu();
                 break;
-        }   
-    
+        }
+
     }
 
     public static void AddMovie()
     {
-        Display.ClearScreen(); 
+        Display.ClearScreen();
 
-        int LocationId = AskLocationId(); 
-        string Title = AskTitle();
-        string Genre = AskGenre();
-        string Description = AskDescription();
-        string Date = AskDate();
-        string StartTime = AskStartTime(); 
-        string EndTime = AskEndTime();  
-        string Duration = AskDuration(); 
-        int BBFC = AskBBFC(); 
-            
-        
-        MovieModel movie = new MovieModel(LocationId, Title, Genre, Description, Date, StartTime, EndTime, Duration, BBFC);  
-        MovieModel CheckMovieExist = movieLogic.CheckMovieExist(movie)!; 
+        int LocationId = AskLocationId();
+        string Title = AskTitle("Add");
+        string Genre = AskGenre("Add");
+        string Description = AskDescription("Add");
+        string Date = AskDate("Add");
+        string StartTime = AskStartTime("Add");
+        string EndTime = AskEndTime("Add");
+        string Duration = AskDuration("Add");
+        int BBFC = AskBBFC();
+
+
+        MovieModel movie = new MovieModel(LocationId, Title, Genre, Description, Date, StartTime, EndTime, Duration, BBFC);
+        MovieModel CheckMovieExist = movieLogic.CheckMovieExist(movie)!;
 
         if (CheckMovieExist != null)
         {
             Tools.ErrorMessage("this item already exists!");
             Tools.ColorYellowMessage("DISCLAIMER: press 'BACKSPACE' to go back");
-            Key = Console.ReadKey(); 
+            Key = Console.ReadKey();
             if (Key.Key == ConsoleKey.Backspace)
             {
                 Tools.ProgressBar();
-                CreateManageMenu(); 
+                CreateManageMenu();
             }
         }
         else
         {
-            movieLogic.Add(movie); 
-            Tools.ApproveMessage($"'{movie.Title}' succesfully added!! ✅✅✅"); 
+            movieLogic.Add(movie);
+            Tools.ApproveMessage($"'{movie.Title}' succesfully added!! ✅✅✅");
             Tools.ColorYellowMessage("DISCLAIMER: press 'ENTER' to go back to the menu");
             Key = Console.ReadKey()!;
 
             if (Key.Key == ConsoleKey.Enter)
             {
-                Tools.ProgressBar(); 
-                CreateManageMenu(); 
-            } 
+                Tools.ProgressBar();
+                CreateManageMenu();
+            }
         }
     }
     public static void UpdateMovie()
     {
-        List<MovieModel> CurrentMovies = movieLogic.GetAllMovies(); 
-        IsOptionSelected = false; 
+        List<MovieModel> CurrentMovies = movieLogic.GetAllMovies();
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             for (int i = 0; i < CurrentMovies.Count; i++)
             {
                 if (i == Arrow)
                 {
-                     Console.Write("➥ ");
+                    Console.Write("➥ ");
                     Tools.ColorMagentaMessage($"[{i + 1}] TITLE: {CurrentMovies[i].Title}");
                     Console.WriteLine("❀° ┄─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮");
                     Tools.ColorMagentaMessage($@"AUDITORIUM: {CurrentMovies[i].LocationId}  | GENRE: {CurrentMovies[i].Genre}  DATE: {CurrentMovies[i].Date}
@@ -224,58 +224,86 @@ public class AdminManageMovies : IPage
                 MenuChoice = Arrow;
                 IsOptionSelected = true;
 
-                Display.ClearScreen(); 
+                Display.ClearScreen();
 
                 Console.WriteLine($"Currently selected item: {CurrentMovies[MenuChoice].Title}");
 
-                int LocationId = AskLocationId(); 
+                int LocationId = AskLocationId();
                 string Title = AskTitle();
+                if (string.IsNullOrEmpty(Title))
+                {
+                    Title = CurrentMovies[MenuChoice].Title;
+                }
                 string Genre = AskGenre();
+                if (string.IsNullOrEmpty(Genre))
+                {
+                    Genre = CurrentMovies[MenuChoice].Genre;
+                }
                 string Description = AskDescription();
+                if (string.IsNullOrEmpty(Description))
+                {
+                    Description = CurrentMovies[MenuChoice].Description;
+                }
                 string Date = AskDate();
-                string StartTime = AskStartTime(); 
-                string EndTime = AskEndTime();  
-                string Duration = AskDuration(); 
-                int BBFC = AskBBFC(); 
-                      
-                MovieModel movie = new MovieModel(LocationId, Title, Genre, Description, Date, StartTime, EndTime, Duration, BBFC);  
-                MovieModel CheckMovieExist = movieLogic.CheckMovieExist(movie)!; 
+                if (string.IsNullOrEmpty(Date))
+                {
+                    Date = CurrentMovies[MenuChoice].Date;
+                }
+                string StartTime = AskStartTime();
+                if (string.IsNullOrEmpty(StartTime))
+                {
+                    StartTime = CurrentMovies[MenuChoice].StartTime;
+                }
+                string EndTime = AskEndTime();
+                if (string.IsNullOrEmpty(EndTime))
+                {
+                    EndTime = CurrentMovies[MenuChoice].EndTime;
+                }
+                string Duration = AskDuration();
+                if (string.IsNullOrEmpty(Duration))
+                {
+                    Duration = CurrentMovies[MenuChoice].Duration;
+                }
+                int BBFC = AskBBFC();
+
+                MovieModel movie = new MovieModel(LocationId, Title, Genre, Description, Date, StartTime, EndTime, Duration, BBFC);
+                MovieModel CheckMovieExist = movieLogic.CheckMovieExist(movie)!;
 
                 if (CheckMovieExist != null)
                 {
                     Tools.ErrorMessage("this item already exists!");
                     Tools.ColorYellowMessage("DISCLAIMER: press 'BACKSPACE' to go back");
-                    Key = Console.ReadKey(); 
+                    Key = Console.ReadKey();
                     if (Key.Key == ConsoleKey.Backspace)
                     {
                         Tools.ProgressBar();
-                        CreateManageMenu(); 
+                        CreateManageMenu();
                     }
                 }
                 else
                 {
-                    movie.Id = CurrentMovies[MenuChoice].Id; 
-                    movieLogic.Update(movie); 
-                    Tools.ApproveMessage($"'{CurrentMovies[MenuChoice].Title}' succesfully updated to:'{movie.Title}'!! ✅✅✅"); 
+                    movie.Id = CurrentMovies[MenuChoice].Id;
+                    movieLogic.Update(movie);
+                    Tools.ApproveMessage($"'{CurrentMovies[MenuChoice].Title}' succesfully updated to:'{movie.Title}'!! ✅✅✅");
                     Tools.ColorYellowMessage("DISCLAIMER: press 'ENTER' to go back to the menu");
                     Key = Console.ReadKey()!;
 
                     if (Key.Key == ConsoleKey.Enter)
                     {
-                        Tools.ProgressBar(); 
-                        CreateManageMenu(); 
-                    }    
+                        Tools.ProgressBar();
+                        CreateManageMenu();
+                    }
                 }
             }
         }
     }
     public static void DeleteMovie()
     {
-        List<MovieModel> CurrentMovies = movieLogic.GetAllMovies(); 
-        IsOptionSelected = false; 
+        List<MovieModel> CurrentMovies = movieLogic.GetAllMovies();
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             for (int i = 0; i < CurrentMovies.Count; i++)
             {
@@ -300,7 +328,7 @@ public class AdminManageMovies : IPage
 
                     Console.WriteLine($"DESCRIPTION: {CurrentMovies[i].Description}");
                     Console.WriteLine();
-                }  
+                }
             }
 
             Key = Console.ReadKey();
@@ -340,7 +368,7 @@ public class AdminManageMovies : IPage
 
                 while (!IsSelected)
                 {
-                    Display.ClearScreen(); 
+                    Display.ClearScreen();
                     Console.WriteLine($"Currently selected item: {CurrentMovies[MenuChoice].Title}");
                     Tools.ErrorMessage("[WARNING] THIS ACTION CAN'T BE UNDONE [WARNING]");
                     Tools.ColorYellowMessage("Are you sure you want to delete this item?");
@@ -353,7 +381,7 @@ public class AdminManageMovies : IPage
                         }
                         else
                         {
-                            Console.WriteLine($"[{i + 1}] {Menu[i]}"); 
+                            Console.WriteLine($"[{i + 1}] {Menu[i]}");
                         }
 
                     }
@@ -388,37 +416,37 @@ public class AdminManageMovies : IPage
 
                 switch (subMenuChoice)
                 {
-                    case 0: 
+                    case 0:
                         Display.ClearScreen();
-                        movieLogic.UpdateBool(CurrentMovies[MenuChoice]); 
+                        movieLogic.UpdateBool(CurrentMovies[MenuChoice]);
                         Tools.ApproveMessage($"'{CurrentMovies[MenuChoice].Title}' has been successfully deleted!");
                         Tools.ColorYellowMessage("press 'ENTER' to go back");
-                        Key = Console.ReadKey(); 
+                        Key = Console.ReadKey();
                         if (Key.Key == ConsoleKey.Enter)
                         {
-                            Tools.ProgressBar(); 
-                            CreateManageMenu(); 
+                            Tools.ProgressBar();
+                            CreateManageMenu();
                         }
                         break;
-                    case 1: 
+                    case 1:
                         Tools.ErrorMessage("deleting cancelled.");
                         Tools.ColorYellowMessage("press 'ENTER' to go back");
-                        Key = Console.ReadKey(); 
+                        Key = Console.ReadKey();
                         if (Key.Key == ConsoleKey.Enter)
                         {
-                            Tools.ProgressBar(); 
-                            CreateManageMenu();                
+                            Tools.ProgressBar();
+                            CreateManageMenu();
                         }
-                        break; 
+                        break;
                 }
 
             }
-            
-        }   
+
+        }
     }
     private static int AskLocationId()
     {
-        Display.ClearScreen(); 
+        Display.ClearScreen();
         Tools.ColorYellowMessage("DISCLAIMER: you can only enter:\n1 (auditorium 1)\n2 (auditorium 2)\n3 (auditorium 3)");
 
         string LocationIdString;
@@ -431,161 +459,347 @@ public class AdminManageMovies : IPage
             if (string.IsNullOrEmpty(LocationIdString))
             {
                 Tools.ErrorMessage("location id can't be empty!!");
-                continue; 
+                continue;
             }
 
             if (!int.TryParse(LocationIdString, out int locationId))
             {
                 Tools.ErrorMessage("invalid Id: must be 1, 2, or 3!!");
-                continue; 
+                continue;
             }
             else
             {
-                LocationId = locationId; 
+                LocationId = locationId;
             }
 
             if (!movieLogic.IsLocationIdValid(LocationId))
             {
-                Tools.InvalidLocationIdPrint(LocationId); 
+                Tools.InvalidLocationIdPrint(LocationId);
             }
 
-        } while (!movieLogic.IsLocationIdValid(LocationId)); 
-        return LocationId; 
+        } while (!movieLogic.IsLocationIdValid(LocationId));
+        return LocationId;
     }
-    private static string AskTitle()
+    private static string AskTitle(string? caller = "")
     {
-        Display.ClearScreen(); 
-        Tools.ColorYellowMessage("DISCLAIMER: Title can't be empty\nTitle can't be less then 2 characters and/or more then 30 characters");
-        string title;
-        do
+        if (caller == "Add")
         {
-            Console.WriteLine("Enter the movie title [REQUIRED FIELD]: ");
-            title = Console.ReadLine()!; 
-
-            if (!movieLogic.IsTitleValid(title))
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("DISCLAIMER: Title can't be empty\nTitle can't be less then 2 characters and/or more then 30 characters");
+            string title;
+            do
             {
-                Tools.InvalidTitlePrint(title); 
-            }
+                Console.WriteLine("Enter the movie title [REQUIRED FIELD]: ");
+                title = Console.ReadLine()!;
 
-        } while (!movieLogic.IsTitleValid(title)); 
-        return title; 
+                if (string.IsNullOrEmpty(title))
+                {
+                    Console.WriteLine("Title cannot be empty!");
+                }
+
+                if (!movieLogic.IsTitleValid(title))
+                {
+                    Tools.InvalidTitlePrint(title);
+                }
+
+            } while (!movieLogic.IsTitleValid(title) || string.IsNullOrEmpty(title));
+            return title;
+        }
+        else
+        {
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("DISCLAIMER: Title can't be empty\nTitle can't be less then 2 characters and/or more then 30 characters\nPress 'enter' to keep the same title");
+            string title;
+            do
+            {
+                Console.WriteLine("Enter the movie title [REQUIRED FIELD]: ");
+                title = Console.ReadLine();
+
+                if (!movieLogic.IsTitleValid(title))
+                {
+                    Tools.InvalidTitlePrint(title);
+                }
+
+            } while (!movieLogic.IsTitleValid(title));
+            return title;
+        }
     }
-    private static string AskGenre()
+    private static string AskGenre(string? caller = "")
     {
-        Display.ClearScreen(); 
-        Tools.ColorYellowMessage("DISCLAIMER: Genre can't be empty\nGenre can't be less then 2 characters and/or more then 10 characters\nGenre can only be:");
-        Tools.ColorYellowMessage("Fantasy, Drama\nCrime, Adventure\nComedy, Western");
-        string genre;
-        do
+        if (caller == "Add")
         {
-            Console.WriteLine("Enter the movie genre [REQUIRED FIELD]: ");
-            genre = Console.ReadLine()!; 
-
-            if (!movieLogic.IsGenreValid(genre))
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("DISCLAIMER: Genre can't be empty\nGenre can't be less then 2 characters and/or more then 10 characters\nGenre can only be:");
+            Tools.ColorYellowMessage("Fantasy, Drama\nCrime, Adventure\nComedy, Western");
+            string genre;
+            do
             {
-                Tools.InvalidGenrePrint(genre); 
-            }
+                Console.WriteLine("Enter the movie genre [REQUIRED FIELD]: ");
+                genre = Console.ReadLine()!;
 
-        } while (!movieLogic.IsGenreValid(genre)); 
-        return genre; 
+                if (string.IsNullOrEmpty(genre))
+                {
+                    Console.WriteLine("Genre cannot be empty!");
+                }
+
+                if (!movieLogic.IsGenreValid(genre))
+                {
+                    Tools.InvalidGenrePrint(genre);
+                }
+
+            } while (!movieLogic.IsGenreValid(genre) || string.IsNullOrEmpty(genre));
+            return genre;
+        }
+        else
+        {
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("Press 'enter' to keep the same genre\nGenre can only be:");
+            Tools.ColorYellowMessage("Fantasy, Drama\nCrime, Adventure\nComedy, Western");
+            string genre;
+            do
+            {
+                Console.WriteLine("Enter the movie genre [REQUIRED FIELD]: ");
+                genre = Console.ReadLine();
+
+                if (!movieLogic.IsGenreValid(genre))
+                {
+                    Tools.InvalidGenrePrint(genre);
+                }
+
+            } while (!movieLogic.IsGenreValid(genre));
+            return genre;
+        }
     }
-    private static string AskDescription()
+    private static string AskDescription(string? caller = "")
     {
-        Display.ClearScreen(); 
-        Tools.ColorYellowMessage("DISCLAIMER: Description can't be empty\nDescription can't be less then 2 characters and/or more then 200 characters");
-        string description;
-        do
+        if (caller == "Add")
         {
-            Console.WriteLine("Enter the movie description [REQUIRED FIELD]: ");
-            description = Console.ReadLine()!; 
-
-            if (!movieLogic.IsDescriptionValid(description))
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("DISCLAIMER: Description can't be empty\nDescription can't be less then 5 characters and/or more then 200 characters");
+            string description;
+            do
             {
-                Tools.InvalidDescriptionPrint(description); 
-            }
+                Console.WriteLine("Enter the movie description [REQUIRED FIELD]: ");
+                description = Console.ReadLine()!;
+                if (string.IsNullOrEmpty(description))
+                {
+                    Console.WriteLine("Description cannot be empty!");
+                }
 
-        } while (!movieLogic.IsDescriptionValid(description)); 
-        return description; 
+                if (!movieLogic.IsDescriptionValid(description))
+                {
+                    Tools.InvalidDescriptionPrint(description);
+                }
+
+            } while (!movieLogic.IsDescriptionValid(description) || string.IsNullOrEmpty(description));
+            return description;
+        }
+        else
+        {
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("Press 'enter' to keep the same description\nDescription can't be less then 5 characters and/or more then 200 characters");
+            string description;
+            do
+            {
+                Console.WriteLine("Enter the movie description [REQUIRED FIELD]: ");
+                description = Console.ReadLine();
+
+                if (!movieLogic.IsDescriptionValid(description))
+                {
+                    Tools.InvalidDescriptionPrint(description);
+                }
+
+            } while (!movieLogic.IsDescriptionValid(description));
+            return description;
+        }
     }
-    private static string AskDate()
+    private static string AskDate(string? caller = "")
     {
-        Display.ClearScreen(); 
-        Tools.ColorYellowMessage("DISCLAIMER: Date can't be empty\nDate must be in corrent format : DD-MM-YYYY");
-        string date;
-        do
+        if (caller == "Add")
         {
-            Console.WriteLine("Enter the date [REQUIRED FIELD]: ");
-            date = Console.ReadLine()!; 
-
-            if (!movieLogic.IsDateValid(date))
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("DISCLAIMER: Date can't be empty\nDate must be in corrent format : DD-MM-YYYY");
+            string date;
+            do
             {
-                Tools.InvalidDatePrint(date); 
-            }
+                Console.WriteLine("Enter the date [REQUIRED FIELD]: ");
+                date = Console.ReadLine();
+                if (string.IsNullOrEmpty(date))
+                {
+                    Console.WriteLine("Date cannot be empty!");
+                }
 
-        } while (!movieLogic.IsDateValid(date) || !SearchMoviesLogic.DateInPastValidation(date)); 
-        return date; 
+                if (!movieLogic.IsDateValid(date))
+                {
+                    Tools.InvalidDatePrint(date);
+                }
+                if (!SearchMoviesLogic.DateInPastValidation(date))
+                {
+                    Console.WriteLine("Date cannot be in the past!");
+                }
+
+            } while (!movieLogic.IsDateValid(date) || !SearchMoviesLogic.DateInPastValidation(date) || string.IsNullOrEmpty(date));
+            return date; ;
+        }
+        else
+        {
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("Press 'enter' to keep the same date\nDate must be in corrent format : DD-MM-YYYY");
+            string date;
+            do
+            {
+                Console.WriteLine("Enter the date [REQUIRED FIELD]: ");
+                date = Console.ReadLine();
+
+                if (!movieLogic.IsDateValid(date))
+                {
+                    Tools.InvalidDatePrint(date);
+                }
+                if (!SearchMoviesLogic.DateInPastValidation(date))
+                {
+                    Console.WriteLine("Date cannot be in the past!");
+                }
+
+            } while (!movieLogic.IsDateValid(date) || !SearchMoviesLogic.DateInPastValidation(date));
+            return date;
+        }
     }
-    private static string AskStartTime()
+    private static string AskStartTime(string? caller = "")
     {
-        Display.ClearScreen(); 
-        Tools.ColorYellowMessage("DISCLAIMER: Start time can't be empty\nstart time must be in correct format: 00:00");
-        string startTime;
-        do
+        if (caller == "Add")
         {
-            Console.WriteLine("Enter the start time [REQUIRED FIELD]: ");
-            startTime = Console.ReadLine()!; 
-
-            if (!movieLogic.IsTimeValid(startTime))
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("DISCLAIMER: Start time can't be empty\nstart time must be in correct format: 00:00");
+            string startTime;
+            do
             {
-                Tools.InvalidTimePrint(startTime); 
-            }
+                Console.WriteLine("Enter the start time [REQUIRED FIELD]: ");
+                startTime = Console.ReadLine();
+                if (string.IsNullOrEmpty(startTime))
+                {
+                    Console.WriteLine("Start time cannot be empty!");
+                }
 
-        } while (!movieLogic.IsTimeValid(startTime)); 
-        return startTime; 
+                if (!movieLogic.IsTimeValid(startTime))
+                {
+                    Tools.InvalidTimePrint(startTime);
+                }
+
+            } while (!movieLogic.IsTimeValid(startTime) || string.IsNullOrEmpty(startTime));
+            return startTime;
+        }
+        else
+        {
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("Press 'enter' to keep the same start time\nstart time must be in correct format: 00:00");
+            string startTime;
+            do
+            {
+                Console.WriteLine("Enter the start time [REQUIRED FIELD]: ");
+                startTime = Console.ReadLine();
+
+                if (!movieLogic.IsTimeValid(startTime))
+                {
+                    Tools.InvalidTimePrint(startTime);
+                }
+
+            } while (!movieLogic.IsTimeValid(startTime));
+            return startTime;
+        }
     }
-    private static string AskEndTime()
+    private static string AskEndTime(string? caller = "")
     {
-        Display.ClearScreen(); 
-        Tools.ColorYellowMessage("DISCLAIMER: End time can't be empty\nend time can't be same as the start time\nend time must be in correct format: 00:00");
-        string endTime;
-        do
+        if (caller == "Add")
         {
-            Console.WriteLine("Enter the end time [REQUIRED FIELD]: ");
-            endTime = Console.ReadLine()!; 
-
-            if (!movieLogic.IsTimeValid(endTime))
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("DISCLAIMER: End time can't be empty\nend time can't be same as the start time\nend time must be in correct format: 00:00");
+            string endTime;
+            do
             {
-                Tools.InvalidTimePrint(endTime); 
-            }
+                Console.WriteLine("Enter the end time [REQUIRED FIELD]: ");
+                endTime = Console.ReadLine();
+                if (string.IsNullOrEmpty(endTime))
+                {
+                    Console.WriteLine("End Time cannot be empty!");
+                }
 
-        } while (!movieLogic.IsTimeValid(endTime)); 
-        return endTime; 
+                if (!movieLogic.IsTimeValid(endTime))
+                {
+                    Tools.InvalidTimePrint(endTime);
+                }
+
+            } while (!movieLogic.IsTimeValid(endTime) || string.IsNullOrEmpty(endTime));
+            return endTime;
+        }
+        else
+        {
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("Press 'enter' to keep the same end time\nend time can't be same as the start time\nend time must be in correct format: 00:00");
+            string endTime;
+            do
+            {
+                Console.WriteLine("Enter the end time [REQUIRED FIELD]: ");
+                endTime = Console.ReadLine();
+
+                if (!movieLogic.IsTimeValid(endTime))
+                {
+                    Tools.InvalidTimePrint(endTime);
+                }
+
+            } while (!movieLogic.IsTimeValid(endTime));
+            return endTime;
+        }
     }
-    private static string AskDuration()
+    private static string AskDuration(string? caller = "")
     {
-        Display.ClearScreen(); 
-        Tools.ColorYellowMessage("DISCLAIMER: Duration can't be empty\nDuration must be in correct format 0:00");
-        string duration;
-        do
+        if (caller == "Add")
         {
-            Console.WriteLine("Enter the Duration [REQUIRED FIELD]: ");
-            duration = Console.ReadLine()!; 
-
-            if (!movieLogic.IsDurationValid(duration))
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("DISCLAIMER: Duration can't be empty\nDuration must be in correct format 0:00");
+            string duration;
+            do
             {
-                Tools.InvalidDurationPrint(duration); 
-            }
+                Console.WriteLine("Enter the Duration [REQUIRED FIELD]: ");
+                duration = Console.ReadLine();
+                if (string.IsNullOrEmpty(duration))
+                {
+                    Console.WriteLine("Duration cannot be empty!");
+                }
 
-        } while (!movieLogic.IsDurationValid(duration)); 
-        return duration; 
+                if (!movieLogic.IsDurationValid(duration))
+                {
+                    Tools.InvalidDurationPrint(duration);
+                }
+
+            } while (!movieLogic.IsDurationValid(duration) || string.IsNullOrEmpty(duration));
+            return duration;
+        }
+        else
+        {
+            Display.ClearScreen();
+            Tools.ColorYellowMessage("Press 'enter' to keep the same duration\nDuration must be in correct format 0:00");
+            string duration;
+            do
+            {
+                Console.WriteLine("Enter the Duration [REQUIRED FIELD]: ");
+                duration = Console.ReadLine();
+
+                if (!movieLogic.IsDurationValid(duration))
+                {
+                    Tools.InvalidDurationPrint(duration);
+                }
+
+            } while (!movieLogic.IsDurationValid(duration));
+            return duration;
+        }
     }
     private static int AskBBFC()
     {
-        Display.ClearScreen(); 
+        Display.ClearScreen();
         Tools.ColorYellowMessage("DISCLAIMER: BBFC can't be empty\nBBFC can only be: 3, 9, 12, 15, 18");
 
-        string bbfcString; 
-        int Bbfc = 0; 
+        string bbfcString;
+        int Bbfc = 0;
         do
         {
             Console.WriteLine("Enter the BBFC REQUIRED FIELD]: ");
@@ -594,7 +808,7 @@ public class AdminManageMovies : IPage
             if (string.IsNullOrEmpty(bbfcString))
             {
                 Tools.ErrorMessage("BBFC can't be empty!!");
-                continue; 
+                continue;
             }
 
             if (!int.TryParse(bbfcString, out int bbfc))
@@ -604,15 +818,15 @@ public class AdminManageMovies : IPage
             }
             else
             {
-                Bbfc = bbfc; 
+                Bbfc = bbfc;
             }
 
             if (!movieLogic.IsBBFCValid(Bbfc))
             {
-                Tools.InvalidBBFCPrint(Bbfc); 
+                Tools.InvalidBBFCPrint(Bbfc);
             }
 
-        } while (!movieLogic.IsBBFCValid(Bbfc)); 
-        return Bbfc; 
+        } while (!movieLogic.IsBBFCValid(Bbfc));
+        return Bbfc;
     }
 }
