@@ -97,4 +97,22 @@ public class AdminManageFoodTest
         //assert
         Assert.AreEqual(expected, actual);
     }
+
+    [TestMethod]
+    [DataRow(4, false)]
+    public void IsFoodDeletedFromDatabase(long selectedId, bool expected)
+    {
+        //arrange
+        FoodLogic foodLogic = new();
+        FoodModel foodToDelete = foodLogic.GetById(selectedId);
+        long oldFoodId = foodToDelete.Id;
+
+        //act
+        foodLogic.Delete(foodToDelete);
+        List<FoodModel> allFood = FoodLogic.GetAllFoods().ToList();
+        bool actual = allFood.Any(food => food.Id == oldFoodId);
+
+        //assert
+        Assert.AreEqual(expected, actual);
+    }
 }   
