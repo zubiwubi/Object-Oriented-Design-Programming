@@ -97,7 +97,7 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
 
             else if (input.Key == ConsoleKey.Enter) // ---- SELECT AMOUNT ----
             {
-                int foodAmount = InputValidator.AskAmount();
+                int foodAmount = InputValidatorLogic.AskAmount();
 
                 AddToOrder(selectedFood, foodAmount);
                 AnsiConsole.MarkupLine($"✅ Added [italic] {foodAmount}x {selectedFood.Name}: € {(selectedFood.Price * foodAmount):F2}[/] to the order. Press anything to continue ordering.");
@@ -226,7 +226,7 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
 
             else if (input.Key == ConsoleKey.Enter) // ---- SELECT AMOUNT ----
             {
-                int drinkAmount = InputValidator.AskAmount();
+                int drinkAmount = InputValidatorLogic.AskAmount();
 
                 AddToOrder(selectedDrink, drinkAmount);
                 AnsiConsole.MarkupLine($"✅ Added [italic] {drinkAmount}x {selectedDrink.Name}: € {(selectedDrink.Price * drinkAmount):F2}[/] to the order. Press anything to continue ordering.");

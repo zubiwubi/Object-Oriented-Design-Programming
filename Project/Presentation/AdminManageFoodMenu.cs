@@ -48,11 +48,11 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
             switch (selectedOption)
             {
                 case 0: // ------------ Food ----------
-                    string foodName = InputValidator.AskName();
-                    string foodDescription = InputValidator.AskDescription();
-                    double foodPrice = InputValidator.AskPrice();
-                    string foodType = InputValidator.AskType();
-                    long Fislounge = InputValidator.AskIsLounge();
+                    string foodName = InputValidatorLogic.AskName();
+                    string foodDescription = InputValidatorLogic.AskDescription();
+                    double foodPrice = InputValidatorLogic.AskPrice();
+                    string foodType = InputValidatorLogic.AskType();
+                    long Fislounge = InputValidatorLogic.AskIsLounge();
 
                     FoodModel newFood = new(foodName, foodDescription, foodPrice, foodType, Fislounge);
                     
@@ -63,12 +63,12 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
                     return;
 
                 case 1: // ------------ Drink -------------
-                    string drinkName = InputValidator.AskName();
-                    string drinkDescription = InputValidator.AskDescription();
-                    string drinkSize = InputValidator.AskSize();
-                    double drinkPrice = InputValidator.AskPrice();
-                    string drinkType = InputValidator.AskType();
-                    long dIsLounge = InputValidator.AskIsLounge();
+                    string drinkName = InputValidatorLogic.AskName();
+                    string drinkDescription = InputValidatorLogic.AskDescription();
+                    string drinkSize = InputValidatorLogic.AskSize();
+                    double drinkPrice = InputValidatorLogic.AskPrice();
+                    string drinkType = InputValidatorLogic.AskType();
+                    long dIsLounge = InputValidatorLogic.AskIsLounge();
 
                     DrinkModel newDrink = new(drinkName, drinkDescription, drinkSize, drinkPrice, drinkType, dIsLounge);
                     
@@ -102,11 +102,11 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
                     {
                         Tools.SlowLine($"{selectedFood.Name} selected ✅", 10);
 
-                        string foodName = InputValidator.AskName();
-                        string foodDescription = InputValidator.AskDescription();
-                        double foodPrice = InputValidator.AskPrice();
-                        string foodType = InputValidator.AskType();
-                        long Fislounge = InputValidator.AskIsLounge();
+                        string foodName = InputValidatorLogic.AskName();
+                        string foodDescription = InputValidatorLogic.AskDescription();
+                        double foodPrice = InputValidatorLogic.AskPrice();
+                        string foodType = InputValidatorLogic.AskType();
+                        long Fislounge = InputValidatorLogic.AskIsLounge();
 
                         FoodModel updatedFood = new(selectedFood.Id, foodName, foodDescription, foodPrice, foodType, Fislounge);
                         
@@ -133,12 +133,12 @@ public class AdminManageFoodMenu : CustomMessageWithMenuOS
                     {
                         Tools.SlowLine($"{selectedDrink.Name} selected ✅", 10);
 
-                        string drinkName = InputValidator.AskName();
-                        string drinkDescription = InputValidator.AskDescription();
-                        string drinkSize = InputValidator.AskSize();
-                        double drinkPrice = InputValidator.AskPrice();
-                        string drinkType = InputValidator.AskType();
-                        long dIsLounge = InputValidator.AskIsLounge();
+                        string drinkName = InputValidatorLogic.AskName();
+                        string drinkDescription = InputValidatorLogic.AskDescription();
+                        string drinkSize = InputValidatorLogic.AskSize();
+                        double drinkPrice = InputValidatorLogic.AskPrice();
+                        string drinkType = InputValidatorLogic.AskType();
+                        long dIsLounge = InputValidatorLogic.AskIsLounge();
 
                         DrinkModel updatedDrink = new(selectedDrink.Id, drinkName, drinkDescription, drinkSize, drinkPrice, drinkType, dIsLounge);
 

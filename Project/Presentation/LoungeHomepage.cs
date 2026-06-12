@@ -10,9 +10,7 @@ public static class LoungeHomepage
     {
         if (RenderLoungeMenu.WantsLounge())
         {
-            RenderLoungeMenu.RenderFood(InputValidator.AskPartySize());
-            // Console.WriteLine("Returning to homepage. The items in the cart will not be saved. Press ENTER to continue.");
-            // Console.ReadKey();
+            RenderLoungeMenu.RenderFood(InputValidatorLogic.AskPartySize());
             return; // Go back to lounge homepage
         }
         else {return;}
