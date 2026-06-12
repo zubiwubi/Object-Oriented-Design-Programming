@@ -1,4 +1,5 @@
 using System.Data;
+using System.Drawing;
 
 namespace UnitTests;
 
@@ -23,18 +24,18 @@ public sealed class AdminManageMerchandiseTest
     }
 
     [DataTestMethod]
-    [DataRow("0", false)] // round number 0 (int)
-    [DataRow("0.0", false)] // 0 in decimals (double)
-    [DataRow("-29", false)] // negative digit 
-    [DataRow("-1", false)] // negative digit 2
-    [DataRow("10", true)] // round number (int)
-    [DataRow("23.99", true)] // decimal
+    [DataRow(0, false)] // round number 0 (int)
+    [DataRow(0.0, false)] // 0 in decimals (double)
+    [DataRow(-29, false)] // negative digit 
+    [DataRow(-1, false)] // negative digit 2
+    [DataRow(10, true)] // round number (int)
+    [DataRow(23.99, true)] // decimal
     public void IsPriceValidTest(double price, bool expected)
     {
         // arrange 
         MerchandiseLogic merchandiseLogic = new(); 
         // act 
-        bool result = merchandiseLogic.IsPriceValid(name); 
+        bool result = merchandiseLogic.IsPriceValid(price); 
         // assert
         Assert.AreEqual(expected, result);
     }
@@ -63,7 +64,7 @@ public sealed class AdminManageMerchandiseTest
         // arrange 
         MerchandiseLogic merchandiseLogic = new(); 
         // act 
-        bool result = merchandiseLogic.IsPriceValid(name); 
+        bool result = merchandiseLogic.IsSizeValid(size); 
         // assert
         Assert.AreEqual(expected, result);
         
@@ -77,7 +78,7 @@ public sealed class AdminManageMerchandiseTest
     [DataRow("1234", false)] // only numbers
     [DataRow("%%", false)] // only symbols 
     [DataRow("blablac245", false)] // letters and number
-    [DayaRow("blabla$%", false)] // letters and symbols
+    [DataRow("blabla$%", false)] // letters and symbols
     [DataRow("Hoodie", true)] 
     [DataRow("Accessory", true)]
     [DataRow("T-shirt", true)]
@@ -85,12 +86,12 @@ public sealed class AdminManageMerchandiseTest
     [DataRow("Poster", true)]
     [DataRow("Sticker", true)]
 
-    public void IsTypeValidTest(string size, bool expected)
+    public void IsTypeValidTest(string type, bool expected)
     {
         // arrange 
         MerchandiseLogic merchandiseLogic = new(); 
         // act 
-        bool result = merchandiseLogic.IsPriceValid(name); 
+        bool result = merchandiseLogic.IsTypeValid(type); 
         // assert
         Assert.AreEqual(expected, result);
     }   

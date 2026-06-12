@@ -33,7 +33,12 @@ public class FoodAccess
     }
 
     public void Delete(FoodModel food)
-    {
+    {        
+        string deleteCache = $"DELETE FROM \"OrderedExtras\" WHERE foodId = @Id"; // delete all dependencies/FKs in others
+        _connection.Execute(deleteCache, new { Id = food.Id });
+
+        // UPDATE instead and change it to '0'
+        
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = food.Id });
     }

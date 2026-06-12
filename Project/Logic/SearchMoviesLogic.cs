@@ -7,7 +7,7 @@ public class SearchMoviesLogic
         return _movieAccess.GetAll();
     }
 
-    public MovieModel? GetByID(int id)
+    public MovieModel? GetByID(int? id)
     {
         return _movieAccess.GetById(id);
     }

@@ -7,8 +7,8 @@ public class AdminManageMerchandise : IPage
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> ManageOptions {get; set;} = new() {"Add merchandise","Update merchandise", "Delete merchandise", "view current merchandise","go back"};
-    public static List<string> Menu {get; set;} = new() {"Yes", "No"};
+    public static List<string> ManageOptions { get; set; } = new() { "Add merchandise", "Update merchandise", "Delete merchandise", "view current merchandise", "go back" };
+    public static List<string> Menu { get; set; } = new() { "Yes", "No" };
 
     public static void StartPage()
     {
@@ -39,14 +39,14 @@ public class AdminManageMerchandise : IPage
         }
         else if (Key.Key == ConsoleKey.Enter)
         {
-            Tools.ProgressBar(); 
-            CreateManageMenu(); 
+            Tools.ProgressBar();
+            CreateManageMenu();
         }
     }
 
     public static void CreateManageMenu()
     {
-        IsOptionSelected = false; 
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
             Display.ClearScreen();
@@ -96,7 +96,7 @@ public class AdminManageMerchandise : IPage
                 AdminHomePage.CreateAdminMenu();
             }
         }
-        
+
         switch (MenuChoice)
         {
             case 0:
@@ -107,64 +107,64 @@ public class AdminManageMerchandise : IPage
                 Tools.ProgressBar();
                 UpdateMerchandise();
                 break;
-            case 2: 
-                Tools.ProgressBar(); 
-                DeleteMerchandise(); 
-                break; 
-            case 3: 
-                Tools.ProgressBar(); 
-                ViewMerchandise.SelectHeader(); 
+            case 2:
+                Tools.ProgressBar();
+                DeleteMerchandise();
+                break;
+            case 3:
+                Tools.ProgressBar();
+                ViewMerchandise.SelectHeader();
                 break;
             case 4:
                 Tools.ProgressBar();
-                AdminHomePage.CreateAdminMenu(); 
+                AdminHomePage.CreateAdminMenu();
                 break;
-        }   
+        }
     }
     public static void AddMerchandise()
     {
-        Display.ClearScreen(); 
-        string Name = AskMerchName(); 
-        string Description = AskMerchDescription(); 
-        double Price = AskMerchPrice(); 
-        string Type = AskMerchType(); 
-        string Size = AskMerchSize(); 
+        Display.ClearScreen();
+        string Name = AskMerchName();
+        string Description = AskMerchDescription();
+        double Price = AskMerchPrice();
+        string Type = AskMerchType();
+        string Size = AskMerchSize();
 
-        MerchandiseModel merchandise = new MerchandiseModel(Name, Description, Price, Type, Size);  
-        MerchandiseModel CheckMerchExist = merchandiseLogic.CheckMerchExist(merchandise)!; 
+        MerchandiseModel merchandise = new MerchandiseModel(Name, Description, Price, Type, Size);
+        MerchandiseModel CheckMerchExist = merchandiseLogic.CheckMerchExist(merchandise)!;
 
         if (CheckMerchExist != null)
         {
             Tools.ErrorMessage("this item already exists!");
             Tools.ColorYellowMessage("DISCLAIMER: press 'BACKSPACE' to go back");
-            Key = Console.ReadKey(); 
+            Key = Console.ReadKey();
             if (Key.Key == ConsoleKey.Backspace)
             {
                 Tools.ProgressBar();
-                CreateManageMenu(); 
+                CreateManageMenu();
             }
         }
         else
         {
-            merchandiseLogic.Add(merchandise); 
-            Tools.ApproveMessage($"'{merchandise.Name}' succesfully added!! ✅✅✅"); 
+            merchandiseLogic.Add(merchandise);
+            Tools.ApproveMessage($"'{merchandise.Name}' succesfully added!! ✅✅✅");
             Tools.ColorYellowMessage("DISCLAIMER: press 'ENTER' to go back to the menu");
             Key = Console.ReadKey()!;
 
             if (Key.Key == ConsoleKey.Enter)
             {
-                Tools.ProgressBar(); 
-                CreateManageMenu(); 
-            } 
+                Tools.ProgressBar();
+                CreateManageMenu();
+            }
         }
-    } 
+    }
     public static void UpdateMerchandise()
     {
-        List<MerchandiseModel> CurrentMerchandise = merchandiseLogic.GetAllMerchandise(); 
-        IsOptionSelected = false; 
+        List<MerchandiseModel> CurrentMerchandise = merchandiseLogic.GetAllMerchandise();
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             for (int i = 0; i < CurrentMerchandise.Count; i++)
             {
@@ -209,54 +209,54 @@ public class AdminManageMerchandise : IPage
                 MenuChoice = Arrow;
                 IsOptionSelected = true;
 
-                Display.ClearScreen(); 
+                Display.ClearScreen();
 
                 Console.WriteLine($"Currently selected item: {CurrentMerchandise[MenuChoice].Name}");
 
-                string Name = AskMerchName(); 
-                string Description = AskMerchDescription(); 
-                double Price = AskMerchPrice(); 
-                string Type = AskMerchType(); 
-                string Size = AskMerchSize(); 
+                string Name = AskMerchName();
+                string Description = AskMerchDescription();
+                double Price = AskMerchPrice();
+                string Type = AskMerchType();
+                string Size = AskMerchSize();
 
-                MerchandiseModel merchandise = new MerchandiseModel(Name, Description, Price, Type, Size);  
-                MerchandiseModel CheckMerchExist = merchandiseLogic.CheckMerchExist(merchandise)!; 
+                MerchandiseModel merchandise = new MerchandiseModel(Name, Description, Price, Type, Size);
+                MerchandiseModel CheckMerchExist = merchandiseLogic.CheckMerchExist(merchandise)!;
 
                 if (CheckMerchExist != null)
                 {
                     Tools.ErrorMessage("this item already exists!");
                     Tools.ColorYellowMessage("DISCLAIMER: press 'BACKSPACE' to go back");
-                    Key = Console.ReadKey(); 
+                    Key = Console.ReadKey();
                     if (Key.Key == ConsoleKey.Backspace)
                     {
                         Tools.ProgressBar();
-                        CreateManageMenu(); 
+                        CreateManageMenu();
                     }
                 }
                 else
                 {
-                    merchandise.Id = CurrentMerchandise[MenuChoice].Id; 
-                    merchandiseLogic.Update(merchandise); 
-                    Tools.ApproveMessage($"'{CurrentMerchandise[MenuChoice].Name}' succesfully updated to:'{merchandise.Name}'!! ✅✅✅"); 
+                    merchandise.Id = CurrentMerchandise[MenuChoice].Id;
+                    merchandiseLogic.Update(merchandise);
+                    Tools.ApproveMessage($"'{CurrentMerchandise[MenuChoice].Name}' succesfully updated to:'{merchandise.Name}'!! ✅✅✅");
                     Tools.ColorYellowMessage("DISCLAIMER: press 'ENTER' to go back to the menu");
                     Key = Console.ReadKey()!;
 
                     if (Key.Key == ConsoleKey.Enter)
                     {
-                        Tools.ProgressBar(); 
-                        CreateManageMenu(); 
-                    }    
+                        Tools.ProgressBar();
+                        CreateManageMenu();
+                    }
                 }
             }
         }
     }
     public static void DeleteMerchandise()
     {
-        List<MerchandiseModel> CurrentMerchandise = merchandiseLogic.GetAllMerchandise(); 
-        IsOptionSelected = false; 
+        List<MerchandiseModel> CurrentMerchandise = merchandiseLogic.GetAllMerchandise();
+        IsOptionSelected = false;
         while (!IsOptionSelected)
         {
-            Display.ClearScreen(); 
+            Display.ClearScreen();
 
             for (int i = 0; i < CurrentMerchandise.Count; i++)
             {
@@ -309,7 +309,7 @@ public class AdminManageMerchandise : IPage
 
                 while (!IsSelected)
                 {
-                    Display.ClearScreen(); 
+                    Display.ClearScreen();
                     Console.WriteLine($"Currently selected item: {CurrentMerchandise[MenuChoice].Name}");
                     Tools.ErrorMessage("[WARNING] THIS ACTION CAN'T BE UNDONE [WARNING]");
                     Tools.ColorYellowMessage("Are you sure you want to delete this item?");
@@ -322,7 +322,7 @@ public class AdminManageMerchandise : IPage
                         }
                         else
                         {
-                            Console.WriteLine($"[{i + 1}] {Menu[i]}"); 
+                            Console.WriteLine($"[{i + 1}] {Menu[i]}");
                         }
 
                     }
@@ -357,32 +357,32 @@ public class AdminManageMerchandise : IPage
 
                 switch (subMenuChoice)
                 {
-                    case 0: 
+                    case 0:
                         Display.ClearScreen();
-                        merchandiseLogic.UpdateBool(CurrentMerchandise[MenuChoice]); 
+                        merchandiseLogic.UpdateBool(CurrentMerchandise[MenuChoice]);
                         Tools.ApproveMessage($"'{CurrentMerchandise[MenuChoice].Name}' has been successfully deleted!");
                         Tools.ColorYellowMessage("press 'ENTER' to go back");
-                        Key = Console.ReadKey(); 
+                        Key = Console.ReadKey();
                         if (Key.Key == ConsoleKey.Enter)
                         {
-                            Tools.ProgressBar(); 
-                            CreateManageMenu(); 
+                            Tools.ProgressBar();
+                            CreateManageMenu();
                         }
                         break;
-                    case 1: 
+                    case 1:
                         Tools.ErrorMessage("deleting cancelled.");
                         Tools.ColorYellowMessage("press 'ENTER' to go back");
-                        Key = Console.ReadKey(); 
+                        Key = Console.ReadKey();
                         if (Key.Key == ConsoleKey.Enter)
                         {
-                            Tools.ProgressBar(); 
-                            CreateManageMenu();                
+                            Tools.ProgressBar();
+                            CreateManageMenu();
                         }
-                        break; 
+                        break;
                 }
 
             }
-            
+
         }
     }
 
@@ -394,14 +394,14 @@ public class AdminManageMerchandise : IPage
         do
         {
             Console.WriteLine("Enter the name [REQUIRED FIELD]: ");
-            Name = Console.ReadLine()!; 
+            Name = Console.ReadLine()!;
 
             if (!merchandiseLogic.IsMerchNameValid(Name))
             {
-                Tools.InvalidMerchNamePrint(Name); 
-            }   
-        } while (!merchandiseLogic.IsMerchNameValid(Name));  
-        return Name; 
+                Tools.InvalidMerchNamePrint(Name);
+            }
+        } while (!merchandiseLogic.IsMerchNameValid(Name));
+        return Name;
     }
 
     private static string AskMerchDescription()
@@ -412,20 +412,20 @@ public class AdminManageMerchandise : IPage
         do
         {
             Console.WriteLine("Enter the Description [REQUIRED FIELD]: ");
-            Description = Console.ReadLine()!; 
+            Description = Console.ReadLine()!;
 
             if (!merchandiseLogic.IsMerchNameValid(Description))
             {
-                Tools.InvalidMerchNamePrint(Description); 
-            }   
-        } while (!merchandiseLogic.IsMerchNameValid(Description));  
-        return Description;  
+                Tools.InvalidMerchNamePrint(Description);
+            }
+        } while (!merchandiseLogic.IsMerchNameValid(Description));
+        return Description;
     }
     private static double AskMerchPrice()
     {
         Display.ClearScreen();
         Tools.ColorYellowMessage("DISCLAIMER:\nPrice can't be empty\nPrice can't contain symbols and/or letters only ',' or '.'\nPrice  can't be 0 or a negative number");
-        string stringPrice; 
+        string stringPrice;
         double price = 0;
         do
         {
@@ -441,15 +441,15 @@ public class AdminManageMerchandise : IPage
             if (double.TryParse(stringPrice, out double Price))
             {
                 price = Math.Round(Price, 2);
-                
+
                 if (!merchandiseLogic.IsPriceValid(price))
                 {
                     Tools.InvalidPricePrint(price);
-                } 
+                }
             }
 
-        } while (!merchandiseLogic.IsPriceValid(price));  
-        return price; 
+        } while (!merchandiseLogic.IsPriceValid(price));
+        return price;
     }
     private static string AskMerchSize()
     {
@@ -461,13 +461,13 @@ public class AdminManageMerchandise : IPage
         do
         {
             Console.WriteLine("Enter the Size [REQUIRED FIELD]: ");
-            Size = Console.ReadLine()!;
+            Size = Console.ReadLine().ToUpper()!;
             if (!merchandiseLogic.IsSizeValid(Size))
             {
                 Tools.InvalidSizePrint(Size);
-            }   
-        } while (!merchandiseLogic.IsSizeValid(Size));  
-        return Size; 
+            }
+        } while (!merchandiseLogic.IsSizeValid(Size));
+        return Size;
     }
     private static string AskMerchType()
     {
@@ -475,7 +475,7 @@ public class AdminManageMerchandise : IPage
         Tools.ColorYellowMessage("'DISCLAIMER: Type can't be empty\nType can't contains symbols and/or numbers");
         Tools.ColorYellowMessage("Type can only be:\nHoodie\nT-shirt\nAccessory\nSticker\nMug\nPoster");
         Tools.ColorYellowMessage("NEEDS TO BE THE EXACT SAME SPELLING");
-        string Type; 
+        string Type;
         do
         {
             Console.WriteLine("Enter the Type [REQUIRED FIELD]: ");
@@ -484,8 +484,8 @@ public class AdminManageMerchandise : IPage
             if (!merchandiseLogic.IsTypeValid(Type))
             {
                 Tools.InvalidTypePrint(Type);
-            }   
-        } while (!merchandiseLogic.IsTypeValid(Type));  
-        return Type; 
+            }
+        } while (!merchandiseLogic.IsTypeValid(Type));
+        return Type;
     }
 }

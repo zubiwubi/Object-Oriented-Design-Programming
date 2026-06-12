@@ -24,4 +24,11 @@ public class FoodLogic
     {
         _foodAccess.Delete(food); 
     }
+
+    public static bool IsFood<T>(T consumable) where T: ConsumableModel
+    {
+        if (consumable is FoodModel && consumable is not DrinkModel)
+            return true;
+        return false;
+    }
 }

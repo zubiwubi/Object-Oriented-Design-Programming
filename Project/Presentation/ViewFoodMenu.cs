@@ -2,9 +2,6 @@ using Spectre.Console;
 
 public static class ViewFoodMenu
 {
-    public static List<FoodModel> allFood = FoodLogic.GetAllFoods();
-    public static List<DrinkModel> allDrinks = DrinkLogic.GetAllDrinks();
-
     public static void AddVeganDescription<T>(List<T> Consumables) where T : ConsumableModel
     {
         foreach (var item in Consumables)
@@ -18,6 +15,8 @@ public static class ViewFoodMenu
 
     public static void RenderFoodMenu()
     {
+        List<FoodModel> allFood = FoodLogic.GetAllFoods();
+        
         AddVeganDescription(allFood);
 
         int selectedOption = 0;
@@ -76,6 +75,8 @@ public static class ViewFoodMenu
 
     public static void RenderDrinkMenu()
     {
+        List<DrinkModel> allDrinks = DrinkLogic.GetAllDrinks();
+
         AddVeganDescription(allDrinks);
 
         int selectedOption = 0;
@@ -103,8 +104,8 @@ public static class ViewFoodMenu
 
                 bool isSelected = (displayId == selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
                 
-                var rowContent = new[] { $"{displayId}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Type}" };
-                var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"[bold]{drink.Type}[/]" };
+                var rowContent = new[] { $"{displayId}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Size}", $"{drink.Type}" };
+                var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"{drink.Size}", $"[bold]{drink.Type}[/]" };
 
                 drinkTable.AddRow(isSelected ? rowContentSelected : rowContent);
             }

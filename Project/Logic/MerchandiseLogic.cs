@@ -7,15 +7,7 @@ public class MerchandiseLogic : AccountLogic
     {
         return _access.CheckMerchExist(merchandise); 
     }
-    public List<MerchandiseModel> GetAllMerchandise()
-    {
-        return _access.GetAllMerchandise();
-    }
 
-    public MerchandiseModel? GetById(long? id)
-    {
-        return _access.GetById(id);
-    }
     public void Add(MerchandiseModel merchandise)
     {
         _access.Add(merchandise); 
@@ -30,11 +22,16 @@ public class MerchandiseLogic : AccountLogic
         _access.UpdateBool(merchandise); 
     }
 
-    public void Delete(MerchandiseModel merchandise)
+    public List<MerchandiseModel> GetAllMerchandise()
     {
-        _access.Delete(merchandise); 
+        return _access.GetAllMerchandise();
     }
 
+    public MerchandiseModel? GetById(long? id)
+    {
+        return _access.GetById(id);
+    }
+   
     public List<MerchandiseModel> GetHoodies() 
     {
         return _access.GetHoodies();

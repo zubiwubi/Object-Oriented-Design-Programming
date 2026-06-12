@@ -32,7 +32,11 @@ public class OrderedExtrasAccess
         return _connection.Query<OrderedExtrasModel>(sql, new { OrderId = orderId }).AsList();
     }
 
-
+    public List<OrderedExtrasModel>? GetAll()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<OrderedExtrasModel>(sql).AsList();
+    }
 
     public void Update(OrderedExtrasModel order)
     {

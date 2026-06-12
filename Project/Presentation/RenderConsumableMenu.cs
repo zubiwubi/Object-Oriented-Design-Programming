@@ -2,11 +2,11 @@ using Spectre.Console;
 
 public class RenderConsumableMenu : CustomMessageWithMenuOS
 {
-    public static List<FoodModel> allFood { get; set; } = FoodLogic.GetAllFoods().ToList();
-    public static List<DrinkModel> allDrinks { get; set; } = DrinkLogic.GetAllDrinks().ToList();
 
     public static FoodModel RenderFoodMenu() // return the selected food
     {
+        List<FoodModel> allFood = FoodLogic.GetAllFoods().ToList();
+
         ViewFoodMenu.AddVeganDescription(allFood);
 
         FoodModel currentFood = new(default, default, default, default, default);
@@ -73,6 +73,8 @@ public class RenderConsumableMenu : CustomMessageWithMenuOS
 
     public static DrinkModel RenderDrinkMenu()
     {
+        List<DrinkModel> allDrinks = DrinkLogic.GetAllDrinks().ToList();
+
         ViewFoodMenu.AddVeganDescription(allDrinks);
         
         DrinkModel currentDrink = new(default, default, default, default, default, default);
