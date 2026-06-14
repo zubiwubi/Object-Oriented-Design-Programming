@@ -7,7 +7,8 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
     protected static string Message { get; set; } = "Would you like to reserve a table at our lounge?";
     protected static List<FoodModel> allLoungeFood { get; set; } = FoodLogic.GetAllFoods().Where(f => f.IsLounge == 1).ToList();
     protected static List<DrinkModel> allLoungeDrinks { get; set; } = DrinkLogic.GetAllDrinks().Where(d => d.IsLounge == 1).ToList();
-    protected static Dictionary<ConsumableModel, int> OrderedItems = new();
+    public static Dictionary<ConsumableModel, int> OrderedItems = new();
+    private static readonly int _maxOrderAmount = 50;
 
 
     public static bool WantsLounge()
@@ -100,8 +101,7 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
                 int foodAmount = InputValidatorLogic.AskAmount();
 
                 AddToOrder(selectedFood, foodAmount);
-                AnsiConsole.MarkupLine($"✅ Added [italic] {foodAmount}x {selectedFood.Name}: € {(selectedFood.Price * foodAmount):F2}[/] to the order. Press anything to continue ordering.");
-                Console.ReadKey();
+
                 continue;
             }
         }
@@ -123,13 +123,30 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
 
     public static void AddToOrder(ConsumableModel item, int amount)
     {
+        foreach (var kvp in OrderedItems)
+        {
+            if (kvp.Key == item)
+            {
+                if (kvp.Value + amount > _maxOrderAmount)
+                {
+                    Console.WriteLine($"❌ You may not hold a quantity of {kvp.Value + amount}. Please order an amount below {_maxOrderAmount}. Press anything to retry.");
+                    Console.ReadKey();
+                    return;
+                }
+            }
+        }
+        
         if (OrderedItems.ContainsKey(item))
         {
             OrderedItems[item] += amount;
+            AnsiConsole.MarkupLine($"✅ Added [italic] {amount}x {item.Name}: € {(item.Price * amount):F2}[/] to the order. Press anything to continue ordering.");
+            Console.ReadKey();
         }
         else
         {
             OrderedItems[item] = amount;
+            AnsiConsole.MarkupLine($"✅ Added [italic] {amount}x {item.Name}: € {(item.Price * amount):F2}[/] to the order. Press anything to continue ordering.");
+            Console.ReadKey();
         }
     }
 
@@ -229,8 +246,7 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
                 int drinkAmount = InputValidatorLogic.AskAmount();
 
                 AddToOrder(selectedDrink, drinkAmount);
-                AnsiConsole.MarkupLine($"✅ Added [italic] {drinkAmount}x {selectedDrink.Name}: € {(selectedDrink.Price * drinkAmount):F2}[/] to the order. Press anything to continue ordering.");
-                Console.ReadKey();
+
                 continue;
             }
         }

@@ -72,7 +72,7 @@ public static class InputValidatorLogic
         int partySize = InputValidator.GetInput(" How many people are you reserving a table for? (max. 15)", ps => int.Parse(ps.Trim()), partyCheck =>
         {
            if (partyCheck <= 0) return "Reserve for at least one person.";
-           if (partyCheck > LoungeHomepage.MAX_PEOPLE_AMOUNT) return $"You may only reserve up to a max of {LoungeHomepage.MAX_PEOPLE_AMOUNT} people.";
+           if (partyCheck > LoungeHomepage.MaxPeopleAmount) return $"You may only reserve up to a max of {LoungeHomepage.MaxPeopleAmount} people.";
            return null; 
         });
         return partySize;
