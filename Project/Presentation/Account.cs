@@ -1,3 +1,5 @@
+using System.Reflection;
+
 public class Account : IPage
 {
     protected static AccountLogic accountLogic = new();
@@ -119,7 +121,7 @@ public class Account : IPage
             {
                 Tools.ErrorMessage($"E-mail '{email}' not found!");
                 Thread.Sleep(4000);
-                LogIn();
+                Program.Main(); 
             }    
         }
     }
