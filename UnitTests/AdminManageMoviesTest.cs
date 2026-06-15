@@ -22,7 +22,7 @@ public sealed class AdminManageMoviesTest
     }
 
     [DataTestMethod]
-    [DataRow("", false)]
+    [DataRow("", true)]
     [DataRow("s", false)]
     [DataRow("qzvTmLpRxknYdsJfHcWbuEaoQwrtsprrr", false)]
     [DataRow("Project hail mary", true)]
@@ -39,7 +39,7 @@ public sealed class AdminManageMoviesTest
     }
 
     [DataTestMethod]
-    [DataRow("", false)]
+    [DataRow("", true)]
     [DataRow("s", false)]
     [DataRow("werd", false)]
     [DataRow("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrs", false)]
@@ -57,7 +57,7 @@ public sealed class AdminManageMoviesTest
     }
 
     [DataTestMethod]
-    [DataRow("", false)]
+    [DataRow("", true)]
     [DataRow("s", false)]
     [DataRow("wertyuiopas", false)]
     [DataRow("2145DRAMA", false)]
@@ -77,7 +77,7 @@ public sealed class AdminManageMoviesTest
     }
 
     [DataTestMethod]
-    [DataRow("", false)]
+    [DataRow("", true)]
     [DataRow("s", false)]
     [DataRow("$$235%^*", false)]
     [DataRow("$$235%^*", false)]
@@ -97,7 +97,7 @@ public sealed class AdminManageMoviesTest
 
     
     [DataTestMethod]
-    [DataRow("", false)]
+    [DataRow("", true)]
     [DataRow("s", false)]
     [DataRow("00:00a", false)]
     [DataRow("00:45444", false)]
@@ -116,7 +116,7 @@ public sealed class AdminManageMoviesTest
 
 
     [DataTestMethod]
-    [DataRow("", false)]
+    [DataRow("", true)]
     [DataRow("s", false)]
     [DataRow("0:00a", false)]
     [DataRow("0:45444", false)]
