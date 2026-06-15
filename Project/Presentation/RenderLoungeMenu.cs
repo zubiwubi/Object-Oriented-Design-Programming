@@ -88,7 +88,18 @@ public class RenderLoungeMenu : CustomMessageWithMenuOS
 
             if (input.Key == ConsoleKey.Backspace)
             {
-                return;
+                Console.WriteLine("Are you sure you want to go back? The items in your cart will not be saved. Press Backspace again to go back. Press anything else to continue ordering.");
+                var Uinput = Console.ReadKey();
+                if (Uinput.Key == ConsoleKey.Backspace)
+                {
+                    Display.LoadingRenderer("Removing items and returning to homepage.");
+                    OrderedItems.Clear();
+                    return;
+                }
+                else
+                {
+                    continue;
+                }
             }
 
             else if (input.Key == ConsoleKey.Spacebar) // ---- CONTINUE TO DRINKS ----

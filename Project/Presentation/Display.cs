@@ -9,6 +9,25 @@ public static class Display
         PrintBanner();
     }
 
+    public static void LoadingRenderer(string message) // loading animation + message
+    {
+        AnsiConsole.Progress()
+            .Columns(
+                new SpinnerColumn(),
+                new TaskDescriptionColumn())
+            .Start(ctx =>
+            {
+                var rendering = ctx.AddTask(message, maxValue: 30);
+
+                var random = new Random(42);
+                while (!ctx.IsFinished)
+                {
+                    rendering.Increment(random.NextDouble() * 3);
+                    Thread.Sleep(50);
+                }
+            });
+    }
+
     public static void LoadingRenderer() // Creates a loading animation
     {
         AnsiConsole.Progress()
