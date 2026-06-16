@@ -12,7 +12,7 @@ public class ReservationMerchandise : MakeAccount
     public static bool IsOptionSelected { get; set; }
     public static List<string> Merchandise { get; set; } = new() { "Hoodies", "Tshirts", "Accessories", "Stickers", "Mugs", "Posters" };
     public static List<string> Menu { get; set; } = new() { "Yes", "No" };
-    public static void CreateMenu(int movieId, string? seat, string caller, long? foodId = null, long? drinkId = null)
+    public static void CreateMenu(int movieId, string? seat, string caller, int? orderedExtrasId, int? firstOrderedExtrasId)
     {
 
         IsOptionSelected = false;
