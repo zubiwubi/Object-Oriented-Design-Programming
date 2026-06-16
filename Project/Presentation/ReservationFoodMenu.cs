@@ -7,6 +7,8 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
     public static List<FoodModel> allSnacks { get; set; } = FoodLogic.GetAllFoods().Where(f => f.IsLounge == 0).ToList();
     public static List<DrinkModel> allMovieDrinks { get; set; } = DrinkLogic.GetAllDrinks().Where(d => d.IsLounge == 0).ToList();
 
+    public static Dictionary<ConsumableModel, int> OrderedItems = new(); // "cart"
+
     public static void FoodOrderChecker(int movieId, string? seatNum, string callerType)
     {
         Console.Clear();
