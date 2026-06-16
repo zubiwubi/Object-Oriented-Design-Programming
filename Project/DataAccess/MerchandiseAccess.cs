@@ -21,7 +21,7 @@ public class MerchandiseAccess
     {
         string sql = $"UPDATE {Table} SET IsVisible = 0 WHERE id = @Id";
         _connection.Execute(sql, merchandise);
-    }
+    } //  this is instead of 'deleting' the item, we make them invisible due to FK limitations
 
     public MerchandiseModel? CheckMerchExist(MerchandiseModel merchandise)
     {

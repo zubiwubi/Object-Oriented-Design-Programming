@@ -9,7 +9,6 @@ public class MovieAccess
 
     public void Add(MovieModel movie)
     {
-        //MovieModel movie = new MovieModel(LocationId, Title, Genre, Description, Date, StartTime, EndTime, Duration, BBFC);  
         string sql = $"INSERT INTO {Table} (LocationId, Title, Genre, Description, Date, StartTime, EndTime, Duration, BBFC, IsVisible) VALUES (@LocationId, @Title, @Genre, @Description, @Date, @StartTime, @EndTime, @Duration,@BBFC, @IsVisible)";
         _connection.Execute(sql, movie);
     }
@@ -36,7 +35,7 @@ public class MovieAccess
     }
 
 
-    public List<MovieModel> GetAll()  // zelfde als getallmovies
+    public List<MovieModel> GetAll() 
     {
         string sql = $"SELECT * FROM {Table}";
         return _connection.Query<MovieModel>(sql).ToList();
@@ -48,20 +47,4 @@ public class MovieAccess
         return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Id = id });
     }
 
-   /*  public MovieModel? GetByTitle(string title)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE title = @Title";
-        return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Title = title });
-    }
-
-    public MovieModel? GetByGenre(string genre)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE genre = @Genre";
-        return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Genre = genre });
-    }
-    public MovieModel? GetByDate(string date)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE date = @Date";
-        return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Date = date });
-    } */
 }
