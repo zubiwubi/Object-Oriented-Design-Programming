@@ -1,15 +1,14 @@
 using Spectre.Console;
 
-class Homepage : MenuOptionSelect
+class Homepage : CustomMessageWithMenuOS
 {
-    protected override List<string> Options { get; set; } = new List<string>() { "Login", "Create Account", "Continue as Guest", "Search Movies", "Lounge Reservation", "View Food & Drinks Menu", "View Merchandise", "Auditorium Maps", "FAQ", "Exit" };
+    protected List<string> Options { get; set; } = new List<string>() { "Login", "Create Account", "Continue as Guest", "Search Movies", "Lounge Reservation", "View Food & Drinks Menu", "View Merchandise", "Auditorium Maps", "FAQ", "Exit" };
+    protected static string Message { get; set; } = "ARROW KEYS: Navigate\nENTER: Select Option";
     public void Render()
     {
-        //Console.Clear();
-
         while (true)
         {
-            int selectedOption = MenuRenderer(Options);
+            int selectedOption = MenuRenderer(Options, Message);
 
             switch (selectedOption)
             {
@@ -21,8 +20,6 @@ class Homepage : MenuOptionSelect
                     makeAccount.CreateAccount();
                     break;
                 case 2: // ------------ CONTINUE AS GUEST -------------
-                    // AnsiConsole.MarkupLine("[red bold] :construction: The guest page is being built. Not yet available.[/]  ​​Press enter to return.");
-                    // Console.ReadKey();
                     ReservationMovie.Reserve("Guest");
                     break;
                 case 3: // ------------ SEARCH MOVIES -------------
@@ -42,7 +39,6 @@ class Homepage : MenuOptionSelect
                     overviewMapsSeats.Render();
                     break;
                 case 8: // ------------ FAQ-------------
-                        //Call FAQ.Method()
                     FaqOverview faqOverview = new();
                     faqOverview.Render();
                     break;
