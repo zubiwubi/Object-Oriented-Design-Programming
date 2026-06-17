@@ -16,20 +16,20 @@ public class NewsletterChain
         else
         {
             Console.WriteLine("Input was incorrect. Please input [1] for monthly or [2] for weekly. Else it will default to monthly");
-            frequency = "monthly";
+            frequency = "Monthly";
         }
 
         Console.Write("Subject: ");
         string subject = Console.ReadLine();
 
-        Console.Write("Main Body of the email");
+        Console.Write("Main Body of the email: ");
         string mainBody = Console.ReadLine();
 
 
-        Console.Write("Discounts? Leave blank if none");
+        Console.Write("Discounts? Leave blank if none: ");
         string discounts = Console.ReadLine();
 
-        Console.Write("Any new releases? Leave blank if none");
+        Console.Write("Any new releases? Leave blank if none: ");
         string newReleases = Console.ReadLine();
 
 
@@ -60,7 +60,7 @@ public class NewsletterChain
         List<AccountModel> customerList = new List<AccountModel>();
         foreach (AccountModel account in allAccounts)
         {
-            if (account.Type == "customer")
+            if (account.Type == "Customer")
             {
                 customerList.Add(account);
             }

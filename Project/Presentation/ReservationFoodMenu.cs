@@ -29,6 +29,7 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
             {
                 orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, item.Id, consumableQuantity, null, null);
             }
+            OrderedItems.Clear();
 
             ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, orderedExtrasId, null); // CONTINUE TO NEXT SCREEN / MERCHANDISE
         }
@@ -58,11 +59,13 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                 if (FoodLogic.IsFood(item))
                 {
                     orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, item.Id, itemQuantity, null, null, null, null);
+                    OrderedItems.Clear();
                     ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, orderedExtrasId, firstOrderedExtrasId);
                 }
                 if (DrinkLogic.IsDrink(item))
                 {
                     orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, item.Id, itemQuantity, null, null);
+                    OrderedItems.Clear();
                     ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, orderedExtrasId, firstOrderedExtrasId);
                 }
             }
@@ -287,7 +290,7 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                 }
             }
         }
-        
+
         if (OrderedItems.ContainsKey(item))
         {
             OrderedItems[item] += amount;

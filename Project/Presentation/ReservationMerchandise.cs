@@ -71,34 +71,19 @@ public class ReservationMerchandise : MakeAccount
         {
             case 0:
                 Tools.ProgressBar();
-                SelectHeaderOrder(movieId, seat, caller, foodId, drinkId);
+                SelectHeaderOrder(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                 break;
             case 1:
                 Tools.ColorMagentaMessage("You'll be redirected to the payment page :) ");
                 Tools.ProgressBar();
-                if (foodId == null && drinkId == null)
-                {
-                    Payment.Order(movieId, seat, caller);
-                }
-                else if (foodId == null)
-                {
-                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, drinkId, 1, null, null);
-                    Payment.Order(movieId, seat, caller, orderedExtrasId);
-                }
-                else if (drinkId == null)
-                {
-                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, null, null, null, null);
-                    Payment.Order(movieId, seat, caller, orderedExtrasId);
-                }
-                else
-                {
-                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, drinkId, 1, null, null);
-                    Payment.Order(movieId, seat, caller, orderedExtrasId);
-                }
+                Payment.Order(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                 break;
+
+
+
         }
     }
-    public static void SelectHeaderOrder(int movieId, string? seat, string caller, long? foodId, long? drinkId)
+    public static void SelectHeaderOrder(int movieId, string? seat, string caller, int? orderedExtrasId, int? firstOrderedExtrasId)
     {
         IsOptionSelected = false;
         while (!IsOptionSelected)
@@ -162,32 +147,32 @@ public class ReservationMerchandise : MakeAccount
         {
             case 0:
                 Tools.ProgressBar();
-                OrderHoodies(movieId, seat, caller, foodId, drinkId);
+                OrderHoodies(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                 break;
             case 1:
                 Tools.ProgressBar();
-                OrderTshirts(movieId, seat, caller, foodId, drinkId);
+                OrderTshirts(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                 break;
             case 2:
                 Tools.ProgressBar();
-                OrderAccessories(movieId, seat, caller, foodId, drinkId);
+                OrderAccessories(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                 break;
             case 3:
                 Tools.ProgressBar();
-                OrderStickers(movieId, seat, caller, foodId, drinkId);
+                OrderStickers(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                 break;
             case 4:
                 Tools.ProgressBar();
-                OrderMugs(movieId, seat, caller, foodId, drinkId);
+                OrderMugs(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                 break;
             case 5:
                 Tools.ProgressBar();
-                OrderPosters(movieId, seat, caller, foodId, drinkId);
+                OrderPosters(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                 break;
         }
     }
 
-    public static void OrderHoodies(int movieId, string? seat, string caller, long? foodId, long? drinkId)
+    public static void OrderHoodies(int movieId, string? seat, string caller, int? orderedExtrasId, int? firstOrderedExtrasId)
     {
         List<MerchandiseModel> Hoodies = merchandiseLogic.GetHoodies();
         IsOptionSelected = false;
@@ -218,11 +203,11 @@ public class ReservationMerchandise : MakeAccount
                     Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(Hoodies, movieId, seat, caller, foodId, drinkId);
+            OrderControlKey(Hoodies, movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
         }
     }
 
-    public static void OrderTshirts(int movieId, string? seat, string caller, long? foodId, long? drinkId)
+    public static void OrderTshirts(int movieId, string? seat, string caller, int? orderedExtrasId, int? firstOrderedExtrasId)
     {
         List<MerchandiseModel> TShirts = merchandiseLogic.GetTshirts();
         IsOptionSelected = false;
@@ -253,11 +238,11 @@ public class ReservationMerchandise : MakeAccount
                     Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(TShirts, movieId, seat, caller, foodId, drinkId);
+            OrderControlKey(TShirts, movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
         }
 
     }
-    public static void OrderAccessories(int movieId, string? seat, string caller, long? foodId, long? drinkId)
+    public static void OrderAccessories(int movieId, string? seat, string caller, int? orderedExtrasId, int? firstOrderedExtrasId)
     {
         List<MerchandiseModel> Accessories = merchandiseLogic.GetAcccesories();
         IsOptionSelected = false;
@@ -288,10 +273,10 @@ public class ReservationMerchandise : MakeAccount
                     Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(Accessories, movieId, seat, caller, foodId, drinkId);
+            OrderControlKey(Accessories, movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
         }
     }
-    public static void OrderStickers(int movieId, string? seat, string caller, long? foodId, long? drinkId)
+    public static void OrderStickers(int movieId, string? seat, string caller, int? orderedExtrasId, int? firstOrderedExtrasId)
     {
         List<MerchandiseModel> Stickers = merchandiseLogic.GetStickers();
 
@@ -323,10 +308,10 @@ public class ReservationMerchandise : MakeAccount
                     Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(Stickers, movieId, seat, caller, foodId, drinkId);
+            OrderControlKey(Stickers, movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
         }
     }
-    public static void OrderMugs(int movieId, string? seat, string caller, long? foodId, long? drinkId)
+    public static void OrderMugs(int movieId, string? seat, string caller, int? orderedExtrasId, int? firstOrderedExtrasId)
     {
         List<MerchandiseModel> Mugs = merchandiseLogic.GetMugs();
 
@@ -358,10 +343,10 @@ public class ReservationMerchandise : MakeAccount
                     Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(Mugs, movieId, seat, caller, foodId, drinkId);
+            OrderControlKey(Mugs, movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
         }
     }
-    public static void OrderPosters(int movieId, string? seat, string caller, long? foodId, long? drinkId)
+    public static void OrderPosters(int movieId, string? seat, string caller, int? orderedExtrasId, int? firstOrderedExtrasId)
     {
         List<MerchandiseModel> Posters = merchandiseLogic.GetPosters();
         IsOptionSelected = false;
@@ -392,10 +377,10 @@ public class ReservationMerchandise : MakeAccount
                     Console.WriteLine("╰──────────────────────────────────────────────────────────────────────────────────────┄ °❀");
                 }
             }
-            OrderControlKey(Posters, movieId, seat, caller, foodId, drinkId);
+            OrderControlKey(Posters, movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
         }
     }
-    public static void OrderedMerchSummary(int movieId, string? seat, string caller, long? foodId, long? drinkId)
+    public static void OrderedMerchSummary(int movieId, string? seat, string caller, int? orderedExtrasId, int? firstOrderedExtrasId)
     {
         if (OrderedMerch.Count == 0)
         {
@@ -420,52 +405,62 @@ public class ReservationMerchandise : MakeAccount
 
         if (MerchCount == 1)
         {
-            if (foodId == null && drinkId == null)
-            {
-                foreach (KeyValuePair<long, int> i in OrderedMerchById)
-                {
-                    long merchId = i.Key;
-                    int merchQuant = i.Value;
-                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, null, null, merchId, merchQuant);
-                    Payment.Order(movieId, seat, caller, orderedExtrasId);
-                }
-            }
-            else
-            {
 
-                foreach (KeyValuePair<long, int> i in OrderedMerchById)
-                {
-                    long merchId = i.Key;
-                    int merchQuant = i.Value;
-                    int orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, drinkId, 1, merchId, merchQuant);
-                    Payment.Order(movieId, seat, caller, orderedExtrasId);
-                }
-            }
-        }
-        else if (MerchCount > 1)
-        {
-            int? orderedExtrasId = null;
-            int? firstOrderedExtrasId = null;
-            bool first = true;
             foreach (KeyValuePair<long, int> i in OrderedMerchById)
             {
                 long merchId = i.Key;
                 int merchQuant = i.Value;
-                if (first)
+                if (orderedExtrasId != null)
                 {
-                    firstOrderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, foodId, 1, drinkId, 1, merchId, merchQuant);
-                    first = false;
-                }
-                else
-                {
-                    orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, null, null, merchId, merchQuant);
+                    if (firstOrderedExtrasId != null)
+                    {
+                        for (int? j = firstOrderedExtrasId; j <= orderedExtrasId; j++)
+                        {
+                            OrderedExtrasModel orderUpdates = orderedExtrasLogic.GetById(j);
+                            orderUpdates.MerchandiseId = merchId;
+                            orderUpdates.MerchandiseQuantity = merchQuant;
+                            orderedExtrasLogic.Update(orderUpdates);
+                        }
+                        Payment.Order(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
+                    }
+                    else
+                    {
+
+                        OrderedExtrasModel orderUpdate = orderedExtrasLogic.GetById(orderedExtrasId);
+                        orderUpdate.MerchandiseId = merchId;
+                        orderUpdate.MerchandiseQuantity = merchQuant;
+                        orderedExtrasLogic.Update(orderUpdate);
+                        Payment.Order(movieId, seat, caller, orderedExtrasId);
+                    }
+                    break;
                 }
             }
-            Payment.Order(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
         }
 
+        else if (MerchCount > 1)
+        {
+            foreach (KeyValuePair<long, int> i in OrderedMerchById)
+            {
+                long merchId = i.Key;
+                int merchQuant = i.Value;
+                if (orderedExtrasId != null)
+                {
+                    if (firstOrderedExtrasId != null)
+                    {
+                        for (int? j = firstOrderedExtrasId; j <= orderedExtrasId; j++)
+                        {
+                            OrderedExtrasModel orderUpdates = orderedExtrasLogic.GetById(j);
+                            orderUpdates.MerchandiseId = merchId;
+                            orderUpdates.MerchandiseQuantity = merchQuant;
+                            orderedExtrasLogic.Update(orderUpdates);
+                        }
+                        Payment.Order(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
+                    }
+                }
+            }
+        }
     }
-    private static void OrderControlKey(List<MerchandiseModel> example, int movieId, string? seat, string caller, long? foodId, long? drinkId)
+    private static void OrderControlKey(List<MerchandiseModel> example, int movieId, string? seat, string caller, int? orderedExtrasId, int? firstOrderedExtrasId)
     {
         Key = Console.ReadKey();
 
@@ -491,7 +486,7 @@ public class ReservationMerchandise : MakeAccount
         {
             //IsOptionSelected = true; 
             Tools.ProgressBar();
-            SelectHeaderOrder(movieId, seat, caller, foodId, drinkId);
+            SelectHeaderOrder(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
         }
         else if (Key.Key == ConsoleKey.Enter)
         {
@@ -626,18 +621,18 @@ public class ReservationMerchandise : MakeAccount
                     {
                         case 0:
                             Tools.ProgressBar();
-                            SelectHeaderOrder(movieId, seat, caller, foodId, drinkId);
+                            SelectHeaderOrder(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                             break;
                         case 1:
                             Tools.ProgressBar();
-                            OrderedMerchSummary(movieId, seat, caller, foodId, drinkId);
+                            OrderedMerchSummary(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                             break;
                     }
                     break;
                 case 1:
                     Tools.ErrorMessage("Cancelled order.");
                     Tools.ProgressBar();
-                    SelectHeaderOrder(movieId, seat, caller, foodId, drinkId);
+                    SelectHeaderOrder(movieId, seat, caller, orderedExtrasId, firstOrderedExtrasId);
                     break;
             }
         }

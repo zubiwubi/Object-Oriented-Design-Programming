@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 public class DrawMap
 {
     private PriceSeatsLogic priceSeats = new PriceSeatsLogic();
@@ -138,8 +140,14 @@ public class DrawMap
             case ConsoleKey.Enter:
 
                 string seatNum = $"{currentCol}{currentRow}";
-
                 Console.WriteLine($"Selected seat: Row {currentRow}, Col {currentCol}");
+                foreach (var seat in ChosenSeats)
+                {
+                    if (seat == (currentRow, currentCol))
+                    {
+                        Console.WriteLine($"WARNING, CHOSEN SEAT ALREADY IN YOUR ORDER.\nYou can reselect it in the menu.\nPress any key to go to the menu.");
+                    }
+                }
                 Console.ReadKey();
 
                 if (caller == "reserve")
