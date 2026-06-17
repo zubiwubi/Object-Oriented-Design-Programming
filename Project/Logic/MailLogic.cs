@@ -52,7 +52,7 @@ public class Mail
         try
         {
             var fromAddress = new MailAddress("inftestmail0@gmail.com", "The Rocket Cinema");
-            var toAddress = new MailAddress(email, "Customer");
+            var toAddress = new MailAddress($"{email}", "Customer");
             const string fromPassword = "qhjy ylfw ldas ewea";
 
             var smtp = new SmtpClient
@@ -73,6 +73,7 @@ public class Mail
 
             smtp.Send(message);
             Console.WriteLine($"Email sent to {email}");
+            Thread.Sleep(500);
         }
         catch (Exception ex)
         {
