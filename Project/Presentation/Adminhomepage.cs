@@ -4,7 +4,7 @@ public class AdminHomePage : IPage
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> Menu { get; set; } = new() { "Manage food/drink menu", "Manage seat price", "Manage merchandise", "Manage movies", "Data overview", "Log off" };
+    public static List<string> Menu { get; set; } = new() { "Manage food/drink menu", "Manage seat price", "Manage merchandise", "Manage movies", "Data overview", "Newsletter", "Log off" };
     public static void Homepage()
     {
         Display.ClearScreen();
@@ -115,7 +115,12 @@ public class AdminHomePage : IPage
             case 4: // data overview method call
                 AdminDataOverview.PrintData();
                 break;
+
             case 5:
+
+                NewsletterChain.SendNewsletter();
+                break;
+            case 6:
                 Account.LogOut();
                 Tools.ProgressBar();
                 Program.Main();
