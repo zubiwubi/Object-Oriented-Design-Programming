@@ -6,7 +6,7 @@ public class AccountHomePage : Account, IPage
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> Menu { get; set; } = new() { "Make a reservation", "Manage your account", "View previous orders", "Log off", "Delete your account" };
+    public static List<string> Menu { get; set; } = new() { "Make a reservation", "Manage your account", "View previous orders", "Log off"};
 
     public static void HomePage()
     {
@@ -102,11 +102,6 @@ public class AccountHomePage : Account, IPage
                 Tools.ProgressBar();
                 LogOut();
                 Program.Main();
-                break;
-            case 4:
-                Console.WriteLine("your being redirected....");
-                Tools.ProgressBar();
-                DeleteAccount();
                 break;
         }
     }

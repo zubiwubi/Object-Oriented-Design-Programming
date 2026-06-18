@@ -125,68 +125,6 @@ public class Account : IPage
             }    
         }
     }
-    protected static void DeleteAccount()
-    {
-        Display.ClearScreen(); 
-        Tools.ErrorMessage("🚨⚠️[WARNING] YOU CAN'T UNDO THIS ACT AND ALL YOUR INFORMATION WILL BE LOST!! [WARNING] ⚠️🚨");
-        Tools.ColorYellowMessage("Press 'ENTER' to continue.");
-        Console.ReadKey(); 
-        Display.ClearScreen(); 
-        string answer;
-        string confirmAnswer; 
-        do
-        {
-            Tools.ErrorMessage("Delete your account? (y/n)");
-            answer = Console.ReadLine()!; 
-
-            if (answer.ToLower() != "y" && answer.ToLower() != "n")
-            {
-                Tools.ErrorMessage("Not a valid answer! (y/n)");
-            }
-            
-        } while (answer.ToLower() != "y" && answer.ToLower() != "n"); 
-
-        if (answer == "y")
-        {
-            do
-            {
-                Tools.ErrorMessage("are you sure? (y/n)?"); 
-                confirmAnswer = Console.ReadLine()!; 
-
-                if (answer.ToLower() != "y" && answer.ToLower() != "n")
-                {
-                    Tools.ErrorMessage("Not a valid answer! (y/n)");
-                }
-                
-            } while (confirmAnswer.ToLower() != "y" && confirmAnswer.ToLower() != "n"); 
-
-            if (confirmAnswer.ToLower() == "y")
-            {
-                Display.ClearScreen(); 
-                accountLogic.DeleteAccount(AccountLogic.CurrentAccount); 
-                Tools.ErrorMessage("YOUR ACCOUNT HAS BEEN DELETED\nYOU HAVE TO CREATE A NEW ACCOUNT TO SAVE YOUR INFORMATION");
-                Tools.ColorYellowMessage("Press 'ENTER' to go back to homepage");
-                Console.ReadKey(); 
-                Tools.ProgressBar(); 
-                Program.Main(); 
-            }
-
-            if (confirmAnswer.ToLower() == "n")
-            {
-                Console.WriteLine("You canceled deleting your account!\nYour being redirected to the homepage");
-                Tools.ProgressBar(); 
-                AccountHomePage.HomePage(); 
-            }
-        
-        }
-
-        if (answer.ToLower() == "n")
-        {
-            Console.WriteLine("You decided not to proceed to delete your account\nYour being redirected to the homepage");
-            Tools.ProgressBar(); 
-            AccountHomePage.HomePage(); 
-        }
-    }
 
     protected static string HidePassword()
     {
