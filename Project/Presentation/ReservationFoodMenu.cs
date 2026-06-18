@@ -107,10 +107,12 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
         {
             Display.ClearScreen();
 
-            AnsiConsole.MarkupLine("[black on gray] SNACKS MENU [/]\n\n");
+            AnsiConsole.MarkupLine("[black on gray] :fork_and_knife: SNACKS MENU [/]\n\n");
+            AnsiConsole.MarkupLine(" SPACEBAR: :tropical_drink: CONTINUE TO DRINKS");
+            AnsiConsole.MarkupLine(" ARROWS KEYS: Navigate ");
+            AnsiConsole.MarkupLine(" ENTER: Select\n ");
             DisplayOrder();
-            AnsiConsole.MarkupLine(" SPACEBAR: CONTINUE TO DRINKS");
-            AnsiConsole.MarkupLine(" BACKSPACE: :credit_card: RETURN WITHOUT ORDERING FOOD  \n\n Use the arrow keys to navigate. Highlighted items will expand and show the description. Please choose one item.");
+            AnsiConsole.MarkupLine(" \nHighlighted items will expand and show the description. Please your choose snack(s).");
 
             var table = new Table();
             table.Border(TableBorder.HeavyHead);
@@ -179,11 +181,15 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
         while (true)
         {
             Display.ClearScreen();
-            AnsiConsole.MarkupLine("[black on gray] DRINKS MENU [/]\n\n");
+            AnsiConsole.MarkupLine("[black on gray] :tropical_drink: DRINKS MENU [/]\n\n");
+
+            AnsiConsole.MarkupLine(" SPACEBAR: :credit_card: CONTINUE TO PAYMENT");
+            AnsiConsole.MarkupLine(" ARROWS KEYS: Navigate ");
+            AnsiConsole.MarkupLine(" ENTER: Select ");
+            AnsiConsole.MarkupLine(" BACKSPACE: :fork_and_knife: RETURN TO FOOD MENU\n");
             DisplayOrder();
-            AnsiConsole.MarkupLine(" SPACEBAR: CONTINUE TO PAYMENT WITHOUT A DRINK ");
-            AnsiConsole.MarkupLine(" BACKSPACE: :fork_and_knife: RETURN TO FOOD MENU\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
-            AnsiConsole.MarkupLine($"\n Please select your drink.");
+            AnsiConsole.MarkupLine("\nHighlighted items will expand and show the description. Please select your drink(s).");
+            
 
 
             var drinkTable = new Table();
@@ -270,7 +276,7 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                 }
                 else
                 {
-                    AnsiConsole.MarkupLine("[rapidblink] CAUTION: PLEASE SELECT EITHER FOOD OR DRINK. PRESS ANYTHING TO RETRY.\n[/]");
+                    AnsiConsole.MarkupLine("[rapidblink] CAUTION: PLEASE SELECT AT LEAST ONE SNACK OR DRINK. PRESS ANYTHING TO RETRY.\n[/]");
                     Console.ReadKey();
                 }
             }
