@@ -29,13 +29,6 @@ public class AccountAccess
         _connection.Execute(sql, new { Id = id, Password = password });
     }
 
-    public void Delete(AccountModel account)
-    {
-        string sql = $"DELETE FROM {Table} WHERE id = @Id";
-        _connection.Execute(sql, new { Id = account.Id });
-    }
-
-
     public List<AccountModel> GetAll()
     {
         string sql = $"SELECT * FROM {Table}";
