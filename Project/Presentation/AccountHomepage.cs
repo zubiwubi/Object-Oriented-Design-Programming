@@ -98,7 +98,7 @@ public class AccountHomePage : Account, IPage
                 PreviousOrders.ViewPreviousOrders();
                 break;
             case 3:
-                Console.WriteLine("Loggin off.....");
+                Console.WriteLine("Logging off.....");
                 Tools.ProgressBar();
                 LogOut();
                 Program.Main();
