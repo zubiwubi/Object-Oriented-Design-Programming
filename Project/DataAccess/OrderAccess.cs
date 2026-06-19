@@ -10,25 +10,37 @@ public class OrderAccess
 
     public int Write(OrderModel order)
     {
-        string sql = $"INSERT INTO {Table} (accountId, movieId, seatId, date , fileNameQRCode, partySize) VALUES (@AccountId, @MovieId, @SeatId,@Date, @FileNameQRCode, @PartySize);SELECT last_insert_rowid();";
+        string sql = $"INSERT INTO {Table} (accountId, movieId, seat, date , partySize) VALUES (@AccountId, @MovieId, @Seat,@Date, @PartySize);SELECT last_insert_rowid();";
         return _connection.QuerySingle<int>(sql, order);
     }
 
-    public OrderModel? GetById(int id)
+    public OrderModel? GetById(long id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<OrderModel>(sql, new { Id = id });
     }
 
-    public List<OrderModel> GetByCustomerId(long accountId)
+    public List<OrderModel> GetByAccountId(long accountId)
     {
-        string sql = $"SELECT * FROM \"{Table}\" WHERE accountId = @AccountId";
+        string sql = $"SELECT * FROM {Table} WHERE accountId = @AccountId";
         return _connection.Query<OrderModel>(sql, new { AccountId = accountId }).AsList();
+    }
+
+    public List<OrderModel> GetByMovieId(long movieId)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE movieId = @MovieId";
+        return _connection.Query<OrderModel>(sql, new { MovieId = movieId }).AsList();
+    }
+
+    public List<OrderModel> GetAllOrders()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<OrderModel>(sql).AsList();
     }
 
     public void Update(OrderModel order)
     {
-        string sql = $"UPDATE {Table} SET accountId = @AccountId, movieId = @MovieId, date = @Date, fileNameQRCode = @FileNameQRCode, partySize = @PartySize WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET accountId = @AccountId, movieId = @MovieId, date = @Date, partySize = @PartySize WHERE id = @Id";
         _connection.Execute(sql, order);
     }
 

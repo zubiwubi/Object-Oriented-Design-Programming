@@ -14,13 +14,13 @@ public class FoodAccess
         return _connection.Query<FoodModel>(sql).ToList();
     }
 
-    public void Write(FoodModel food)
+    public void Add(FoodModel food)
     {
-        string sql = $"INSERT INTO {Table} (name, description, price, type, isLounge) VALUES (@Name, @Description, @Price, @Type, @isLounge)";
+        string sql = $"INSERT INTO {Table} (name, description, price, type, isLounge) VALUES (@Name, @Description, @Price, @Type, @IsLounge)";
         _connection.Execute(sql, food);
     }
 
-    public FoodModel? GetById(int id)
+    public FoodModel? GetById(long? id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<FoodModel>(sql, new { Id = id });
@@ -28,12 +28,17 @@ public class FoodAccess
 
     public void Update(FoodModel food)
     {
-        string sql = $"UPDATE {Table} SET name = @Name, description = @Description, price = @Price, type = @Type, isLounge = @isLounge WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET name = @Name, description = @Description, price = @Price, type = @Type, isLounge = @IsLounge WHERE id = @Id";
         _connection.Execute(sql, food);
     }
 
     public void Delete(FoodModel food)
-    {
+    {        
+        string deleteCache = $"DELETE FROM \"OrderedExtras\" WHERE foodId = @Id"; // delete all dependencies/FKs in others
+        _connection.Execute(deleteCache, new { Id = food.Id });
+
+        // UPDATE instead and change it to '0'
+        
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = food.Id });
     }

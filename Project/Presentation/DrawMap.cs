@@ -1,23 +1,16 @@
-/*
-        //  (ZAAL NAAM)  
-        //     ● ● ●   ● ● ●
-        //     ● ● ● ● ● ● ●
-        //     ● ● ●   ● ● ●
+using Microsoft.VisualBasic;
 
-        //     ════════════════
-        //     │   SCREEN     │
-        //     ════════════════
-*/
 public class DrawMap
 {
-    PriceSeatsLogic priceSeats = new();
-    int currentRow = 0;
-    int currentCol = 0;
+    private PriceSeatsLogic priceSeats = new PriceSeatsLogic();
 
-    // start position
+    public List<(int Row, int Col)> ChosenSeats = new();
+
+    private int currentRow = 0;
+    private int currentCol = 0;
+
     public void StartPosition(char[,] auditorium)
     {
-        // loop through the whole map
         for (int i = 0; i < auditorium.GetLength(0); i++)
         {
             for (int j = 0; j < auditorium.GetLength(1); j++)
@@ -31,28 +24,20 @@ public class DrawMap
             }
         }
     }
-    // seat selection
-    public void SeatSelection(string caller, char[,] auditorium, string name, string info, string screen, string callerType)
+    public void SeatSelection(string caller, char[,] auditorium, string name, string info, string screen, string callerType, int locationId)
     {
         while (true)
         {
             Display.ClearScreen();
-            // header
+
+            var seats = PriceSeatsLogic.seatAccess.GetSeatsByLocation(locationId);
+
+            // HEADER
             Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.WriteLine($" {name} ");
             Console.ResetColor();
 
-            // // legenda
-            // Console.WriteLine("\nLegend:");
-            // Console.WriteLine(
-            //     "Red       =   Unavailable\n" +
-            //     "Grey      =   Available\n" +
-            //     "Green     =   Selected\n\n"
-            //     );
-
-            // MAP
-            // loop through the map
             for (int i = 0; i < auditorium.GetLength(0); i++)
             {
                 for (int j = 0; j < auditorium.GetLength(1); j++)
@@ -75,140 +60,214 @@ public class DrawMap
                         continue;
                     }
 
-                    double price = priceSeats.PriceSeatCalc(name, i, j);
+                    var seat = seats.FirstOrDefault(s => s.Row == i && s.Col == j);
 
-                    if (price == 38.99)
+                    if (seat != null)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    else if (price == 29.99)
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        if (seat.Type == "premium")
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        else if (seat.Type == "standard")
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        else
+                            Console.ForegroundColor = ConsoleColor.Gray;
                     }
 
                     Console.Write(" ● ");
                     Console.ResetColor();
                 }
+
                 Console.WriteLine();
             }
 
-            // scherm printen
             Console.WriteLine();
             Console.WriteLine(screen);
-
-            // informatie
             Console.WriteLine();
             Console.WriteLine(info);
+
             if (caller == "")
             {
-                Console.WriteLine();
-                Console.WriteLine($"Press enter to return to main menu");
+                Console.WriteLine("\nPress enter to return to main menu");
                 Console.ReadKey();
                 return;
             }
 
             if (caller == "reserve")
             {
-                Console.WriteLine("Use the Arrows to move");
-                Console.WriteLine("Press Enter to confirm | Escape to return\n");
-                bool exit = SeatSelectionArrow(auditorium, name, callerType);
-                if (exit)
-                    return;
+                Console.WriteLine("\nUse arrows | Enter = confirm | ESC = back");
+                bool exit = SeatSelectionArrow(auditorium, locationId, callerType, "", "", caller);
+                if (exit) return;
             }
-
+            else if (caller == "Admin")
+            {
+                Console.WriteLine("\nUse arrows | Enter = confirm | ESC = back");
+                bool exit = SeatSelectionArrow(auditorium, locationId, callerType, info, screen, caller);
+                if (exit) return;
+            }
         }
     }
 
-    public bool SeatSelectionArrow(char[,] auditorium, string name, string callerType = "")
+    public bool SeatSelectionArrow(char[,] auditorium, int locationId, string callerType = "", string info = "", string screen = "", string caller = "")
     {
         Console.WriteLine();
-        double priceSeat = priceSeats.PriceSeatCalc(name, currentRow, currentCol);
+
+        double priceSeat = priceSeats.PriceSeatCalc(locationId, currentRow, currentCol);
         Console.WriteLine($"Price current seat: {priceSeat}");
 
-        // input 
         var key = Console.ReadKey(true).Key;
+
         switch (key)
         {
-            // seat selection with arrow keys
             case ConsoleKey.UpArrow:
-                int newRow = currentRow - 1;
-                if (newRow >= 0 && auditorium[newRow, currentCol] == '●')
-                {
-                    currentRow = newRow;
-                }
+                if (currentRow - 1 >= 0 && auditorium[currentRow - 1, currentCol] == '●')
+                    currentRow--;
                 break;
 
             case ConsoleKey.DownArrow:
-                int newRow2 = currentRow + 1;
-                if (newRow2 < auditorium.GetLength(0) && auditorium[newRow2, currentCol] == '●')
-                {
-                    currentRow = newRow2;
-                }
+                if (currentRow + 1 < auditorium.GetLength(0) && auditorium[currentRow + 1, currentCol] == '●')
+                    currentRow++;
                 break;
 
             case ConsoleKey.LeftArrow:
-                int newCol = currentCol - 1;
-                if (newCol >= 0 && auditorium[currentRow, newCol] == '●')
-                {
-                    currentCol = newCol;
-                }
+                if (currentCol - 1 >= 0 && auditorium[currentRow, currentCol - 1] == '●')
+                    currentCol--;
                 break;
 
             case ConsoleKey.RightArrow:
-                int newCol2 = currentCol + 1;
-                if (newCol2 < auditorium.GetLength(1) && auditorium[currentRow, newCol2] == '●')
-                {
-                    currentCol = newCol2;
-                }
+                if (currentCol + 1 < auditorium.GetLength(1) && auditorium[currentRow, currentCol + 1] == '●')
+                    currentCol++;
                 break;
 
-            // confirm
             case ConsoleKey.Enter:
-                int seatNum = int.Parse($"{currentCol}{currentRow}");
-                Console.WriteLine($"Your chosen seat is:\nColumn: {currentCol} Row: {currentRow}");
-                Console.WriteLine($"Press enter to continue");
+
+                string seatNum = $"{currentCol}{currentRow}";
+                Console.WriteLine($"Selected seat: Row {currentRow}, Col {currentCol}");
+                foreach (var seat in ChosenSeats)
+                {
+                    if (seat == (currentRow, currentCol))
+                    {
+                        Console.WriteLine($"WARNING, CHOSEN SEAT ALREADY IN YOUR ORDER.\nYou can reselect it in the menu.\nPress any key to go to the menu.");
+                    }
+                }
                 Console.ReadKey();
-                ReservationFoodMenu.FoodOrderChecker(ReservationMovie.ChosenMovieId, seatNum, callerType); // REDIRECT TO FOOD ORDER
-                //Payment.Order(ReservationMovie.ChosenMovieId, seatNum, callerType);
+
+                if (caller == "reserve")
+                {
+                    while (true)
+                    {
+                        Console.WriteLine(
+                            "Q = Quit\nX = Continue with order\nA = Add seats to your order\nR = Reselect last seat\nRA = reset all");
+
+                        string choice = Console.ReadLine();
+
+                        if (choice == "Q" || choice == "q")
+                        {
+                            ChosenSeats.Clear();
+                            AccountHomePage.HomePage();
+                        }
+                        else if (choice == "X" || choice == "x")
+                        {
+                            ChosenSeats.Add((currentRow, currentCol));
+
+                            string seatsString = string.Join(", ", ChosenSeats.Select(s => $"({s.Row},{s.Col})"));
+                            ChosenSeats.Clear();
+                            ReservationFoodMenu.FoodOrderChecker(ReservationMovie.ChosenMovieId, seatsString, callerType);
+
+                        }
+                        else if (choice == "A" || choice == "a")
+                        {
+                            ChosenSeats.Add((currentRow, currentCol));
+                            SeatSelection(caller, auditorium, "", info, screen, callerType, locationId);
+                        }
+                        else if (choice == "R" || choice == "r")
+                        {
+                            SeatSelection(caller, auditorium, "", info, screen, callerType, locationId);
+                        }
+                        else if (choice == "RA" || choice == "ra")
+                        {
+                            ChosenSeats.Clear();
+                            SeatSelection(caller, auditorium, "", info, screen, callerType, locationId);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong input");
+                        }
+                    }
+                }
+
+                if (callerType == "Admin")
+                {
+                    while (true)
+                    {
+                        Console.WriteLine(
+                            "Q = Quit\nX = Change Type\nA = Add more to change\nR = Reselect last seat\nRA = reset all");
+
+                        string choice = Console.ReadLine();
+
+                        if (choice == "Q" || choice == "q")
+                        {
+                            ChosenSeats.Clear();
+                            AdminHomePage.Homepage();
+                        }
+                        else if (choice == "X" || choice == "x")
+                        {
+                            ChosenSeats.Add((currentRow, currentCol));
+
+                            var copy = new List<(int Row, int Col)>(ChosenSeats);
+                            ChosenSeats.Clear();
+
+                            AdminManageSeatPrice.printSeats(copy);
+                        }
+                        else if (choice == "A" || choice == "a")
+                        {
+                            ChosenSeats.Add((currentRow, currentCol));
+                            SeatSelection(caller, auditorium, "", info, screen, callerType, locationId);
+                        }
+                        else if (choice == "R" || choice == "r")
+                        {
+                            SeatSelection(caller, auditorium, "", info, screen, callerType, locationId);
+                        }
+                        else if (choice == "RA" || choice == "ra")
+                        {
+                            ChosenSeats.Clear();
+                            SeatSelection(caller, auditorium, "", info, screen, callerType, locationId);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Wrong input");
+                        }
+                    }
+                }
+                else
+                {
+                    ReservationFoodMenu.FoodOrderChecker(ReservationMovie.ChosenMovieId, seatNum, callerType);
+                }
+
                 return true;
 
-            // exit
             case ConsoleKey.Escape:
                 return true;
         }
+
         return false;
     }
 
-    // draw auditorium
-    public char[,] DrawAuditorium(int[] seatsRow)
+    public char[,] DrawAuditorium(int[] seatsRow, int locationId)
     {
-        // beslissing van de rijen en kolommen
         int rows = seatsRow.Length;
         int maxSeats = seatsRow.Max();
 
-        char[,] auditorium = new char[rows, maxSeats];  // maxSeats = breedste rij
+        char[,] auditorium = new char[rows, maxSeats];
 
         for (int i = 0; i < rows; i++)
         {
-            // leeg maken
             for (int j = 0; j < maxSeats; j++)
-            {
-                auditorium[i, j] = ' ';     // leeg
-            }
+                auditorium[i, j] = ' ';
 
-            int spaces = (maxSeats - seatsRow[i]) / 2;
+            int offset = (maxSeats - seatsRow[i]) / 2;
 
             for (int j = 0; j < seatsRow[i]; j++)
-            {
-                auditorium[i, j + spaces] = '●';    // j + spaces = centered
-            }
+                auditorium[i, j + offset] = '●';
         }
-
-        Console.WriteLine();
 
         return auditorium;
     }

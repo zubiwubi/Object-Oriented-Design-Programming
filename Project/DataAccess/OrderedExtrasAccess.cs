@@ -21,6 +21,22 @@ public class OrderedExtrasAccess
         return _connection.QueryFirstOrDefault<OrderedExtrasModel>(sql, new { Id = id });
     }
 
+    public OrderedExtrasModel? GetByOrderId(long? orderId)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE orderId = @OrderId";
+        return _connection.QueryFirstOrDefault<OrderedExtrasModel>(sql, new { OrderId = orderId });
+    }
+    public List<OrderedExtrasModel>? GetAllByOrderId(long? orderId)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE orderId = @OrderId";
+        return _connection.Query<OrderedExtrasModel>(sql, new { OrderId = orderId }).AsList();
+    }
+
+    public List<OrderedExtrasModel>? GetAll()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<OrderedExtrasModel>(sql).AsList();
+    }
 
     public void Update(OrderedExtrasModel order)
     {

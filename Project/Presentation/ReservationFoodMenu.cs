@@ -2,12 +2,77 @@ using Spectre.Console;
 
 public class ReservationFoodMenu : CustomMessageWithMenuOS
 {
+    private static readonly int _maxOrderAmount = 50;
+    protected static OrderedExtrasLogic orderedExtrasLogic = new();
     protected static List<string> Options { get; set; } = new List<string>() { "VIEW SNACKS", "CONTINUE TO PAYMENT WITHOUT SNACKS" };
     protected static string Message { get; set; } = "";
-    public static List<FoodModel> allSnacks { get; set; } = FoodMenuLogic.GetAllFoods().Where(f => f.IsLounge == 0).ToList();
-    public static List<DrinkModel> allMovieDrinks { get; set; } = FoodMenuLogic.GetAllDrinks().Where(d => d.IsLounge == 0).ToList();
+    public static List<FoodModel> allSnacks { get; set; } = FoodLogic.GetAllFoods().Where(f => f.IsLounge == 0).ToList();
+    public static List<DrinkModel> allMovieDrinks { get; set; } = DrinkLogic.GetAllDrinks().Where(d => d.IsLounge == 0).ToList();
 
-    public static void FoodOrderChecker(int movieId, int seatNum, string callerType) // Confirm First
+    public static Dictionary<ConsumableModel, int> OrderedItems = new(); // "cart"
+
+    public static void CreateOrderedExtraId(int movieId, string seatNum, string callerType) // FOWARDS TO MERCHANDISE
+    {
+        int orderCount = OrderedItems.Count();
+
+        if (orderCount == 1)
+        {
+            var item = OrderedItems.First().Key;
+            int orderedExtrasId = 0;
+            int consumableQuantity = OrderedItems.First().Value;
+
+            if (FoodLogic.IsFood(item))
+            {
+                orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, item.Id, consumableQuantity, null, null, null, null);
+            }
+            if (DrinkLogic.IsDrink(item))
+            {
+                orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, item.Id, consumableQuantity, null, null);
+            }
+            OrderedItems.Clear();
+
+            ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, orderedExtrasId, null); // CONTINUE TO NEXT SCREEN / MERCHANDISE
+        }
+
+        if (orderCount > 1) // Bigger quanitites
+        {
+            int? firstOrderedExtrasId = null;
+
+            var firstItem = OrderedItems.First().Key;
+            int consumableQuantity = OrderedItems.First().Value;
+
+            if (FoodLogic.IsFood(firstItem))
+                firstOrderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, firstItem.Id, consumableQuantity, null, null, null, null);
+
+            if (DrinkLogic.IsDrink(firstItem))
+                firstOrderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, firstItem.Id, consumableQuantity, null, null);
+
+            // Other IDs
+            int? orderedExtrasId = null;
+            var others = OrderedItems.Skip(1).ToDictionary(k => k.Key, v => v.Value); // Seperate the rest from the first
+
+            foreach (var otherItem in others)
+            {
+                ConsumableModel item = otherItem.Key;
+                int itemQuantity = otherItem.Value;
+
+                if (FoodLogic.IsFood(item))
+                {
+                    orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, item.Id, itemQuantity, null, null, null, null);
+                    OrderedItems.Clear();
+                    ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, orderedExtrasId, firstOrderedExtrasId);
+                }
+                if (DrinkLogic.IsDrink(item))
+                {
+                    orderedExtrasId = orderedExtrasLogic.SaveOrderedExtras(null, null, null, item.Id, itemQuantity, null, null);
+                    OrderedItems.Clear();
+                    ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, orderedExtrasId, firstOrderedExtrasId);
+                }
+            }
+        }
+    }
+
+    public static void FoodOrderChecker(int movieId, string? seatNum, string callerType)
     {
         Console.Clear();
 
@@ -24,24 +89,30 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                     Console.ReadKey();
                     break;
                 case 1: // ------------ CONTINUE WITHOUT SNACKS -------------
-                    ReservationMerchandise.CreateMenu(movieId, seatNum, callerType);
+                    ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, null, null);
                     break;
             }
         }
     }
 
-    public static void RenderFoodMenu(int movieId, int seatNum, string callerType)
+    public static void RenderFoodMenu(int movieId, string? seatNum, string callerType)
     {
         ViewFoodMenu.AddVeganDescription(allSnacks);
 
         int selectedOption = 0;
 
+        FoodModel selectedSnack = new(default, default, default, default, default);
+
         while (true)
         {
             Display.ClearScreen();
 
-            AnsiConsole.MarkupLine("[black on gray] SNACKS MENU [/]\n\n");
-            AnsiConsole.MarkupLine(" BACKSPACE: :credit_card: RETURN WITHOUT ORDERING FOOD  \n\n Use the arrow keys to navigate. Highlighted items will expand and show the description. Please choose one item.");
+            AnsiConsole.MarkupLine("[black on gray] :fork_and_knife: SNACKS MENU [/]\n\n");
+            AnsiConsole.MarkupLine(" SPACEBAR: :tropical_drink: CONTINUE TO DRINKS");
+            AnsiConsole.MarkupLine(" ARROWS KEYS: Navigate ");
+            AnsiConsole.MarkupLine(" ENTER: Select\n ");
+            DisplayOrder();
+            AnsiConsole.MarkupLine(" \nHighlighted items will expand and show the description. Please your choose snack(s).");
 
             var table = new Table();
             table.Border(TableBorder.HeavyHead);
@@ -50,15 +121,25 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
             table.AddColumn("FOOD").Width(110);
             table.AddColumn("PRICE").Width(110);
             table.AddColumn("DIETARY").Width(110);
-            foreach (var food in allSnacks) // ----- TABLE ROWS ------------------
+            for (int i = 0; i < allSnacks.Count(); i++)
             {
-                bool isSelected = food.Id == (selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
+                FoodModel snack = allSnacks[i];
 
-                var rowContent = new[] { $"{food.Id}", $"{food.Name}", $"€ {food.Price.ToString("0.00")}", $"{food.Type}" };
-                var rowContentSelected = new[] { $"{food.Id}", $"[white on gray23]   ● {food.Name}  [/]\n[italic][dim]{food.Description}[/][/]", $"[bold]€ {food.Price.ToString("0.00")}[/]", $"[bold]{food.Type}[/]" };
+                int displayId = (i + 1);
+
+                bool isSelected = displayId == selectedOption + 1; // +1 because it starts at 0, so this is to make it match the ids
+
+                var rowContent = new[] { $"{displayId}", $"{snack.Name}", $"€ {snack.Price.ToString("0.00")}", $"{snack.Type}" };
+                var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {snack.Name}  [/]\n[italic][dim]{snack.Description}[/][/]", $"[bold]€ {snack.Price.ToString("0.00")}[/]", $"[bold]{snack.Type}[/]" };
 
                 table.AddRow(isSelected ? rowContentSelected : rowContent);
+
+                if (isSelected)
+                {
+                    selectedSnack = snack;
+                }
             }
+
             AnsiConsole.Write(table); // --------------- END OF FOOD TABLE DRAWING ------------------
 
             var input = Console.ReadKey();
@@ -73,62 +154,42 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                 selectedOption = (allSnacks.Count() + selectedOption - 1) % allSnacks.Count();
             }
 
-            if (input.Key == ConsoleKey.Backspace)
+            else if (input.Key == ConsoleKey.Spacebar) // ---- IF NO SNACK, CONTINUE TO DRINKS
             {
-                return;
+                RenderDrinkMenu(movieId, seatNum, callerType);
             }
 
-            else if (input.Key == ConsoleKey.Enter)
+            else if (input.Key == ConsoleKey.Enter) // ---- SELECT AMOUNT ----
             {
-                long snackId = selectedOption + 1;
+                int foodAmount = InputValidatorLogic.AskAmount();
 
-                foreach (var snack in allSnacks)
-                {
-                    if (snackId == snack.Id)
-                    {
-                        AnsiConsole.MarkupLine($"[black on white] CURRENT ORDER:\n €{snack.Price.ToString("0.00")} {snack.Name} [/]\n");
-                        RenderDrinkMenu(movieId, seatNum, callerType, snackId);
-                    }
-                }
-                // Console.WriteLine(" Please press anything to confirm.\n Press BACKSPACE to re-select your items.");
-                // var confirmKey = Console.ReadKey();
+                AddToOrder(selectedSnack, foodAmount);
 
-                // if (confirmKey.Key == ConsoleKey.Backspace)
-                // {
-                //     return;
-                // }
-                // else
-                // {
-                //     RenderDrinkMenu(movieId, seatNum, callerType, snackId);
-                // }
+                continue;
             }
         }
     }
 
-    public static void RenderDrinkMenu(int movieId, int seatNum, string callerType, long snackId)
+    public static void RenderDrinkMenu(int movieId, string? seatNum, string callerType)
     {
         ViewFoodMenu.AddVeganDescription(allMovieDrinks);
 
-        double snackPrice = 0.00; // Rememeber previous order details
-        string snackName = "";
-
-        foreach (var snack in allSnacks)
-        {
-            if (snack.Id == snackId)
-            {
-                snackPrice = snack.Price;
-                snackName = snack.Name;
-            }
-        }
+        DrinkModel selectedDrink = new(default, default, default, default, default, default);
 
         int selectedOption = 0;
 
         while (true)
         {
             Display.ClearScreen();
-            AnsiConsole.MarkupLine("[black on gray] DRINKS MENU [/]\n\n");
-            AnsiConsole.MarkupLine(" BACKSPACE: :fork_and_knife: RETURN TO FOOD MENU\n\n\n Use the arrow keys to navigate. Highlighted items will expand and show the description.");
-            AnsiConsole.MarkupLine($"[black on white] CURRENT ORDER:\n €{snackPrice.ToString("0.00")} {snackName} [/]\n\n Please select your drink.");
+            AnsiConsole.MarkupLine("[black on gray] :tropical_drink: DRINKS MENU [/]\n\n");
+
+            AnsiConsole.MarkupLine(" SPACEBAR: :credit_card: CONTINUE TO PAYMENT");
+            AnsiConsole.MarkupLine(" ARROWS KEYS: Navigate ");
+            AnsiConsole.MarkupLine(" ENTER: Select ");
+            AnsiConsole.MarkupLine(" BACKSPACE: :fork_and_knife: RETURN TO FOOD MENU\n");
+            DisplayOrder();
+            AnsiConsole.MarkupLine("\nHighlighted items will expand and show the description. Please select your drink(s).");
+            
 
 
             var drinkTable = new Table();
@@ -139,14 +200,23 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
             drinkTable.AddColumn("PRICE").Width(100);
             drinkTable.AddColumn("SIZE").Width(100);
             drinkTable.AddColumn("DIETARY").Width(100);
-            foreach (var drink in allMovieDrinks) // ----- TABLE ROWS ------------------
+            for (int i = 0; i < allMovieDrinks.Count(); i++)
             {
-                bool isSelected = drink.Id == (selectedOption + 1); // +1 to match with IDs
+                DrinkModel drink = allMovieDrinks[i];
 
-                var rowContent = new[] { $"{drink.Id}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Size}", $"{drink.Type}" };
-                var rowContentSelected = new[] { $"[bold]{drink.Id}[/]", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"{drink.Size}", $"[bold]{drink.Type}[/]" };
+                int displayId = (i + 1);
+
+                bool isSelected = (displayId == selectedOption + 1); // +1 because it starts at 0, so this is to make it match the ids
+
+                var rowContent = new[] { $"{displayId}", $"{drink.Name}", $"€ {drink.Price.ToString("0.00")}", $"{drink.Size}", $"{drink.Type}" };
+                var rowContentSelected = new[] { $"{displayId}", $"[white on gray23]   ● {drink.Name}  [/]\n[italic][dim]{drink.Description}[/][/]", $"[bold]€ {drink.Price.ToString("0.00")}[/]", $"{drink.Size}", $"[bold]{drink.Type}[/]" };
 
                 drinkTable.AddRow(isSelected ? rowContentSelected : rowContent);
+
+                if (isSelected)
+                {
+                    selectedDrink = drink;
+                }
             }
 
             AnsiConsole.Write(drinkTable); // --------------- END OF DRINK TABLE DRAWING ------------------
@@ -163,43 +233,95 @@ public class ReservationFoodMenu : CustomMessageWithMenuOS
                 selectedOption = (allMovieDrinks.Count() + selectedOption - 1) % allMovieDrinks.Count();
             }
 
-            if (input.Key == ConsoleKey.Backspace)
+            if (input.Key == ConsoleKey.Backspace) // RETURN
             {
                 return;
             }
 
-            else if (input.Key == ConsoleKey.Enter) // Full order 
+            else if (input.Key == ConsoleKey.Enter) // ---- SELECT AMOUNT ----
             {
-                long drinkId = selectedOption + 1;
-                Display.ClearScreen();
+                int foodAmount = InputValidatorLogic.AskAmount();
 
-                foreach (var drink in allMovieDrinks)
+                AddToOrder(selectedDrink, foodAmount);
+
+                continue;
+            }
+
+            else if (input.Key == ConsoleKey.Spacebar) // CONFIRM AND GO TO MERCHANDISE
+            {
+                if (OrderedItems != null)
                 {
-                    if (drinkId == drink.Id)
+                    Console.WriteLine("Please press anything to confirm (this will add the selected items to the current order and send you to the next screen).\n Press BACKSPACE to re-set your cart.\n");
+                    var confirmKey = Console.ReadKey();
+
+                    if (confirmKey.Key == ConsoleKey.Backspace)
                     {
-                        double total = Convert.ToDouble(snackPrice) + drink.Price;
-                        AnsiConsole.MarkupLine("[black on gray] SELECTED FOOD ITEMS  \n[/]" +
-                            $"[black on white]\n ------------------------------- \n  ● {snackName} | € {snackPrice:F2}  [/]\n" +
-                            $"[black on white]  ● {drink.Name} ({drink.Size}) | € {drink.Price:F2}  [/]" +
-                            $"[black on white]\n ============================== \n[bold] TOTAL: € {total:F2}  [/][/]\n\n");
+                        Tools.ErrorMessage("Are you sure you want to go back? The items in your cart will not be saved. Press BACKSPACE again to go back. Press ENTER else to continue ordering.");
+                        var Uinput = Console.ReadKey();
+                        if (Uinput.Key == ConsoleKey.Backspace)
+                        {
+                            Display.LoadingRenderer("Removing items and returning to the start of FOOD MENU...");
+                            OrderedItems.Clear();
+                            return;
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
-                }
-
-                Console.WriteLine(" Please press anything to confirm (this will add the selected items to the current order and send you to the payment screen).\n Press BACKSPACE to re-select your items.\n");
-                var confirmKey = Console.ReadKey();
-
-                if (confirmKey.Key == ConsoleKey.Backspace)
-                {
-                    return;
+                    else
+                    {
+                        CreateOrderedExtraId(movieId, seatNum, callerType); // <----CREATES ORDERED EXTRA & FORWARDS TO MERCHANDISE
+                    }
                 }
                 else
                 {
-                    ReservationMerchandise.CreateMenu(movieId, seatNum, callerType, snackId, drinkId);
-                    // Wouden we niet dat een persoon meer dan 1 drank/snack kon bestellen? 
-                    // gebruiker wordt geforceerd om beide te kiezen, wat als die alleen een drankje wil? of alleen een snack? 
-
+                    AnsiConsole.MarkupLine("[rapidblink] CAUTION: PLEASE SELECT AT LEAST ONE SNACK OR DRINK. PRESS ANYTHING TO RETRY.\n[/]");
+                    Console.ReadKey();
                 }
             }
         }
+    }
+    public static void AddToOrder(ConsumableModel item, int amount)
+    {
+        foreach (var kvp in OrderedItems)
+        {
+            if (kvp.Key == item)
+            {
+                if (kvp.Value + amount > _maxOrderAmount)
+                {
+                    Tools.ErrorMessage($"You may not hold a quantity of {kvp.Value + amount}. Please order an amount below {_maxOrderAmount}. Press anything to retry.");
+                    Console.ReadKey();
+                    return;
+                }
+            }
+        }
+
+        if (OrderedItems.ContainsKey(item))
+        {
+            OrderedItems[item] += amount;
+            AnsiConsole.MarkupLine($"✅ Added [italic] {amount}x {item.Name}: € {(item.Price * amount):F2}[/] to the order. Press anything to continue ordering.");
+            Console.ReadKey();
+        }
+        else
+        {
+            OrderedItems[item] = amount;
+            AnsiConsole.MarkupLine($"✅ Added [italic] {amount}x {item.Name}: € {(item.Price * amount):F2}[/] to the order. Press anything to continue ordering.");
+            Console.ReadKey();
+        }
+    }
+
+    public static void DisplayOrder()
+    {
+        double total = 0;
+
+        AnsiConsole.MarkupLine("[bold] CART: [/]");
+        foreach (var item in OrderedItems)
+        {
+            total += (item.Key.Price * item.Value);
+            AnsiConsole.MarkupLine($"●[italic] {item.Value}x {item.Key.Name,-10}: € {(item.Key.Price * item.Value):F2}[/]");
+            // "{Quantity}x {Name}: {Total}"
+        }
+        AnsiConsole.MarkupLine($"============================== \n[bold] TOTAL: € {total:F2}  [/]\n");
     }
 }

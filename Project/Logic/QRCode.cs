@@ -4,15 +4,23 @@ class QRCodeGen
 {
     private static readonly MovieAccess _movieAccess = new();
 
-    public static MovieModel? GetByID(int id)
+    public static MovieModel? GetByID(int? id)
     {
         return _movieAccess.GetById(id);
     }
-    public static void QrCodeGeneration(string? email, int orderId, int movieId, int seatId)
+    public static void QrCodeGeneration(string? email, int orderId, int? movieId, string? seatId)
     {
-        MovieModel QrMovie = GetByID(movieId);
+        string text = "";
+        if (movieId != null)
+        {
+            MovieModel QrMovie = GetByID(movieId);
 
-        string text = $"Movie Title: {QrMovie.Title}, MovieId:{movieId},Auditorium:{QrMovie.LocationId}, SEAT{seatId}, Date: {QrMovie.Date}, Start Time: {QrMovie.StartTime}";
+            text = $"Movie Title: {QrMovie.Title}, MovieId:{movieId},Auditorium:{QrMovie.LocationId}, SEAT{seatId}, Date: {QrMovie.Date}, Start Time: {QrMovie.StartTime}";
+        }
+        else
+        {
+            text = "Confirmed.";
+        }
 
         string filePath = Path.Combine(Directory.GetCurrentDirectory(), $"qrcode{orderId}.png");
 

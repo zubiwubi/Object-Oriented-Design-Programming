@@ -6,7 +6,7 @@ public class AccountHomePage : Account, IPage
     public static int Arrow { get; set; }
     public static int MenuChoice { get; set; }
     public static bool IsOptionSelected { get; set; }
-    public static List<string> Menu { get; set; } = new() { "Make a reservation", "Manage your account", "View previous orders", "Log off", "Delete your account" };
+    public static List<string> Menu { get; set; } = new() { "Make a reservation", "Manage your account", "View previous orders", "Log off"};
 
     public static void HomePage()
     {
@@ -44,9 +44,12 @@ public class AccountHomePage : Account, IPage
                 if (i == Arrow)
                 {
                     Console.Write("➥ ");
+                    Tools.ColorMagentaMessage($"[{i + 1}] {Menu[i]}");
                 }
-
-                Console.WriteLine($"[{i + 1}] {Menu[i]}");
+                else
+                {
+                    Console.WriteLine($"[{i + 1}] {Menu[i]}");
+                }
             }
 
 
@@ -81,32 +84,25 @@ public class AccountHomePage : Account, IPage
         {
             case 0:
                 Console.WriteLine("you chose to make a reservation.");
-                Thread.Sleep(2000);
+                Tools.ProgressBar();
                 ReservationMovie.Reserve();
                 break;
             case 1:
                 Console.WriteLine("you chose to manage your account.");
-                Thread.Sleep(3000);
+                Tools.ProgressBar();
                 ManageAccount.Start();
                 break;
             case 2:
-                Tools.ErrorMessage("this function does not exist yet.");
-                Console.WriteLine("Press 'Enter' to go back");
-                Console.ReadKey();
-                Thread.Sleep(3000);
-                HomePage();
+                Console.WriteLine("You chose to view your previous orders.");
+                Tools.ProgressBar();
+                PreviousOrders.ViewPreviousOrders();
                 break;
             case 3:
-                Console.WriteLine("Loggin off.....");
-                Thread.Sleep(3000);
+                Console.WriteLine("Logging off.....");
+                Tools.ProgressBar();
                 LogOut();
                 Program.Main();
                 break;
-            case 4: 
-            Console.WriteLine("your being redirected....");
-                Thread.Sleep(3000); 
-                DeleteAccount(); 
-                break; 
         }
     }
 }
