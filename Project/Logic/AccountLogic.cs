@@ -141,12 +141,6 @@ public class AccountLogic
         return true;
     }
 
-
-    public void DeleteAccount(AccountModel account)
-    {
-        _access.Delete(account);
-    }
-
     public static void LogOff()
     {
         CurrentAccount = null;

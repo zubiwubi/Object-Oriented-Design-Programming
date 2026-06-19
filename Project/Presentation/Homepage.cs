@@ -3,7 +3,7 @@ using Spectre.Console;
 class Homepage : CustomMessageWithMenuOS
 {
     protected List<string> Options { get; set; } = new List<string>() { "Login", "Create Account", "Continue as Guest", "Search Movies", "Lounge Reservation", "View Food & Drinks Menu", "View Merchandise", "Auditorium Maps", "FAQ", "Exit" };
-    protected static string Message { get; set; } = "ARROW KEYS: Navigate\nENTER: Select Option";
+    protected static string Message { get; set; } = "ARROW KEYS: Navigate\nENTER: Select";
     public void Render()
     {
         while (true)
